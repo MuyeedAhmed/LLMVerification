@@ -1,6 +1,6 @@
 import subprocess
 import shutil, os
-
+import re
 
 class ExtractGitInfo:
     def __init__(self, github_link, repo_path):
@@ -144,8 +144,6 @@ class ExtractGitInfo:
                     print(f"File {source_path} does not exist. Skipping copy.")
         except subprocess.CalledProcessError as e:
             print(f"Error copying changed files: {e}")
-        
-    
 
     def GetChangedFunctions(self, commit_hash):
         try:
@@ -157,7 +155,19 @@ class ExtractGitInfo:
                 text=True,
                 check=True
             )
-            return diff_result.stdout.strip()
+            diff_result_strip = diff_result.stdout.strip()
+            diff_output = diff_result.stdout
+            hunk_header_pattern = re.compile(r'^@@ .*@@\s+(.*)$', re.MULTILINE)
+
+            functions = set()
+            for match in hunk_header_pattern.finditer(diff_output):
+                line = match.group(1).strip()
+                # Heuristically extract the function name from a C declaration
+                func_match = re.match(r'(?:static\s+)?(?:inline\s+)?[^\(\)]+\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(', line)
+                if func_match:
+                    functions.add(func_match.group(1))
+                    
+            return diff_result.stdout.strip(), list(functions)
         except subprocess.CalledProcessError as e:
             print(f"Error fetching changed functions for {commit_hash}: {e.stderr}")
             return None
