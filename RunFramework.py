@@ -4,7 +4,12 @@ import os
 
 def main():
     github_link = "https://github.com/FFmpeg/FFmpeg.git"
-    repo_path = "FFmpeg"
+    projects_dir = "Projects"
+    project = "FFmpeg"
+    repo_path = os.path.join(projects_dir, project)
+    os.makedirs(projects_dir, exist_ok=True)
+    os.makedirs("ExcelFiles", exist_ok=True)
+    os.makedirs("FileHistory", exist_ok=True)
     FileStorePath = "FileHistory"
     run_clang = ExtractGitInfo(github_link, repo_path)
     if not os.path.exists(repo_path):
@@ -48,7 +53,7 @@ def main():
     ws.append(["Commit Hash", "Commit Date", "Commit Message", "Prompt", "Changed File", "Changed Functions"])
     for commit, commit_date, message, prompt, file, changed_function, diff in filtered_commits:
         ws.append([commit, commit_date, message, prompt, file, changed_function, diff])
-    wb.save("Test.xlsx")
+    wb.save(f"ExcelFiles/{project}.xlsx")
 
 
 if __name__ == "__main__":
