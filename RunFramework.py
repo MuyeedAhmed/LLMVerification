@@ -1,11 +1,15 @@
 from ExtractGitInfo import ExtractGitInfo
 from openpyxl import Workbook
 import os
+import pandas as pd
 
-def main():
-    github_link = "https://github.com/FFmpeg/FFmpeg.git"
+
+from LLM import RunLLM, MergeLLMOutput
+from RunClang import RunClang
+
+
+def GetGitInfo(github_link, project):
     projects_dir = "Projects"
-    project = "FFmpeg"
     repo_path = os.path.join(projects_dir, project)
     os.makedirs(projects_dir, exist_ok=True)
     os.makedirs("ExcelFiles", exist_ok=True)
@@ -56,5 +60,22 @@ def main():
     wb.save(f"ExcelFiles/{project}.xlsx")
 
 
+
 if __name__ == "__main__":
-    main()
+    github_link = "https://github.com/FFmpeg/FFmpeg.git"
+    project = "FFmpeg"
+
+    # GetGitInfo(github_link, project)
+
+    AllCommits = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
+    commit_hash = "b587afcb65192c4c4bf88422f6565e5355eaf31e"
+    commit_df = AllCommits[AllCommits["Commit Hash"] == commit_hash]
+    message = commit_df["Commit Message"].values[0]
+    change_file_dir = commit_df["Changed File"].values[0]
+    changed_function = commit_df["Changed Functions"].values[0]
+
+    # RunLLM(commit, message, changed_function, change_file_dir)
+
+    # MergeLLMOutput(commit, change_file_dir, changed_function)
+
+    RunClang(project, commit_hash, change_file_dir)
