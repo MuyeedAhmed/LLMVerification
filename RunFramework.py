@@ -5,6 +5,7 @@ import pandas as pd
 from openai import OpenAI
 client = OpenAI()
 
+from MergeLLMOutput import MergeLLMOutput
 
 def GetGitInfo(github_link, project):
     projects_dir = "Projects"
@@ -102,5 +103,7 @@ if __name__ == "__main__":
 
     commit_hash = "b587afcb65192c4c4bf88422f6565e5355eaf31e"
     commit_df = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
-    RunLLM(commit_df=commit_df, commit=commit_hash)
+    # RunLLM(commit_df=commit_df, commit=commit_hash)
+
+    MergeLLMOutput(commit_df=commit_df, commit=commit_hash)
 
