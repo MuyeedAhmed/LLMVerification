@@ -4,13 +4,9 @@ import pandas as pd
 from openai import OpenAI
 client = OpenAI()
 
-def RunLLM(commit_df, commit):
-    df = commit_df[commit_df["Commit Hash"] == commit]
-    message = df["Commit Message"].values[0]
-    change_file_dir = df["Changed File"].values[0]
+def RunLLM(commit, message, changed_function, change_file_dir):
     change_file_name = change_file_dir.split("/")[-1].split(".")[0]
-    changed_function = df["Changed Functions"].values[0]
-
+    
     source_file = os.path.join("FileHistory", commit, f"{change_file_name}_original.c")
     destination_file = os.path.join("FileHistory", commit, f"{change_file_name}_llm_function.c")
     with open(source_file, 'r') as file:
@@ -68,13 +64,9 @@ def RemoveFunctionFromCode(content, function_name):
     return re.sub(pattern, '', content, flags=re.DOTALL)
 
 
-def MergeLLMOutput(commit_df, commit):
-    df = commit_df[commit_df["Commit Hash"] == commit]
-    message = df["Commit Message"].values[0]
-    change_file_dir = df["Changed File"].values[0]
+def MergeLLMOutput(commit, change_file_dir, changed_function):
     change_file_name = change_file_dir.split("/")[-1].split(".")[0]
-    changed_function = df["Changed Functions"].values[0]
-
+    
     source_file = os.path.join("FileHistory", commit, f"{change_file_name}_original.c")
     source_file_llm_function = os.path.join("FileHistory", commit, f"{change_file_name}_llm_function.c")
     destination_file = os.path.join("FileHistory", commit, f"{change_file_name}_llm.c")

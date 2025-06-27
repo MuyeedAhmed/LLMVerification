@@ -5,6 +5,8 @@ import pandas as pd
 
 
 from LLM import RunLLM, MergeLLMOutput
+from RunClang import RunClang
+
 
 def GetGitInfo(github_link, project):
     projects_dir = "Projects"
@@ -65,9 +67,15 @@ if __name__ == "__main__":
 
     # GetGitInfo(github_link, project)
 
+    AllCommits = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
     commit_hash = "b587afcb65192c4c4bf88422f6565e5355eaf31e"
-    commit_df = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
-    # RunLLM(commit_df=commit_df, commit=commit_hash)
+    commit_df = AllCommits[AllCommits["Commit Hash"] == commit_hash]
+    message = commit_df["Commit Message"].values[0]
+    change_file_dir = commit_df["Changed File"].values[0]
+    changed_function = commit_df["Changed Functions"].values[0]
 
-    MergeLLMOutput(commit_df=commit_df, commit=commit_hash)
+    # RunLLM(commit, message, changed_function, change_file_dir)
 
+    # MergeLLMOutput(commit, change_file_dir, changed_function)
+
+    RunClang(project, commit_hash, change_file_dir)
