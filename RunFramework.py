@@ -2,10 +2,9 @@ from ExtractGitInfo import ExtractGitInfo
 from openpyxl import Workbook
 import os
 import pandas as pd
-from openai import OpenAI
-client = OpenAI()
 
-from MergeLLMOutput import MergeLLMOutput
+
+from LLM import RunLLM, MergeLLMOutput
 
 def GetGitInfo(github_link, project):
     projects_dir = "Projects"
@@ -57,41 +56,6 @@ def GetGitInfo(github_link, project):
     for commit, commit_date, message, prompt, file, changed_function, diff in filtered_commits:
         ws.append([commit, commit_date, message, prompt, file, changed_function, diff])
     wb.save(f"ExcelFiles/{project}.xlsx")
-
-def RunLLM(commit_df, commit):
-    df = commit_df[commit_df["Commit Hash"] == commit]
-    message = df["Commit Message"].values[0]
-    change_file_dir = df["Changed File"].values[0]
-    change_file_name = change_file_dir.split("/")[-1].split(".")[0]
-    changed_function = df["Changed Functions"].values[0]
-
-    source_file = os.path.join("FileHistory", commit, f"{change_file_name}_original.c")
-    destination_file = os.path.join("FileHistory", commit, f"{change_file_name}_llm_function.c")
-    with open(source_file, 'r') as file:
-        source_code = file.read()
-
-    updated_prompt = f"""
-    Fix Requirement: {message}
-    Function:{changed_function}
-    C file:
-    ```
-    {source_code}
-    ```
-    Give me the update {changed_function} function.
-    """
-    completion = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": "You are an expert in C programming language. You are working on leetcode problems, and you need to implement certain functions based on the prompts."},
-            {"role": "user", "content": updated_prompt}
-        ],
-        max_tokens=2500,
-        temperature=0.5
-    )
-
-    output = completion.choices[0].message.content.strip()
-    with open(destination_file, "w") as f_out:
-            f_out.writelines(output)
 
 
 
