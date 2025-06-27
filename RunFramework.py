@@ -22,11 +22,13 @@ def main():
             continue
         commit_date = run_clang.GetCommitDate(commit)
         changed_files = run_clang.GetChangedFiles(commit)
-        changed_function = run_clang.GetChangedFunctions(commit)
+        diff, changed_function = run_clang.GetChangedFunctions(commit)
+
+        changed_function = ",".join(changed_function)
         prompt = f"Fix Requirement: {message}\nFunction:{changed_function}\nGive me the edited function. Also show the diff."
         
         if len(changed_files) == 1:
-            filtered_commits.append((commit, commit_date, message, prompt, changed_files[0], changed_function))
+            filtered_commits.append((commit, commit_date, message, prompt, changed_files[0], changed_function, diff))
         if len(changed_files) > 1:
             print(f"Multiple changed files detected for commit {commit}: {changed_files}")
             continue
@@ -44,8 +46,8 @@ def main():
     ws = wb.active 
     ws.title = "Commits"
     ws.append(["Commit Hash", "Commit Date", "Commit Message", "Prompt", "Changed File", "Changed Functions"])
-    for commit, commit_date, message, prompt, file, changed_function in filtered_commits:
-        ws.append([commit, commit_date, message, prompt, file, changed_function])
+    for commit, commit_date, message, prompt, file, changed_function, diff in filtered_commits:
+        ws.append([commit, commit_date, message, prompt, file, changed_function, diff])
     wb.save("Test.xlsx")
 
 
