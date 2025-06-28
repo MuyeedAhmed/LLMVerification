@@ -140,32 +140,50 @@ def extract_c_content(code):
         print(f"Error: {e}")
         return code
 
-def RemoveFunctionFromCode(content, function_name):
+def ReplaceFunctionAtOriginalLine(content, function_name, changed_function_code_stripped):
     pattern = rf'(?:\b[\w\s\*]+)?\b{function_name}\s*\([^)]*\)\s*\{{(?:[^{{}}]*|\{{[^{{}}]*\}})*\}}'
-    return re.sub(pattern, '', content, flags=re.DOTALL)
+
+    match = re.search(pattern, content, flags=re.DOTALL)
+    if not match:
+        return content, None
+
+    start_index = match.start()
+    end_index = match.end()
+    line_number = content[:start_index].count('\n') + 1
+
+    lines = content.splitlines()
+    removed_lines = content[start_index:end_index].count('\n') + 1
+
+    changed_lines = changed_function_code_stripped if isinstance(changed_function_code_stripped, list) else [changed_function_code_stripped]
+    new_lines = lines[:line_number - 1] + changed_lines + lines[line_number - 1 + removed_lines:]
+
+    return "\n".join(new_lines) + "\n", line_number
+
 
 
 def MergeLLMOutput(commit, change_file_dir, changed_function):
     change_file_name = change_file_dir.split("/")[-1].split(".")[0]
-    
+
     source_file = os.path.join("FileHistory", commit, f"{change_file_name}_original.c")
     source_file_llm_function = os.path.join("FileHistory", commit, f"{change_file_name}_llm_function.c")
     destination_file = os.path.join("FileHistory", commit, f"{change_file_name}_llm.c")
 
     with open(source_file, 'r') as file:
         source_code = file.read()
-    source_code_removed_function = RemoveFunctionFromCode(source_code, changed_function)
 
     with open(source_file_llm_function, 'r') as file:
         changed_function_code = file.read()
 
     changed_function_code_stripped = extract_c_content(changed_function_code)
 
-    updated_code = source_code_removed_function.rstrip() + "\n\n" + "\n".join(changed_function_code_stripped) + "\n"
+    updated_code, line_number = ReplaceFunctionAtOriginalLine(
+        source_code,
+        changed_function,
+        changed_function_code_stripped
+    )
 
     with open(destination_file, "w") as f_out:
         f_out.write(updated_code)
-
 
 def DeleteAllFileLLM():
     files = openai.files.list().data
