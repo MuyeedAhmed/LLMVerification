@@ -65,7 +65,7 @@ if __name__ == "__main__":
     github_link = "https://github.com/FFmpeg/FFmpeg.git"
     project = "FFmpeg"
 
-    # GetGitInfo(github_link, project)
+    GetGitInfo(github_link, project)
 
     AllCommits = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
     commit_hash = "b587afcb65192c4c4bf88422f6565e5355eaf31e"
@@ -74,8 +74,8 @@ if __name__ == "__main__":
     change_file_dir = commit_df["Changed File"].values[0]
     changed_function = commit_df["Changed Functions"].values[0]
 
-    # RunLLM(commit, message, changed_function, change_file_dir)
+    RunLLM(commit_hash, message, changed_function, change_file_dir)
 
-    # MergeLLMOutput(commit, change_file_dir, changed_function)
+    MergeLLMOutput(commit_hash, change_file_dir, changed_function)
 
     RunClang(project, commit_hash, change_file_dir)
