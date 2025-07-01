@@ -4,7 +4,8 @@ import os
 import pandas as pd
 
 
-from LLM import RunLLM, MergeLLMOutput
+from LLM import RunLLM
+from MergeOutput import MergeLLMOutput
 from RunClang import RunClang
 
 
@@ -65,17 +66,17 @@ if __name__ == "__main__":
     github_link = "https://github.com/FFmpeg/FFmpeg.git"
     project = "FFmpeg"
 
-    # GetGitInfo(github_link, project)
+    GetGitInfo(github_link, project)
 
     AllCommits = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
-    commit_hash = "b587afcb65192c4c4bf88422f6565e5355eaf31e"
+    commit_hash = "f8e30d9eebd25d6ed2db744940f1a6d33534ef7b"
     commit_df = AllCommits[AllCommits["Commit Hash"] == commit_hash]
     message = commit_df["Commit Message"].values[0]
     change_file_dir = commit_df["Changed File"].values[0]
     changed_function = commit_df["Changed Functions"].values[0]
 
-    # RunLLM(commit, message, changed_function, change_file_dir)
+    RunLLM(commit_hash, message, changed_function, change_file_dir)
 
-    # MergeLLMOutput(commit, change_file_dir, changed_function)
+    MergeLLMOutput(commit_hash, change_file_dir, changed_function)
 
     RunClang(project, commit_hash, change_file_dir)
