@@ -1,53 +1,104 @@
-# #!/bin/bash
-
-# set -e
-
-# FILE="$1"
-# OBJFILE=$(echo "$FILE" | sed 's/\.c$/.o/')
-
-# ./configure --disable-asm
-
-# bear -- make -B "$OBJFILE"
-
-# clang --analyze \
-#   -Xanalyzer -analyzer-checker=alpha.core \
-#   -Xanalyzer -analyzer-checker=alpha.unix \  
-#   -Xanalyzer -analyzer-checker=alpha.security \
-#   $(jq -r --arg file "$FILE" '.[] | select(.file | endswith($file)) | .arguments[]' compile_commands.json)
-
 #!/bin/bash
 
 set -e
 
 FILE="$1"
-OBJFILE=$(echo "$FILE" | sed 's/\.c$/.o/')
+OBJFILE="${FILE%.c}.o"
 
-# ./configure \
-#   --disable-asm \
-#   --enable-gpl \
-#   --enable-libopenh264 \
-#   # --enable-x11grab \
-#   --extra-cflags="-I$(brew --prefix)/include -I/opt/X11/include" \
-#   --extra-ldflags="-L$(brew --prefix)/lib -L/opt/X11/lib"
+if [ -x "./configure" ]; then
+  ./configure > /dev/null 2>&1
+  CC=${CC:-cc}
+  compiler=$($CC --version 2>/dev/null)
 
-./configure
-
-echo 'CFLAGS += -Wno-incompatible-function-pointer-types -Wno-string-plus-int -Wno-incompatible-pointer-types-discards-qualifiers -Werror -Wno-unused-but-set-variable -Wno-absolute-value -Wno-cast-qual -Wno-non-literal-null-conversion -Wno-int-in-bool-context -Wno-constant-conversion -Wno-shift-negative-value -Wno-incompatible-pointer-types -Wno-array-parameter -Wno-unused-const-variable -Wno-bool-operation -Wno-sometimes-uninitialized -Wno-deprecated-declarations -Wno-pointer-bool-conversion' >> config.mak
-
-bear -- make -B "$OBJFILE"
-
-ARGS=$(jq -r --arg file "$FILE" '.[] | select(.file | endswith($file)) | .arguments[]' compile_commands.json)
-
-echo $ARGS
-
-if [[ -z "$ARGS" ]]; then
-  echo "Error: compile_commands.json has no entry for $FILE"
-  exit 1
+  if echo "$compiler" | grep -qi "clang"; then
+      echo "Detected Clang"
+      echo 'CFLAGS += -Wno-everything -Werror' >> config.mak
+  elif echo "$compiler" | grep -qi "gcc"; then
+      echo "Detected GCC"
+      echo 'CFLAGS += -w -Werror' >> config.mak
+  else
+      echo "Unknown compiler: using default flags"
+      echo 'CFLAGS += -Werror' >> config.mak
+  fi
 fi
 
-clang --analyze \
-  -Xanalyzer -analyzer-checker=alpha.core \
-  -Xanalyzer -analyzer-checker=alpha.unix \
-  -Xanalyzer -analyzer-checker=alpha.security \
-  -I/Users/muyeedahmed/VulkanSDK/1.4.313.1/macOS/include \
-  $ARGS
+if [ -f Makefile ] || [ -f makefile ]; then
+  echo "Makefile found: building with bear"
+  bear -- make -B "$OBJFILE"
+
+  ARGS=$(jq -r --arg file "$FILE" '.[] | select(.file | endswith($file)) | .arguments[]' compile_commands.json)
+
+  if [[ -z "$ARGS" ]]; then
+    echo "Error: compile_commands.json has no entry for $FILE"
+    exit 1
+  fi
+
+  clang --analyze \
+    -Xanalyzer -analyzer-checker=alpha.core \
+    -Xanalyzer -analyzer-checker=alpha.unix \
+    -Xanalyzer -analyzer-checker=alpha.security \
+    $ARGS
+else
+  INCLUDES=""
+  for dir in $(find . -type d \( -name include -o -name inc \)); do
+    INCLUDES+=" -I$dir"
+  done
+
+  clang --analyze \
+    -Xanalyzer -analyzer-checker=alpha.core \
+    -Xanalyzer -analyzer-checker=alpha.unix \
+    -Xanalyzer -analyzer-checker=alpha.security \
+    $INCLUDES \
+    "$FILE"
+fi
+set -e
+
+FILE="$1"
+OBJFILE="${FILE%.c}.o"
+
+if [ -x "./configure" ]; then
+  ./configure > /dev/null 2>&1
+  CC=${CC:-cc}
+  compiler=$($CC --version 2>/dev/null)
+
+  if echo "$compiler" | grep -qi "clang"; then
+      echo "Detected Clang"
+      echo 'CFLAGS += -Wno-everything -Werror' >> config.mak
+  elif echo "$compiler" | grep -qi "gcc"; then
+      echo "Detected GCC"
+      echo 'CFLAGS += -w -Werror' >> config.mak
+  else
+      echo "Unknown compiler: using default flags"
+      echo 'CFLAGS += -Werror' >> config.mak
+  fi
+fi
+
+if [ -f Makefile ] || [ -f makefile ]; then
+  echo "Makefile found. Make"
+  bear -- make -B "$OBJFILE"
+
+  ARGS=$(jq -r --arg file "$FILE" '.[] | select(.file | endswith($file)) | .arguments[]' compile_commands.json)
+
+  if [[ -z "$ARGS" ]]; then
+    echo "Error: compile_commands.json has no entry for $FILE"
+    exit 1
+  fi
+  echo "clang output:"
+  clang --analyze \
+    -Xanalyzer -analyzer-checker=alpha.core \
+    -Xanalyzer -analyzer-checker=alpha.unix \
+    -Xanalyzer -analyzer-checker=alpha.security \
+    $ARGS
+else
+  INCLUDES=""
+  for dir in $(find . -type d \( -name include -o -name inc \)); do
+    INCLUDES+=" -I$dir"
+  done
+  echo "clang output:"
+  clang --analyze \
+    -Xanalyzer -analyzer-checker=alpha.core \
+    -Xanalyzer -analyzer-checker=alpha.unix \
+    -Xanalyzer -analyzer-checker=alpha.security \
+    $INCLUDES \
+    "$FILE"
+fi
