@@ -11,6 +11,15 @@ CATEGORY_KEYWORDS = {
     "Uninitialized": ["uninitialized"],
     "Security": ["overflow", "security", "buffer", "format string"],
     "Logic": ["always true", "always false", "tautology", "redundant"],
+    "Syntax Error": ["expected", "extraneous", "invalid syntax", "parse error"],
+    "Unsafe Cast": ["implicit conversion", "incompatible type", "loss of", "cast"],
+    "Undeclared Identifier": ["undeclared identifier", "implicit function declaration", "call to undeclared"],
+    "Return Issue": ["does not return a value", "no return", "missing return"],
+    "Initializer Error": ["not a compile-time constant", "initializer element"],
+    "Assembly Constraint": ["invalid output constraint", "asm"],
+    "Standard Compliance": ["C99", "ISO C", "before C99", "standards before"],
+    "Struct Member Access": ["no member named", "incompatible struct", "invalid field"],
+    "Logic": ["always true", "always false", "tautology", "redundant"],
 }
 
 def classify_issue(message):
