@@ -35,10 +35,12 @@ def GetGitInfo(github_link, project):
         diff, changed_function = gitInfo.GetChangedFunctions(commit)
 
         changed_function = ",".join(changed_function)
-        prompt = f"Fix Requirement: {message}\nFunction:{changed_function}\nGive me the edited function. Also show the diff."
-        
+        prompt = f"Modify the function in the provided C file such that it fixes the following issue: 
+            {message} in {changed_function}\nGive me the edited function."
+        line_changes = gitInfo.GetTotalLineChanges(commit)
+
         if len(changed_files) == 1:
-            filtered_commits.append((commit, commit_date, message, prompt, changed_files[0], changed_function, diff))
+            filtered_commits.append((commit, commit_date, message, prompt, changed_files[0], changed_function, line_changes))
         if len(changed_files) > 1:
             print(f"Multiple changed files detected for commit {commit}: {changed_files}")
             continue
@@ -50,7 +52,7 @@ def GetGitInfo(github_link, project):
         gitInfo.CopyChangedFilesFromParent(commit, dest_dir)
         gitInfo.CopyChangedFilesFromCommit(commit, dest_dir)
 
-        print(gitInfo.GetTotalLineChanges(commit))
+        print()
         gitInfo.gitCheckoutMaster()
 
 
