@@ -35,8 +35,7 @@ def GetGitInfo(github_link, project):
         diff, changed_function = gitInfo.GetChangedFunctions(commit)
 
         changed_function = ",".join(changed_function)
-        prompt = f"Modify the function in the provided C file such that it fixes the following issue: 
-            {message} in {changed_function}\nGive me the edited function."
+        prompt = f"Modify the function in the provided C file such that it fixes the following issue: {message} in {changed_function}\nGive me the edited function."
         line_changes = gitInfo.GetTotalLineChanges(commit)
 
         if len(changed_files) == 1:
