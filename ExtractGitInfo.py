@@ -171,3 +171,24 @@ class ExtractGitInfo:
         except subprocess.CalledProcessError as e:
             print(f"Error fetching changed functions for {commit_hash}: {e.stderr}")
             return None
+    
+    def GetTotalLineChanges(self, commit_hash):
+        try:
+            diff_result = subprocess.run(
+                ["git", "show", "--numstat", commit_hash],
+                cwd=self.repo_path,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=True
+            )
+            added, deleted = 0, 0
+            for line in diff_result.stdout.splitlines():
+                parts = line.strip().split('\t')
+                if len(parts) == 3 and parts[0].isdigit() and parts[1].isdigit():
+                    added += int(parts[0])
+                    deleted += int(parts[1])
+            return added + deleted
+        except subprocess.CalledProcessError as e:
+            print(f"Error fetching total line changes for {commit_hash}: {e.stderr}")
+            return None

@@ -4,9 +4,9 @@ import os
 import pandas as pd
 
 
-from LLM import RunLLM
-from MergeOutput import MergeLLMOutput
-from RunClang import RunClang
+# from LLM import RunLLM
+# from MergeOutput import MergeLLMOutput
+# from RunClang import RunClang
 
 
 def GetGitInfo(github_link, project):
@@ -16,23 +16,23 @@ def GetGitInfo(github_link, project):
     os.makedirs("ExcelFiles", exist_ok=True)
     os.makedirs("FileHistory", exist_ok=True)
     FileStorePath = "FileHistory"
-    run_clang = ExtractGitInfo(github_link, repo_path)
+    gitInfo = ExtractGitInfo(github_link, repo_path)
     if not os.path.exists(repo_path):
-        run_clang.gitCloneRepo()
+        gitInfo.gitCloneRepo()
     else:
-        run_clang.gitCheckoutMaster()
+        gitInfo.gitCheckoutMaster()
     since_date = "2025-06-22"
     until_date = "2025-06-24"
-    commit_count = 10
-    commit_hashes = run_clang.GetCommitsByDate(since_date, until_date, commit_count)
+    commit_count = 1
+    commit_hashes = gitInfo.GetCommitsByDate(since_date, until_date, commit_count)
     filtered_commits = []  
     for commit in commit_hashes:
-        message = run_clang.GetCommitMessages(commit)
+        message = gitInfo.GetCommitMessages(commit)
         if message is None:
             continue
-        commit_date = run_clang.GetCommitDate(commit)
-        changed_files = run_clang.GetChangedFiles(commit)
-        diff, changed_function = run_clang.GetChangedFunctions(commit)
+        commit_date = gitInfo.GetCommitDate(commit)
+        changed_files = gitInfo.GetChangedFiles(commit)
+        diff, changed_function = gitInfo.GetChangedFunctions(commit)
 
         changed_function = ",".join(changed_function)
         prompt = f"Fix Requirement: {message}\nFunction:{changed_function}\nGive me the edited function. Also show the diff."
@@ -47,17 +47,19 @@ def GetGitInfo(github_link, project):
             continue
         dest_dir = os.path.join(FileStorePath, commit)
         os.makedirs(dest_dir, exist_ok=True)
-        run_clang.CopyChangedFilesFromParent(commit, dest_dir)
-        run_clang.CopyChangedFilesFromCommit(commit, dest_dir)
+        gitInfo.CopyChangedFilesFromParent(commit, dest_dir)
+        gitInfo.CopyChangedFilesFromCommit(commit, dest_dir)
 
-        run_clang.gitCheckoutMaster()
+        print(gitInfo.GetTotalLineChanges(commit))
+        gitInfo.gitCheckoutMaster()
+
 
     wb = Workbook()
     ws = wb.active 
     ws.title = "Commits"
-    ws.append(["Commit Hash", "Commit Date", "Commit Message", "Prompt", "Changed File", "Changed Functions"])
-    for commit, commit_date, message, prompt, file, changed_function, diff in filtered_commits:
-        ws.append([commit, commit_date, message, prompt, file, changed_function, diff])
+    ws.append(["Commit Hash", "Commit Date", "Commit Message", "Prompt", "Changed File", "Changed Functions", "Line Changes"])
+    for commit, commit_date, message, prompt, file, changed_function, line_changes in filtered_commits:
+        ws.append([commit, commit_date, message, prompt, file, changed_function, line_changes])
     wb.save(f"ExcelFiles/{project}.xlsx")
 
 
