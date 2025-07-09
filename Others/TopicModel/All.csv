@@ -1,0 +1,3061 @@
+﻿Commit Description
+"avformat/iamf_parse: add missing constrains for num_parameters in audio_element_oub()
+
+Fixes ticket #11475.
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avformat/mov: check for tts_count before deferencing tts_data
+
+Fixes ticket #11460.
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avformat/hls: Be more picky on extensions This blocks disallowed extensions from probing It also requires all available segments to have matching extensions to the format mpegts is treated independent of the extension It is recommended to set the whitelists correctly instead of depending on extensions, but this should help a bit, and this is easier to backport Fixes: CVE-2023-6602 II. HLS Force TTY Demuxer Fixes: CVE-2023-6602 IV. HLS XBIN Demuxer DoS Amplification The other parts of CVE-2023-6602 have been fixed by prior commits Found-by: Harvey Phillips of Amazon Element55 (element55) Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"mjpegbdec: Fix incorrect bitstream buffer size. Fixes CVE-2011-3947 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avformat/mov: fix potential unsigned underflow in loop condition
+
+if sc->tts_count is 0, this condition will wrap around to UINT_MAX and the
+code will try to dereference a NULL pointer.
+
+Fixes ticket #11417
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avfilter/af_pan: Fix sscanf() use
+
+Fixes: Memory Data Leak
+
+Found-by: Simcha Kosman <simcha.kosman@cyberark.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/dump: print only the actual streams in a tile grid group
+
+The amount of tiles does not necessarely need to match the amount of streams.
+
+Fixes ticket #11389.
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avfilter/buffersrc: check for valid sample rate
+
+A sample rate <= 0 is invalid.
+
+Fixes an assert in ffmpeg_enc.c that assumed a valid sample rate would be set.
+Fixes ticket #11385.
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"swsresample/swresample: error out on invalid layouts
+
+If it's unsupported or invalid, then there's no point trying to rebuild it
+using a value that may have been derived from the same layout to begin with.
+
+Move the checks before the attempts at copying the layout while at it.
+
+Fixes ticket #9908.
+
+Signed-off-by: James Almer <jamrial@gmail.com>
+
+Fixes: out of array acces
+Fixes: poc5
+Fixes: poc6
+
+Reported-by: VulDB CNA Team
+Found-by: CookedMelon
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/pnmdec: Use 64bit for input size check
+
+Fixes: out of array read
+Fixes: poc3
+
+Reported-by: VulDB CNA Team
+Found-by: CookedMelon
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/cafdec: dont seek beyond 64bit
+
+Fixes: signed integer overflow: 64 + 9223372036854775807 cannot be represented in type 'long long'
+Fixes: 51896/clusterfuzz-testcase-minimized-ffmpeg_dem_CAF_fuzzer-6418242730328064
+Fixes: 62276/clusterfuzz-testcase-minimized-ffmpeg_dem_CAF_fuzzer-6418242730328064
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avutil/hwcontext: Don't assume frames_uninit is reentrant
+
+Fix heap use after free when vulkan_frames_init failed.
+
+Signed-off-by: Zhao Zhili <zhilizhao@tencent.com>"
+"avcodec/speexdec: check for sane frame_size values
+
+Regression since ab39cc36c72bb73318bb911acb66873de850a107.
+
+Fixes heap buffer overflows
+Fixes ticket #10866
+
+Reported-by: sploitem <sploitem@gmail.com>
+Reviewed-by: Michael Niedermayer <michael@niedermayer.cc>
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avfilter/vf_codecview: fix heap buffer overflow
+
+And improve the performance by a little bit.
+
+Signed-off-by: Zhao Zhili <zhilizhao@tencent.com>"
+"avfilter/bwdif: account for chroma sub-sampling in min size calculation
+
+The current logic for detecting frames that are too small for the
+algorithm does not account for chroma sub-sampling, and so a sample
+where the luma plane is large enough, but the chroma planes are not
+will not be rejected. In that event, a heap overflow will occur.
+
+This change adjusts the logic to consider the chroma planes and makes
+the change to all three bwdif implementations.
+
+Fixes #10688
+
+Signed-off-by: Cosmin Stejerean <cosmin@cosmin.at>
+Reviewed-by: Thomas Mundt <tmundt75@gmail.com>
+Signed-off-by: Philip Langdale <philipl@overt.org>"
+avfilter/vf_colorcorrect: fix memory leaks
+avfilter/af_afwtdn: fix crash with EOF handling
+avfilter/asrc_afirsrc: fix by one smaller allocation of buffer
+"avformat/rtsp: Use rtsp_st->stream_index
+
+Fixes: out of array access
+Fixes: rtpdec_h264.c149/poc
+
+Found-by: Hardik Shah of Vehere
+Reviewed-by: Martin Storsjö <martin@martin.st>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"nsvdec: Fix use of uninitialized streams. Fixes CVE-2011-3940 (Out of bounds read resulting in out of bounds write) Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/vp3: Add missing check for av_malloc
+
+Since the av_malloc() may fail and return NULL pointer,
+it is needed that the 's->edge_emu_buffer' should be checked
+whether the new allocation is success.
+
+Fixes: d14723861b (""VP3: fix decoding of videos with stride > 2048"")
+Reviewed-by: Peter Ross <pross@xvid.org>
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>"
+avcodec/smcenc: stop accessing out of bounds frame
+avcodec/rpzaenc: stop accessing out of bounds frame
+"swsresample/swresample: error out on invalid layouts
+
+If it's unsupported or invalid, then there's no point trying to rebuild it
+using a value that may have been derived from the same layout to begin with.
+
+Move the checks before the attempts at copying the layout while at it.
+
+Fixes ticket #9908.
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"lavc/pthread_frame: avoid leaving stale hwaccel state in worker threads
+
+This state is not refcounted, so make sure it always has a well-defined
+owner.
+
+Remove the block added in 091341f2ab5bd35ca1a2aae90503adc74f8d3523, as
+this commit also solves that issue in a more general way."
+"avformat/mov: Check count sums in build_open_gop_key_points()
+
+Fixes: ffmpeg.md
+Fixes: Out of array access
+Fixes: CVE-2022-2566
+
+Found-by: Andy Nguyen <theflow@google.com>
+Found-by: 3pvd <3pvd@google.com>
+Reviewed-by: Andy Nguyen <theflow@google.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+avformat/mov: Check count sums in build_open_gop_key_points() Fixes: ffmpeg.md Fixes: Out of array access Fixes: CVE-2022-2566 Found-by: Andy Nguyen <theflow@google.com> Found-by: 3pvd <3pvd@google.com> Reviewed-by: Andy Nguyen <theflow@google.com> Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+"avcodec/g729_parser: Check channels
+
+Fixes: signed integer overflow: 10 * 808464428 cannot be represented in type 'int'
+Fixes: assertion failure
+Fixes: ticket9651
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/nutdec: Add check for avformat_new_stream
+
+Check for failure of avformat_new_stream() and propagate
+the error code.
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/vp3: Add missing check for av_malloc
+
+Since the av_malloc() may fail and return NULL pointer,
+it is needed that the 's->edge_emu_buffer' should be checked
+whether the new allocation is success.
+
+Fixes: d14723861b (""VP3: fix decoding of videos with stride > 2048"")
+Reviewed-by: Peter Ross <pross@xvid.org>
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>"
+"avcodec/frame_thread_encoder: Free AVCodecContext structure on error during init
+
+Fixes: MemLeak
+Fixes: 8281
+Fixes: PoC_option158.jpg
+Fixes: CVE-2020-22037
+
+Reviewed-by: Andreas Rheinhardt <andreas.rheinhardt@outlook.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/frame_thread_encoder: Free AVCodecContext structure on error during init
+
+Fixes: MemLeak
+Fixes: 8281
+Fixes: PoC_option158.jpg
+Fixes: CVE-2020-22037
+
+Reviewed-by: Andreas Rheinhardt <andreas.rheinhardt@outlook.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+avcodec/frame_thread_encoder: Free AVCodecContext structure on error during init Fixes: MemLeak Fixes: 8281 Fixes: PoC_option158.jpg Fixes: CVE-2020-22037 Reviewed-by: Andreas Rheinhardt <andreas.rheinhardt@outlook.com> Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+"avcodec/utils: don't return negative values in av_get_audio_frame_duration()
+
+In some extrme cases, like with adpcm_ms samples with an extremely high channel
+count, get_audio_frame_duration() may return a negative frame duration value.
+Don't propagate it, and instead return 0, signaling that a duration could not
+be determined.
+
+Fixes ticket #9312
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avcodec/utils: don't return negative values in av_get_audio_frame_duration()
+
+In some extrme cases, like with adpcm_ms samples with an extremely high channel
+count, get_audio_frame_duration() may return a negative frame duration value.
+Don't propagate it, and instead return 0, signaling that a duration could not
+be determined.
+
+Fixes ticket #9312
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avformat/adtsenc: return value check for init_get_bits in adts_decode_extradata
+
+As the second argument for init_get_bits (buf) can be crafted, a return value check for this function call is necessary.
+'buf' is  part of  'AVPacket pkt'.
+replace init_get_bits with init_get_bits8.
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/dnxhddec: check and propagate function return value
+
+Similar to CVE-2013-0868, here return value check for 'init_vlc' is needed.
+crafted DNxHD data can cause unspecified impact.
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avcodec/dnxhddec: check and propagate function return value Similar to CVE-2013-0868, here return value check for 'init_vlc' is needed. crafted DNxHD data can cause unspecified impact. Reviewed-by: Paul B Mahol <onemda@gmail.com> Signed-off-by: James Almer <jamrial@gmail.com>"
+"avfilter/vf_yadif: Fix handing of tiny images
+
+Fixes: out of array access
+Fixes: Ticket8240
+Fixes: CVE-2020-22021
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_yadif: Fix handing of tiny images
+
+Fixes: out of array access
+Fixes: Ticket8240
+Fixes: CVE-2020-22021
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_vmafmotion: Check dimensions
+
+Fixes: out of array access
+Fixes: Ticket8241
+Fixes: Ticket8246
+Fixes: CVE-2020-22019
+Fixes: CVE-2020-22033
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Check pal_size before use
+
+Fixes: assertion failure
+Fixes: out of array read
+Fixes: Ticket8190
+Fixes: CVE-2020-22015
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Check pal_size before use
+
+Fixes: assertion failure
+Fixes: out of array read
+Fixes: Ticket8190
+Fixes: CVE-2020-22015
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"dv: Fix small stack overread related to CVE-2011-3929 and CVE-2011-3936. Found with asan. Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Alex Converse <alex.converse@gmail.com>"
+"avcodec/aacenc: Avoid 0 lambda
+
+Fixes: Ticket8003
+Fixes: CVE-2020-20453
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/aacenc: Avoid 0 lambda
+
+Fixes: Ticket8003
+Fixes: CVE-2020-20453
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/aacpsy: Avoid floating point division by 0 of norm_fac
+
+Fixes: Ticket7995
+Fixes: CVE-2020-20446
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/aacpsy: Avoid floating point division by 0 of norm_fac
+
+Fixes: Ticket7995
+Fixes: CVE-2020-20446
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+avcodec/aacenc: Avoid 0 lambda Fixes: Ticket8003 Fixes: CVE-2020-20453 Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+avcodec/aacpsy: Avoid floating point division by 0 of norm_fac Fixes: Ticket7995 Fixes: CVE-2020-20446 Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+avcodec/lpc: Avoid floating point division by 0 Fixes: Ticket7996 Fixes: CVE-2020-20445 Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+avfilter/vf_vmafmotion: Check dimensions Fixes: out of array access Fixes: Ticket8241 Fixes: Ticket8246 Fixes: CVE-2020-22019 Fixes: CVE-2020-22033 Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+avfilter/vf_yadif: Fix handing of tiny images Fixes: out of array access Fixes: Ticket8240 Fixes: CVE-2020-22021 Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+"avcodec/exr: More strictly check dc_count
+
+Fixes: out of array access
+Fixes: exr/deneme
+
+Found-by: Burak Çarıkçı <burakcarikci@crypttech.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mov: check offset for overflow in mov_probe()
+
+Fixes: Invalid read of size 4
+Fixes: ASAN_Deadlysignal.zip
+
+Found-by: Hardik Shah <hardik05@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mpegenc: Ensure packet queue stays valid
+
+The MPEG-PS muxer uses a custom queue of custom packets. To keep track
+of it, it has a pointer (named predecode_packet) to the head of the
+queue and a pointer to where the next packet is to be added (it points
+to the next-pointer of the last element of the queue); furthermore,
+there is also a pointer that points into the queue (called premux_packet).
+
+The exact behaviour was as follows: If premux_packet was NULL when a
+packet is received, it is taken to mean that the old queue is empty and
+a new queue is started. premux_packet will point to the head of said
+queue and the next_packet-pointer points to its next pointer. If
+predecode_packet is NULL, it will also made to point to the newly
+allocated element.
+
+But if premux_packet is NULL and predecode_packet is not, then there
+will be two queues with head elements premux_packet and
+predecode_packet. Yet only elements reachable from predecode_packet are
+ever freed, so the premux_packet queue leaks.
+Worse yet, when the predecode_packet queue will be eventually exhausted,
+predecode_packet will be made to point into the other queue and when
+predecode_packet will be freed, the next pointer of the preceding
+element of the queue will still point to the element just freed. This
+element might very well be still reachable from premux_packet which
+leads to use-after-frees lateron. This happened in the tickets mentioned
+below.
+
+Fix this by never creating two queues in the first place by checking for
+predecode_packet to know whether the queue is empty. If premux_packet is
+NULL, then it is set to the newly allocated element of the queue.
+
+Fixes tickets #6887, #8188 and #8266.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>"
+"avformat/mxfenc: Never set codec_ul UID to NULL
+
+mxf distinguishes codec profiles by different UIDs and therefore needs
+to check that the input is actually compatible with mxf (i.e. if there
+is a defined UID for it). If not, then sometimes the UID would be set to
+NULL and writing the (video) packet would fail. Yet the following audio
+packet would trigger writing the header (which has been postponed because
+the UID is not known at the start) and if the UID is NULL, this can lead
+to segfaults. This commit therefore stops setting the UID to NULL if the
+input is incompatible with mxf (it has initially been set to a generic
+value in mxf_write_header()).
+
+Fixes #7993.
+
+Reviewed-by: Tomas Härdin <tjoppen@acc.umu.se>
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>"
+"avcodec/pngenc: remove monowhite from apng formats
+
+Monowhite pixel format is not supported, and it does not make sense
+to add support for it.
+
+Fixes #7989"
+"avcodec/exr: Check ymin vs. h
+
+Fixes: out of array access
+Fixes: 26532/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_EXR_fuzzer-5613925708857344
+Fixes: 27443/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_EXR_fuzzer-5631239813595136
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/exr: skip bottom clearing loop when its outside the image
+
+Fixes: signed integer overflow: 1633771809 * 32960 cannot be represented in type 'int'
+Fixes: 26532/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_EXR_fuzzer-5613925708857344
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/vividas: improve extradata packing checks in track_header()
+
+Fixes: out of array accesses
+Fixes: 26622/clusterfuzz-testcase-minimized-ffmpeg_dem_VIVIDAS_fuzzer-6581200338288640
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Fix segfault when remuxing rtp hint stream
+
+When remuxing an rtp hint stream (or any stream with the tag ""rtp ""),
+the mov muxer treats this as one of the rtp hint tracks it creates
+internally when ordered to do so; yet this track lacks the
+AVFormatContext for the hinting rtp muxer, leading to segfaults in
+mov_write_udta_sdp() if a ""trak"" atom is written for this stream; if not,
+the stream's codecpar is freed by mov_free() as if the mov muxer owned
+it (it does for the internally created ""rtp "" tracks), but without
+resetting st->codecpar, leading to double-frees lateron. This commit
+therefore ignores said tag which makes rtp hint streams unremuxable.
+
+This fixes tickets #8181 and #8186.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>"
+"avcodec/aacdec_template: add more checks to make sure only 22.2 gets to 22.2
+
+Validates the set channel layout as well as verifies that the received
+layout to the function matches the reference layout, so that it matches
+the implemented re-ordering logic.
+
+Fixes #8845"
+"fftools/ffmpeg: Fix leak of AVFilterInOut in case of error
+
+The AVFilterInOuts normally get freed in init_output_filter() when
+the corresponding streams get created; yet if an error happens before
+one reaches said point, they leak. Therefore this commit makes
+ffmpeg_cleanup free them, too.
+
+Fixes ticket #8267.
+
+Reviewed-by: Nicolas George <george@nsup.org>
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>"
+"avcodec/v4l2_m2m: adapt to call close() on init fail
+
+This fixes several mem leaks when init of encoder/decoder failed.
+
+Fixes ticket #8285
+
+Signed-off-by: Andriy Gelman <andriy.gelman@gmail.com>"
+"avformat/mm: Check for existence of audio stream
+
+No audio stream is created unconditionally and if none has been created,
+no packet with stream_index 1 may be returned. This fixes an assert in
+ff_read_packet() in libavformat/utils reported in ticket #8782.
+
+Reviewed-by: Michael Niedermayer <michael@niedermayer.cc>
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>"
+"dnn_backend_native: Add overflow check for length calculation.
+
+We should not silently allocate an incorrect sized buffer.
+Fixes trac issue #8718.
+
+Signed-off-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
+Reviewed-by: Michael Niedermayer <michael@niedermayer.cc>
+Reviewed-by: Guo, Yejun <yejun.guo@intel.com>"
+"dnn_backend_native: check operand index
+
+it fixed the issue in https://trac.ffmpeg.org/ticket/8716
+(cherry-pick from 0b3bd001ac1745d9d008a2d195817df57d7d1d14)
+Signed-off-by: Guo, Yejun <yejun.guo@intel.com>"
+"avformat/hls: Pass a copy of the URL for probing
+
+The segments / url can be modified by the io read when reloading
+
+This may be an alternative or additional fix for Ticket8673
+as a further alternative the reload stuff could be disabled during
+probing
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"dnn_backend_native: check operand index
+
+it fixed the issue in https://trac.ffmpeg.org/ticket/8716"
+"avformat/hls: check segment duration value of EXTINF
+
+fix ticket: 8673
+set the default EXTINF duration to 1ms if duration is smaller than 1ms
+
+Signed-off-by: Steven Liu <lq@chinaffmpeg.org>"
+"avcodec/cbs_jpeg: Check length for SOS
+
+Fixes: out of array access
+Fixes: 19734/clusterfuzz-testcase-minimized-ffmpeg_BSF_TRACE_HEADERS_fuzzer-5673507031875584
+Fixes: 19353/clusterfuzz-testcase-minimized-ffmpeg_BSF_TRACE_HEADERS_fuzzer-5703944462663680
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"fftools/ffmpeg_opt: Fix leak of options when parsing options fails
+
+Fixes #8094.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+avformat/tty: add probe function
+"avcodec/snowenc: Fix 2 undefined shifts
+
+Fixes: Ticket7990
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/snowenc: Set mb_num to avoid ratecontrol floating point divisions by 0.0
+
+Fixes: Ticket7990
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/snowenc: Set mb_num to avoid ratecontrol floating point divisions by 0.0
+
+Fixes: Ticket7990
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/avienc: add deinit function
+
+Fixes ticket #8302
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"dv: Fix null pointer dereference due to ach=0 dv: Fix null pointer dereference due to ach=0 Fixes part2 of CVE-2011-3929 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Reviewed-by: Roman Shaposhnik <roman@shaposhnik.org> Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Alex Converse <alex.converse@gmail.com>"
+"avfilter/vf_lagfun: fix heap-buffer overflow
+
+Fixes #8310"
+avidec: use actually read size instead of requested size Fixes CVE-2012-2788
+"avfilter/vf_datascope: fix heap buffer overflow
+
+Fixes #8309"
+"avcodec/g729dec: Avoid computing invalid temporary pointers for ff_acelp_weighted_vector_sum()
+
+Fixes: Ticket8176
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/g729postfilter: Fix left shift of negative value
+
+Fixes: Ticket8176
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_colorspace: fix memmory leaks
+
+Fixes #8303"
+"avformat/nutenc: don't allocate a dynamic AVIOContext if no index is going to be written
+
+Fixes ticket #8295
+
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avcodec/ac3enc: Fix memleak
+
+Fixes ticket #8294.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>"
+"avformat/mpegenc: Fix memleaks and return values
+
+If there is an error in mpeg_mux_init() (the write_header function of
+the various MPEG-PS muxers), two things might happen:
+
+1. Several fifos might leak. Instead of freeing them, the goto fail part
+of the functions freed the private data of the AVStreams instead,
+although this will be freed later in free_stream() anyway.
+2. And if the function is exited via goto fail, it automatically
+returned AVERROR(ENOMEM), although this is also used when the error is
+not a memory allocation failure.
+
+Both of these issues happened in ticket #8284 and have been fixed.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_random: fix memory leaks
+
+Fixes #8296"
+"avfilter/f_reverse: fix memory leaks
+
+Fixes #8283"
+"avcodec/g729postfilter: Fix undefined intermediate pointers
+
+Fixes: index -49 out of bounds for type 'int16_t [192]'
+Fixes: 17689/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_ACELP_KELVIN_fuzzer-5756275014500352
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_gblur: fix heap-buffer overflow
+
+Fixes #8282"
+"avfilter/vf_edgedetect: fix heap-buffer overflow
+
+Fixes #8275"
+"avfilter/af_afade: fix heap-buffer overflow
+
+Fixes #8276"
+"avfilter/vf_avgblur: fix heap-buffer overflow
+
+Fixes #8274"
+"avformat/latmenc: abort if no extradata is available
+
+Fixes ticket #8273.
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avfilter/vf_bwdif: fix heap-buffer overflow
+
+Fixes #8261"
+"avfilter/vf_convolution: fix undefined behaviour
+
+Fixes #8263"
+"avfilter/vf_convolution: fix undefined behaviour
+
+Fixes #8263"
+"avfilter/vf_convolution: fix undefined behaviour
+
+Fixes #8263"
+"avfilter/vf_convolution: fix undefined behaviour
+
+Fixes #8263"
+"avfilter/vf_convolution: fix undefined behaviour
+
+Fixes #8263"
+"avfilter/vf_bm3d: fix heap-buffer overflows
+
+Fixes #8262"
+"avfilter/vf_edgedetect: check if height is big enough
+
+Fixes #8260"
+"avfilter/vf_fieldorder: fix heap-buffer overflow
+
+Fixes #8264"
+"avfilter/vf_convolution: fix undefined behaviour
+
+Fixes #8263"
+"avfilter/vf_lenscorrection: fix division by zero
+
+Fixes #8265"
+"avfilter/vf_colorconstancy: fix overreads in gauss array
+
+Fixes #8250"
+"avcodec/zmbvenc: Correct offset in buffer
+
+zmbvenc allocates a buffer for a picture with padding on all four sides:
+The stride is choosen so large that it already contains padding on the
+right; the height also includes padding rows. The padding on the right
+of each row is also reused as padding for the left of the next row. So
+one still needs to add padding on the left for the first row. This is done
+by offsetting the actual pointer used to access the picture from the
+pointer returned by av_mallocz and the formula for this offset was
+wrong, because it ignored that a pixel can take more than one byte when
+calculating the offset resulting from the left padding of the first row.
+
+This fixes accesses outside of the allocated buffer that were reported
+in tickets #7980 and #7994. No writes were ever attempted outside of
+the buffer.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>
+Reviewed-by: Tomas Härdin <tjoppen@acc.umu.se>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/zmbvenc: Correct offset in buffer
+
+zmbvenc allocates a buffer for a picture with padding on all four sides:
+The stride is choosen so large that it already contains padding on the
+right; the height also includes padding rows. The padding on the right
+of each row is also reused as padding for the left of the next row. So
+one still needs to add padding on the left for the first row. This is done
+by offsetting the actual pointer used to access the picture from the
+pointer returned by av_mallocz and the formula for this offset was
+wrong, because it ignored that a pixel can take more than one byte when
+calculating the offset resulting from the left padding of the first row.
+
+This fixes accesses outside of the allocated buffer that were reported
+in tickets #7980 and #7994. No writes were ever attempted outside of
+the buffer.
+
+Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>
+Reviewed-by: Tomas Härdin <tjoppen@acc.umu.se>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_w3fdif: deny processing small videos
+
+Fixes #8243"
+"avfilter/vf_neighbor: check if width is 1
+
+Fixes #8242"
+"avfilter/vf_bitplanenoise: fix overreads
+
+Fixes #8244"
+"avfilter/vf_floodfill: finish early if source and destination fill matches
+
+Fixes #8236"
+"indeo5: check tile size in decode_mb_info(). This prevents writing into a too small array if some parameters changed without the tile being reallocated. Fixes CVE-2012-2794 CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"lavf/rawenc: Only accept the appropriate stream type for raw muxers.
+
+This does not affect the rawvideo muxer.
+
+Fixes ticket #7979."
+"avcodec/h2645_parse: zero initialize the rbsp buffer
+
+Fixes ticket #8093
+
+Reviewed-by: Andreas Rheinhardt <andreas.rheinhardt@gmail.com>
+Signed-off-by: James Almer <jamrial@gmail.com>"
+"avcodec/vqavideo: Set video size
+
+Fixes: out of array access
+Fixes: 15919/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_VQA_fuzzer-5657368257363968
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/utils: Check close before calling it
+
+Fixes: NULL pointer dereference
+Fixes: 15733/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_IDF_fuzzer-5658616977162240
+
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/aadec: Check for scanf() failure
+
+Fixes: use of uninitialized variables
+Fixes: blank.aa
+
+Found-by: Chamal De Silva <chamal.desilva@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/hevcdec: Avoid only partly skiping duplicate first slices
+
+Fixes: NULL pointer dereference and out of array access
+Fixes: 13871/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_HEVC_fuzzer-5746167087890432
+Fixes: 13845/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_HEVC_fuzzer-5650370728034304
+
+This also fixes the return code for explode mode
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Reviewed-by: James Almer <jamrial@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videodec: Check idx in mpeg4_decode_studio_block()
+
+Fixes: Out of array access
+Fixes: 13500/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_MPEG4_fuzzer-5769760178962432
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Reviewed-by: Kieran Kunhya <kierank@obe.tv>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/htmlsubtitles: Fixes denial of service due to use of sscanf in inner loop for handling braces
+
+Fixes: [Semmle Security Reports #19439]
+Fixes: dos_sscanf2.mkv
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/htmlsubtitles: Fixes denial of service due to use of sscanf in inner loop for tag scaning
+
+Fixes: [Semmle Security Reports #19438]
+Fixes: dos_sscanf1.mkv
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videodec: Clear interlaced_dct for studio profile
+
+Fixes: Out of array access
+Fixes: 13090/clusterfuzz-testcase-minimized-ffmpeg_AV_CODEC_ID_MPEG4_fuzzer-5408668986638336
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Reviewed-by: Kieran Kunhya <kierank@obe.tv>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"cbs_av1: Fix reading of overlong uvlc codes
+
+The specification allows 2^32-1 to be encoded as any number of zeroes
+greater than 31, followed by a one.  This previously failed because the
+trace code would overflow the array containing the string representation
+of the bits if there were more than 63 zeroes.  Fix that by splitting the
+trace output into batches, and at the same time move it out of the default
+path.
+
+(While this seems likely to be a specification error, libaom does support
+it so we probably should as well.)
+
+From a test case by keval shah <skeval65@gmail.com>.
+
+Reviewed-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/flvenc: Check audio packet size
+
+Fixes: Assertion failure
+Fixes: assert_flvenc.c:941_1.swf
+
+Found-by: #CHEN HONGXU# <HCHEN017@e.ntu.edu.sg>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Write version 2 of audio atom if channels is not known
+
+The version 1 needs the channel count and would divide by 0
+Fixes: division by 0
+Fixes: fpe_movenc.c_1108_1.ogg
+Fixes: fpe_movenc.c_1108_2.ogg
+Fixes: fpe_movenc.c_1108_3.wav
+
+Found-by: #CHEN HONGXU# <HCHEN017@e.ntu.edu.sg>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Check input sample count
+
+Fixes: division by 0
+Fixes: fpe_movenc.c_199_1.wav
+Fixes: fpe_movenc.c_199_2.wav
+Fixes: fpe_movenc.c_199_3.wav
+Fixes: fpe_movenc.c_199_4.wav
+Fixes: fpe_movenc.c_199_5.wav
+Fixes: fpe_movenc.c_199_6.wav
+Fixes: fpe_movenc.c_199_7.wav
+
+Found-by: #CHEN HONGXU# <HCHEN017@e.ntu.edu.sg>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mms: Add missing chunksize check
+
+Fixes: out of array read
+Fixes: mms-crash-01b6c5d85f9d9f40f4e879896103e9f5b222816a
+
+Found-by: Paul Ch <paulcher@icloud.com>
+1st hunk by Paul Ch <paulcher@icloud.com>
+Tested-by: Paul Ch <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mxfdec: Fix av_log context
+
+Fixes: out of array access
+Fixes: mxf-crash-1c2e59bf07a34675bfb3ada5e1ec22fa9f38f923
+
+Found-by: Paul Ch <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/rmdec: Do not pass mime type in rm_read_multi() to ff_rm_read_mdpr_codecdata()
+
+Fixes: use after free()
+Fixes: rmdec-crash-ffe85b4cab1597d1cfea6955705e53f1f5c8a362
+
+Found-by: Paul Ch <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/pva: Check for EOF before retrying in read_part_of_packet()
+
+Fixes: Infinite loop
+Fixes: pva-4b1835dbc2027bf3c567005dcc78e85199240d06
+
+Found-by: Paul Ch <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/asfdec_o: Check size_bmp more fully
+
+Fixes: integer overflow and out of array access
+Fixes: asfo-crash-46080c4341572a7137a162331af77f6ded45cbd7
+
+Found-by: Paul Ch <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videodec: Check for bitstream end in read_quant_matrix_ext()
+
+Fixes: out of array read
+Fixes: asff-crash-0e53d0dc491dfdd507530b66562812fbd4c36678
+
+Found-by: Paul Ch <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videodec: Remove use of FF_PROFILE_MPEG4_SIMPLE_STUDIO as indicator of studio profile
+
+The profile field is changed by code inside and outside the decoder,
+its not a reliable indicator of the internal codec state.
+Maintaining it consistency with studio_profile is messy.
+Its easier to just avoid it and use only studio_profile
+
+Fixes: assertion failure
+Fixes: ffmpeg_crash_9.avi
+
+Found-by: Thuan Pham, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/vc1_block: Fix mqaunt check for negative values
+
+Fixes: out of array access
+Fixes: ffmpeg_bof_4.avi
+Fixes: ffmpeg_bof_5.avi
+Fixes: ffmpeg_bof_6.avi
+
+Found-by: Thuan Pham, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Reviewed-by: Jerome Borsboom <jerome.borsboom@carpalis.nl>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/ac3_parser: Check init_get_bits8() for failure
+
+Fixes: null pointer dereference
+Fixes: ffmpeg_crash_6.avi
+
+Found-by: Thuan Pham, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Check that frame_types other than EAC3_FRAME_TYPE_INDEPENDENT have a supported substream id
+
+Fixes: out of array access
+Fixes: ffmpeg_bof_1.avi
+
+Found-by: Thuan Pham, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videodec: Check read profile before setting it
+
+Fixes: null pointer dereference
+Fixes: ffmpeg_crash_7.avi
+
+Found-by: Thuan Pham, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/movenc: Do not pass AVCodecParameters in avpriv_request_sample
+
+Fixes: out of array read
+Fixes: ffmpeg_crash_8.avi
+
+Found-by: Thuan Pham, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videodec: Clear bits_per_raw_sample if it has originated from a previous instance
+
+Fixes: assertion failure
+Fixes: ffmpeg_crash_5.avi
+
+Found-by: Thuan Pham <thuanpv@comp.nus.edu.sg>, Marcel Böhme, Andrew Santosa and Alexandru Razvan Caciulescu with AFLSmart
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/idctdsp: Transmit studio_profile to init instead of using AVCodecContext profile
+
+These 2 fields are not always the same, it is simpler to always use the same field
+for detecting studio profile
+
+Fixes: null pointer dereference
+Fixes: ffmpeg_crash_3.avi
+
+Found-by: Thuan Pham <thuanpv@comp.nus.edu.sg>, Marcel Böhme, Andrew Santosa and Alexandru RazvanCaciulescu with AFLSmart
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpeg4videoenc: Use 64 bit for times in mpeg4_encode_gop_header()
+
+Fixes truncation
+Fixes Assertion n <= 31 && value < (1U << n) failed at libavcodec/put_bits.h:169
+Fixes: ffmpeg_crash_2.avi
+
+Found-by: Thuan Pham <thuanpv@comp.nus.edu.sg>, Marcel Böhme, Andrew Santosa and Alexandru RazvanCaciulescu with AFLSmart
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_signature: use av_strlcpy()
+
+Fixes: out of array access
+
+Found-by: Kira <kira_cxy@foxmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/utvideodec: Set pro flag based on fourcc
+
+This avoids mixing 8bit variants with pro and 10bit with non pro mode.
+Fixes: out of array read
+Fixes: poc_03_30.avi
+
+Found-by: GwanYeong Kim <gy741.kim@gmail.com>
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/img2dec: fix infinite loop
+
+Fixes: kira-poc
+
+Found-by: Kira <kira_cxy@foxmail.com>
+Change suggested by Kira
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/utvideodec: Check subsample factors
+
+Fixes: Out of array read
+Fixes: heap_poc
+
+Found-by: GwanYeong Kim <gy741.kim@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/utvideodec: Add several out of array read related checks
+
+Fixes: OV_decode_plane.avi
+
+Found-by: GwanYeong Kim <gy741.kim@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/utvideodec: Fix bytes left check in decode_frame()
+
+Fixes: out of array read
+Fixes: poc-2017.avi
+
+Found-by: GwanYeong Kim <gy741.kim@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avfilter/vf_transpose: Fix regression with packed pixel formats
+
+Regression since: c6939f65a116b1ffed345d29d8621ee4ffb32235
+Found-by: Paul B Mahol <onemda@gmail.com>
+Reviewed-by: Paul B Mahol <onemda@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/x86/mpegvideodsp: Fix signedness bug in need_emu
+
+Fixes: out of array read
+Fixes: 3516/attachment-311488.dat
+
+Found-by: Insu Yun, Georgia Tech.
+Tested-by: wuninsu@gmail.com
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"vc2enc_dwt: pad the temporary buffer by the slice size
+
+Since non-Haar wavelets need to look into pixels outside the frame, we
+need to pad the buffer. The old factor of two seemed to be a workaround
+that fact and only padded to the left and bottom. This correctly pads
+by the slice size and as such reduces memory usage and potential
+exploits.
+Reported by Liu Bingchang.
+
+Ideally, there should be no temporary buffer but the encoder is designed
+to deinterleave the coefficients into the classical wavelet structure
+with the lower frequency values in the top left corner.
+
+Signed-off-by: Rostislav Pehlivanov <atomnuker@gmail.com>"
+pictor: Correctly check frame dimensions Fixes: 559/clusterfuzz-testcase-6424225917173760 Bug-Id: CVE-2017-7862 CC: libav-stable@libav.org Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg Signed-off-by: Michael Niedermayer <michael@niedermayer.cc> (cherry picked from commit 8c2ea3030af7b40a3c4275696fb5c76cdb80950a) Signed-off-by: Diego Biurrun <diego@biurrun.de>
+"avcodec/mpeg_er: Clear mcsel in mpeg_er_decode_mb()
+
+Fixes out of array read
+Should fix: 3516/clusterfuzz-testcase-minimized-4608518562775040 (not reprodoceable)
+
+Found-by: Insu Yun, Georgia Tech.
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/x86/lossless_videoencdsp: Fix handling of small widths
+
+Fixes out of array access
+Fixes: crash-huf.avi
+
+Regression since: 6b41b4414934cc930468ccd5db598dd6ef643987
+
+This could also be fixed by adding checks in the C code that calls the dsp
+
+Found-by: Zhibin Hu and 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/asfdec: Fix DoS in asf_build_simple_index()
+
+Fixes: Missing EOF check in loop
+No testcase
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mov: Fix DoS in read_tfra()
+
+Fixes: Missing EOF check in loop
+No testcase
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/nsvdec: Fix DoS due to lack of eof check in nsvs_file_offset loop.
+
+Fixes: 20170829.nsv
+
+Co-Author: 张洪亮(望初)"" <wangchu.zhl@alibaba-inc.com>
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mxfdec: Fix DoS issues in mxf_read_index_entry_array()
+
+Fixes: 20170829A.mxf
+
+Co-Author: 张洪亮(望初)"" <wangchu.zhl@alibaba-inc.com>
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mxfdec: Fix Sign error in mxf_read_primer_pack()
+
+Fixes: 20170829B.mxf
+
+Co-Author: 张洪亮(望初)"" <wangchu.zhl@alibaba-inc.com>
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/cinedec: Fix DoS due to lack of eof check
+
+Fixes: loop.cine
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/hls: Fix DoS due to infinite loop
+
+Fixes: loop.m3u
+
+The default max iteration count of 1000 is arbitrary and ideas for a better solution are welcome
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+
+Previous version reviewed-by: Steven Liu <lingjiujianke@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/asfdec: Fix DoS due to lack of eof check
+
+Fixes: loop.asf
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/rl2: Fix DoS due to lack of eof check
+
+Fixes: loop.rl2
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mvdec: Fix DoS due to lack of eof check
+
+Fixes: loop.mv
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/rmdec: Fix DoS due to lack of eof check
+
+Fixes: loop.ivr
+
+Found-by: Xiaohei and Wangchu from Alibaba Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"ffprobe: Fix null pointer dereference with color primaries
+
+Found-by: AD-lab of venustech
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/rtpdec_h264: Fix heap-buffer-overflow
+
+Fixes: rtp_sdp/poc.sdp
+
+Found-by: Bingchang <l.bing.chang.bc@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"dfa: Disallow odd width/height and add proper bounds check for DDS1 chunks DDS1 chunks are decoded in 2x2 blocks, odd chunk width or height is not allowed in that case. Also ensure that the decode buffer is big enough for all blocks being processed. Bug-Id: CVE-2017-9992 CC: libav-stable@libav.org"
+"avformat/rtmppkt: Convert ff_amf_get_field_value() to bytestream2
+
+Fixes: out of array accesses
+
+Found-by: JunDong Xie of Ant-financial Light-Year Security Lab
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/rtmppkt: Convert ff_amf_tag_size() to bytestream2
+
+Fixes: out of array accesses
+Fixes: crash-9238fa9e8d4fde3beda1f279626f53812cb001cb-SEGV
+
+Found-by: JunDong Xie of Ant-financial Light-Year Security Lab
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/dnxhddec: Move mb height check out of non hr branch
+
+Fixes: out of array access
+Fixes: poc.dnxhd
+
+Found-by: Bingchang, Liu@VARAS of IIE
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/apedec: Fix integer overflow
+
+Fixes: out of array access
+Fixes: PoC.ape and others
+
+Found-by: Bingchang, Liu@VARAS of IIE
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/dnxhd_parser: Do not return invalid value from dnxhd_find_frame_end() on error
+
+Fixes: Null pointer dereference
+
+Fixes: CVE-2017-9608
+Found-by: Yihan Lian
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+avcodec/dnxhd_parser: Do not return invalid value from dnxhd_find_frame_end() on error Fixes: Null pointer dereference Fixes: CVE-2017-9608 Found-by: Yihan Lian Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+"avformat/hls: Check local file extensions
+
+This reduces the attack surface of local file-system
+information leaking.
+
+It prevents the existing exploit leading to an information leak. As
+well as similar hypothetical attacks.
+
+Leaks of information from files and symlinks ending in common multimedia extensions
+are still possible. But files with sensitive information like private keys and passwords
+generally do not use common multimedia filename extensions.
+It does not stop leaks via remote addresses in the LAN.
+
+The existing exploit depends on a specific decoder as well.
+It does appear though that the exploit should be possible with any decoder.
+The problem is that as long as sensitive information gets into the decoder,
+the output of the decoder becomes sensitive as well.
+The only obvious solution is to prevent access to sensitive information. Or to
+disable hls or possibly some of its feature. More complex solutions like
+checking the path to limit access to only subdirectories of the hls path may
+work as an alternative. But such solutions are fragile and tricky to implement
+portably and would not stop every possible attack nor would they work with all
+valid hls files.
+
+Developers have expressed their dislike / objected to disabling hls by default as well
+as disabling hls with local files. There also where objections against restricting
+remote url file extensions. This here is a less robust but also lower
+inconvenience solution.
+It can be applied stand alone or together with other solutions.
+limiting the check to local files was suggested by nevcairiel
+
+This recommits the security fix without the author name joke which was
+originally requested by Nicolas.
+
+Found-by: Emil Lerner and Pavel Cheremushkin
+Reported-by: Thierry Foucu <tfoucu@google.com>
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"smacker: Check that the data size is a multiple of a sample vector Fixes out of array access Fixes: ce19e41f0ef1e52a23edc488faecdb58/asan_heap-oob_2504e97_4202_ffa0df1baed14022b9bfd4f8ac23d0cb.smk Bug-Id: CVE-2015-8365 CC: libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michael@niedermayer.cc> (cherry picked from commit 4a9af07a49295e014b059c1ab624c40345af5892) Signed-off-by: Diego Biurrun <diego@biurrun.de>"
+"avformat/avidec: Limit formats in gab2 to srt and ass/ssa
+
+This prevents part of one exploit leading to an information leak
+
+Found-by: Emil Lerner and Pavel Cheremushkin
+Reported-by: Thierry Foucu <tfoucu@google.com>
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/scpr: Fix multiple runtime error: index 256 out of bounds for type 'unsigned int [256]'
+
+Fixes: 1519/clusterfuzz-testcase-minimized-5286680976162816
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/xpmdec: Fix multiple pointer/memory issues
+
+Most of these were found through code review in response to
+fixing 1466/clusterfuzz-testcase-minimized-5961584419536896
+There is thus no testcase for most of this.
+The initial issue was Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/scpr: Check y in first line loop in decompress_i()
+
+Fixes: out of array access
+Fixes: 1478/clusterfuzz-testcase-minimized-5285486908145664
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/webp: Always set pix_fmt
+
+Fixes: out of array access
+Fixes: 1434/clusterfuzz-testcase-minimized-6314998085189632
+Fixes: 1435/clusterfuzz-testcase-minimized-6483783723253760
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Reviewed-by: ""Ronald S. Bultje"" <rsbultje@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/cdxl: Check format for BGR24
+
+Fixes: out of array access
+Fixes: 1427/clusterfuzz-testcase-minimized-5020737339392000
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/xwddec: Check bpp more completely
+
+Fixes out of array access
+Fixes: 1399/clusterfuzz-testcase-minimized-4866094172995584
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/cdxl: Check format parameter
+
+Fixes out of array access
+Fixes: 1378/clusterfuzz-testcase-minimized-5715088008806400
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/dfa: Fix off by 1 error
+
+Fixes out of array access
+Fixes: 1345/clusterfuzz-testcase-minimized-6062963045695488
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"lavf/mov.c: Avoid heap allocation wrap in mov_read_hdlr
+
+Core of patch is from paul@paulmehta.com
+Reference https://crbug.com/643950
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+Check value reduced as the code does not support larger lengths"
+"lavf/mov.c: Avoid heap allocation wrap in mov_read_uuid
+
+Core of patch is from paul@paulmehta.com
+Reference https://crbug.com/643951
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+Check value reduced as the code does not support values beyond INT_MAX
+Also the check is moved to a more common place and before integer truncation"
+"avcodec/pictordec: Fix logic error
+
+Fixes: 559/clusterfuzz-testcase-6424225917173760
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/pngdec: Fix off by 1 size in decode_zbuf()
+
+Fixes out of array access
+Fixes: 444/fuzz-2-ffmpeg_VIDEO_AV_CODEC_ID_PNG_fuzzer
+
+Found-by: continuous fuzzing process https://github.com/google/oss-fuzz/tree/master/targets/ffmpeg
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/options_table: Set the default maximum number of streams to 1000 Fixes CVE-2016-9561, Note the security relevance of this is disputed as running out of memory can happen with valid files Suggested-by: Andreas Cadhalpun <andreas.cadhalpun@googlemail.com> Reviewed-by: Andreas Cadhalpun <andreas.cadhalpun@googlemail.com> Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"ffserver: Check chunk size
+
+Fixes out of array access
+
+Fixes: poc_ffserver.py
+Found-by: Paul Cher <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/rtmppkt: Check for packet size mismatches
+
+Fixes out of array access
+
+Found-by: Paul Cher <paulcher@icloud.com>
+Reviewed-by: Paul Cher <paulcher@icloud.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"http: make length/offset-related variables unsigned.
+
+Fixes #5992, reported and found by Paul Cher <paulcher@icloud.com>."
+"avformat/utils: Update codec_id before using it in the parser init
+
+Fixes assertion failure
+
+Fixes: input.avi
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/utils: Update codec_id before using it in the parser init
+
+Fixes assertion failure
+
+Fixes: input.avi
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/avidec: Check nb_streams in read_gab2_sub()
+
+Fixes null pointer dereference
+Fixes: 1/null_point.avi
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/avidec: Remove ancient assert
+
+This assert can with crafted files fail, a warning is already printed
+for this case.
+
+Fixes assertion failure
+Fixes:1/assert.avi
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/ansi: Check dimensions
+
+Fixes: 1.avi
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/avidec: Fix memleak with dv in avi
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/cavsdsp: use av_clip_uint8() for idct
+
+Fixes out of array read
+Fixes: 1.swf
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Tested-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/g726: Add missing ADDB output mask
+
+Fixes: 1.poc
+Fixes out of array read
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mov: Fix potential integer overflow in mov_read_keys
+
+Actual allocation size is computed as (count + 1)*sizeof(meta_keys), so
+we need to check that (count + 1) won't cause overflow.
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/avidec: Fix infinite loop in avi_read_nikon()
+
+Fixes: 360/test.poc
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/exr: Check tile positions
+
+This also disabled the case of mixed x/ymin with tiles, the code
+handles these cases inconsistent for the 2 coordinate axis and is
+unlikely working correctly.
+
+Fixes crash
+Fixes: poc1.exr, poc2.exr
+
+Found-by: Yaoguang Chen of Aliapy unLimit Security Team
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/swfdec: Fix inflate() error code check
+
+Fixes infinite loop
+Fixes endless.poc
+
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/rawdec: Fix palette handling with changing palettes
+
+Fixes out of array access
+
+Fixes: poc.swf
+Found-by: 连一汉 <lianyihan@360.cn>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/mov: Check sample size
+
+Fixes integer overflow
+Fixes: poc.mp4
+
+Found-by: ajax secure <ajax4sec@hotmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/h264: Check init_get_bits8() for failure
+
+Fixes CID1361935
+
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"Merge commit 'ff3db937ef3aa30046a3936146f86ad48ee2ff90' This commit is a no-op. As far as I can tell, we already added checks, to address this CVE in 7c0b84d89911b2035161f5ef51aafbfcc84aa9e2, which is also reflected in the CVE database: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-2326 * commit 'ff3db937ef3aa30046a3936146f86ad48ee2ff90': asfenc: fix some possible integer overflows Merged-by: Derek Buitenhuis <derek.buitenhuis@gmail.com>"
+mov: Check the entries value when parsing dref boxes And properly reset the entries count when resetting the entries. CC: libav-stable@libav.org Bug-Id: 929 Bug-Id: CVE-2016-3062
+"asfenc: fix some possible integer overflows Store the file duration in the same timebase it arrives (i.e. milliseconds) and only convert it to the file duration units (100ns) when it's actually written, thus simplifying some calculations. Also, store the duration as unsigned, since it cannot be negative. CC: libav-stable@libav.org Bug-ID: CVE-2016-2326"
+lavf: add a protocol whitelist/blacklist for file opened internally Should make the default behaviour safer for careless callers that open random untrusted files. Bug-Id: CVE-2016-1897 Bug-Id: CVE-2016-1898
+"avcodec/jpeg2000dec: More completely check cdef
+
+Fixes out of array read
+Fixes: j2k-poc.bin
+
+Found-by: Lucas Leong <wmliang.tw@gmail.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"alsdec: check block length Fix writing over the end Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Addresses: CVE-2013-0845"
+"avcodec/tiff: Check subsample & rps values more completely
+
+Fixes out of array access
+Fixes: 83aedfb29af669c4d6e10f1bfad974d2/asan_heap-oob_1ab42fe_4984_9f6ec14462f8d8a00ea24b320572a963.tif
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"swscale/swscale_unscaled: Fix odd height inputs for bayer_to_rgb24_wrapper()
+
+Fixes: 372d2df1f04b49e25f109f07f90b1505/asan_heap-oob_2835d2e_8501_99e0114d7ba3a6db885d0b4684d200c1.cine
+Fixes out of array read
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"swscale/swscale_unscaled: Fix odd height inputs for bayer_to_yv12_wrapper()
+
+Fixes: 372d2df1f04b49e25f109f07f90b1505/asan_heap-oob_2835d2e_8501_99e0114d7ba3a6db885d0b4684d200c1.cine
+Fixes out of array read
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/pngenc: Fix mixed up linesizes
+
+Fixes out of array accesses
+Fixes: 0cf176e6d3ab9fe924f39738e513f547/asan_generic_4a54aa_3431_aaa28be1cb32e307a9890cad06f84fba.avi
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/pngenc: Replace memcpy by av_image_copy()
+
+Fixes out of array access
+Fixes: 0cf176e6d3ab9fe924f39738e513f547/asan_generic_4a54aa_3431_aaa28be1cb32e307a9890cad06f84fba.avi
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/asfenc: Check pts
+
+Fixes integer overflow
+Fixes: 0063df8be3aaa30dd6d76f59c8f818c8/signal_sigsegv_7b7b59_3634_bf418b6822bbfa68734411d96b667be3.mov
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avformat/asfenc: Check pts
+
+Fixes integer overflow
+Fixes: 0063df8be3aaa30dd6d76f59c8f818c8/signal_sigsegv_7b7b59_3634_bf418b6822bbfa68734411d96b667be3.mov
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/utils: Clear dimensions in ff_get_buffer() on failure
+
+Fixes out of array access
+Fixes: 482d8f2fd17c9f532b586458a33f267c/asan_heap-oob_4a52b6_7417_1d08d477736d66cdadd833d146bb8bae.mov
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/jpeg2000dwt: Check ndeclevels before calling dwt_decode*()
+
+Fixes out of array access
+Fixes: 01859c9a9ac6cd60a008274123275574/asan_heap-oob_1dff571_8250_50d3d1611e294c3519fd1fa82198b69b.avi
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/h264_slice: Limit max_contexts when slice_context_count is initialized
+
+Fixes out of array access
+Fixes: 1430e9c43fae47a24c179c7c54f94918/signal_sigsegv_421427_2049_f2192b6829ab6e0eefcb035329c03c60.264
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/smacker: Check that the data size is a multiple of a sample vector
+
+Fixes out of array access
+Fixes: ce19e41f0ef1e52a23edc488faecdb58/asan_heap-oob_2504e97_4202_ffa0df1baed14022b9bfd4f8ac23d0cb.smk
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/ivi: Check image dimensions
+
+Fixes integer overflow
+Fixes: 1e32c6c591d940337c20b197ec1c4d3d/asan_heap-oob_4a52e5_8946_0bb0d9e863def56005e49f1d89bdc94d.avi
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/jpeg2000dec: Check for duplicate SIZ marker
+
+Fixes: 0231a17345734228011c6f35a64e4594/asan_heap-oob_1d92a72_3218_1213809a9e3affec77e4c191fdfdc0a9.mov
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/jpeg2000dec: Clip all tile coordinates
+
+Fixes out of array access
+Fixes: b877a6b788a25c70e8b1d014f8628549/asan_heap-oob_1da2c3f_2324_5a1b329b0b3c4bb6b1d775660ac56717.r3d
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/faxcompr: Add missing runs check in decode_uncompressed()
+
+Fixes out of array access
+Fixes: 54e488b9da4abbceaf405d6492515697/asan_heap-oob_32769b0_160_a8755eb08ee8f9579348501945a33955.TIF
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/hevc_ps: Check chroma_format_idc
+
+Fixes out of array access
+Fixes: 24d05e8b84676799c735c9e27d97895e/asan_heap-oob_1b70f6a_2955_7c3652a7f370f9f3ef40642bc2c99bb2.bit
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mjpegdec: Check index in ljpeg_decode_yuv_scan() before using it
+
+Fixes: 04715144ba237443010554be0d05343f/asan_heap-oob_1eafc76_1737_c685b48041a563461839e4e7ab97abb8.jpg
+Fixes out of array access
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/vp8: Do not use num_coeff_partitions in thread/buffer setup
+
+The variable is not a constant and can lead to race conditions
+
+Fixes: repro.webm (not reproducable with FFmpeg alone)
+
+Found-by: Dale Curtis <dalecurtis@google.com>
+Tested-by: Dale Curtis <dalecurtis@google.com>
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/rv34: Clear pointers in ff_rv34_decode_init_thread_copy()
+
+Avoids leaving stale pointers
+Fixes: signal_sigabrt_7ffff70eccc9_819_sabtriple.rm with memlimit 536870912
+
+Found-by: Samuel Groß, Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/pthread_frame: clear priv_data, avoid stale pointer in error case
+
+Fixes: b4b47bc2b3fb7ca710bfffe5aa969e37_signal_sigabrt_7ffff70eccc9_744_nc_sample2.avi with memlimit of 4194304
+
+Found-by: Samuel Groß, Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"swscale/utils: Clear pix buffers
+
+Fixes use of uninitialized memory
+Fixes: a96874b9466b6edc660a519c7ad47977_signal_sigsegv_7ffff713351a_744_nc_sample.avi with memlimit 2147483648
+
+Found-by: Samuel Groß, Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/alac: Clear pointers in allocate_buffers()
+
+Fixes: 06a4edb39ad8a9883175f9bd428334a2_signal_sigsegv_7ffff713351a_706_mov__alac__ALAC_6ch.mov
+
+Found-by: Samuel Groß, Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/sanm: Reset sizes in destroy_buffers()
+
+Fixes crash in 1288a2fe8e9ae6b00ca40e089d08ca65_signal_sigsegv_7ffff71426a7_354_accident.san with allocation limit 65536
+
+Found-by: Samuel Groß, Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"avcodec/mpegvideo: Clear pointers in ff_mpv_common_init()
+
+This ensures that no stale pointers leak through on any path
+
+Fixes: signal_sigsegv_c3097a_991_xtrem_e2_m64q15_a32sxx.3gp
+
+Found-by: Samuel Groß, Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/aacsbr: check that the element type matches before applying SBR
+
+Fixes out of array access
+Fixes: signal_sigsegv_3670fc0_2818_cov_2307326154_moon.mux
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/mjpegdec: Fix small picture upscale
+
+Fixes out of array access
+
+Fixes: asan_heap-oob_1dd60fd_267_cov_2954683513_5baad44ca4702949724234e35c5bb341.jpg
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/pngdec: Only allow one IHDR chunk
+
+Multiple IHDR chunks are forbidden in PNG
+Fixes inconsistency and out of array accesses
+
+Fixes: asan_heap-oob_4d5c5a_1738_cov_2638287726_c-m2-8f2b481b7fd9bd745e620b7c01a18df2.png
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+h264: Make sure reinit failures mark the context as not initialized Bug-Id: CVE-2015-3417 CC: libav-stable@libav.org
+msrle: Use FFABS to determine the frame size in msrle_decode_pal4 As done in msrle_decode_8_16_24_32. Bug-Id: CVE-2015-3395 CC: libav-stable@libav.org
+"avcodec/msrledec: restructure msrle_decode_pal4() based on the line number instead of the pixel pointer
+
+Fixes out of array access
+Fixes: da14e86d8462be6493eab16bc2d40f88/asan_heap-oob_204cfd2_528_cov_340150052_COMPRESS.BMP
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"gifdec: refactor interleave end handling Fixes invalid writes with very small image heights. CC: libav-stable@libav.org Bug-ID: CVE-2014-8547 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"Fix Requirement: rtpdec_h264: Remove an unnecessary include
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"tiff: Check that there is no aliasing in pixel format selection Fixes possible issues with unexpected bpp/bppcount values. CC: libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Bug-Id: CVE-2014-8544 Signed-off-by: Luca Barbato <lu_zero@gentoo.org>"
+"Fix Requirement: rtpdec_h264: Remove unnecessary struct padding
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtsp: Interpret the text media type as AVMEDIA_TYPE_DATA
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtpdec_hevc: Add asterisks at the start of each long comment line
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtsp: Fix the indentation of a linewrapped statement
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtpenc_amr: Use s->num_frames instead of s->buf_ptr - s->buf
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtpenc_xiph: Use AV_WB16 instead of manual bitshifts
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: x11grab: Unbreak building
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: dashenc: Simplify code by using a local variable
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: v4l2: Use the codec descriptor facility
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: Revert ""mov: Change DTS-based seek into CTS-based seek.""
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtpdec_asf: Don't free the payload context in the .close function
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtpdec_mpa_robust: Fix incrementing split_pos
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: aac: Relax reserved_bit validation
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rtpdec_asf: Don't set RTP_FLAG_KEY
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: webp: validate the distance prefix code
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avfilter: Return more meaningful error codes
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: libopenh264enc: Add support for building with OpenH264 1.4
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: dashenc: Update extradata for mov muxer
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: dashenc: Simplify code by using a local variable
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: vorbis: Check the vlc value in setup_classifs
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: rmdec: Improve message for demux error
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: xcbgrab: Free the host string after checking the connection
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: vorbis: Use a local codebook variable
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avprobe: Export coded_{width,height} in -show_streams
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"utvideodec: Handle slice_height being zero Fixes out of array accesses. CC: libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Bug-Id: CVE-2014-9604 Signed-off-by: Vittorio Giovara <vittorio.giovara@gmail.com> Signed-off-by: Luca Barbato <lu_zero@gentoo.org>"
+"Fix Requirement: utvideodec: Handle slice_height being zero
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"avcodec/gif: Fix lzw buffer size
+
+Fixes out of array access
+Fixes: aaa479088e6fb40b04837b3119f47b04/asan_heap-oob_e38c68_8576_9d653078b2470700e2834636f12ff557.tga
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>"
+"aformat/movenc: add missing padding to output track extradata
+ 
+ Fixes ticket #8183.
+ 
+ Tested-by: Thierry Foucu <tfoucu@gmail.com>
+ Signed-off-by: James Almer <jamrial@gmail.com>
+ (cherry picked from commit 58aa0ed8f10753ee90f4a4a1f4f3da803cf7c145)"
+"avcodec/mjpegdec: Check number of components for JPEG-LS
+
+Fixes out of array accesses
+Fixes: asan_heap-oob_1c1a4ea_1242_cov_2274415971_TESTcmyk.jpg
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avfilter/af_tremolo: fix heap-buffer overflow
+
+Fixes #8317"
+"jvdec: check frame dimensions The frame size must be set by the caller and each dimension must be a multiple of 8. CC: libav-stable@libav.org Bug-ID: CVE-2014-8542 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"mjpegdec: check for pixel format changes Fixes possible invalid memory access. Based on code by Michael Niedermayer <michaelni@gmx.at> CC: libav-stable@libav.org Bug-ID: CVE-2014-8541 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"mmvideo: check frame dimensions The frame size must be set by the caller and each dimension must be a multiple of 2. CC: libav-stable@libav.org Bug-ID: CVE-2014-8543 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"on2avc: check number of channels Fixes invalid memory access. CC: libav-stable@libav.org Bug-ID: CVE-2014-8549 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"smc: fix the bounds check Fixes invalid writes when there are more blocks in a run than total remaining blocks. CC: libav-stable@libav.org Bug-ID: CVE-2014-8548 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"avcodec/h264: Clear delayed_pic on deallocation
+
+Fixes use of freed memory
+
+Fixes: case5_av_frame_copy_props.mp4
+Found-by: Michal Zalewski <lcamtuf@coredump.cx>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/utvideodec: Fix handling of slice_height=0
+
+Fixes out of array accesses
+Fixes: asan_heap-oob_25bcd7e_3783_cov_3553517262_utvideo_rgba_median.avi
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/vmdvideo: Check len before using it in method 3
+
+Fixes out of array access
+Fixes: asan_heap-oob_4d23ba_91_cov_3853393937_128.vmd
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/xface: correct the XFACE_MAX_* values
+
+Fixes out of array access
+
+Fixes: asan_stack-oob_32c12e5_2536_cov_2442316831_lena.xface
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"matroskadec: Fix read-after-free in matroska_read_seek()
+
+In matroska_read_seek(), |tracks| is assigned at the begining of the
+function. However, functions like matroska_parse_cues() could reallocate
+the tracks and invalidate |tracks|.
+
+This assigns |tracks| only before using it, so that it will not get
+invalidated elsewhere.
+
+Bug-Id: chromium/427266"
+"avcodec/hevc_ps: Check num_long_term_ref_pics_sps
+
+Fixes out of array access
+Fixes: signal_sigsegv_35bd0f0_1182_cov_791726764_STRUCT_B_Samsung_4.bit
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/rawdec: Check the return code of avpicture_get_size()
+
+Fixes out of array access
+Fixes: asan_heap-oob_22388d0_3435_cov_3297128910_small_roll5_FlashCine1.cine
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/pngdec: Check IHDR/IDAT order
+
+Fixes out of array access
+Fixes: asan_heap-oob_20a6c26_2690_cov_3434532168_mail.png
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/mjpegdec: Fix context fields becoming inconsistent
+
+Fixes out of array access
+Fixes: asan_heap-oob_1ca4f85_2760_cov_144449187_miss_congeniality_pegasus_ljpg.avi
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/on2avc: Check number of channels
+
+Fixes out of array access
+Fixes: asan_heap-oob_4da4f3_7_asan_heap-oob_4da4f3_173_Xmen_avc_500.vp6
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/vorbisdec: Fix off by 1 error in ptns_to_read
+
+Fixes read of uninitialized memory
+Fixes: asan_heap-uaf_18dac2b_9_asan_heap-uaf_22eb375_208_beta3_test_small.ogg
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/smc: fix off by 1 error
+
+Fixes out of array access
+Fixes: asan_heap-oob_1685bf0_5_asan_heap-oob_1f35116_430_smc.mov
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/smc: fix off by 1 error
+
+Fixes out of array access
+Fixes: asan_heap-oob_1685bf0_5_asan_heap-oob_1f35116_430_smc.mov
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/gifdec: factorize interleave end handling out
+
+also change it to a loop
+Fixes out of array access
+Fixes: asan_heap-oob_ca5410_8_asan_heap-oob_ca5410_97_ID_LSD_Size_Less_Then_Data_Inter_3.gif
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/cinepak: fix integer underflow
+
+Fixes out of array access
+Fixes: asan_heap-oob_4da0ba_6_asan_heap-oob_4da0ba_241_cvid_crash.avi
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/pngdec: Check bits per pixel before setting monoblack pixel format
+
+Fixes out of array accesses
+Fixes: asan_heap-oob_14dbfcf_4_asan_heap-oob_1ce5767_179_add_method_small.png
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/tiff: more completely check bpp/bppcount
+
+Fixes pixel format selection
+Fixes out of array accesses
+Fixes: asan_heap-oob_1766029_6_asan_heap-oob_20aa045_332_cov_1823216757_m2-d1d366d7965db766c19a66c7a2ccbb6b.tif
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/mmvideo: Bounds check 2nd line of HHV Intra blocks
+
+Fixes out of array access
+Fixes: asan_heap-oob_4da4f3_8_asan_heap-oob_4da4f3_419_scene1a.mm
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/utils: Add case for jv to avcodec_align_dimensions2()
+
+Fixes out of array accesses
+Fixes: asan_heap-oob_12304aa_8_asan_heap-oob_4da4f3_300_intro.jv
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/mjpegdec: check bits per pixel for changes similar to dimensions
+
+Fixes out of array accesses
+Fixes: asan_heap-oob_16668e9_2_asan_heap-oob_16668e9_346_miss_congeniality_pegasus_mjpg.avi
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+mpegts: Do not try to write a PMT larger than SECTION_SIZE Prevent out of array writes. Similar to what Michael Niedermayer did to address the same issue. Bug-Id: CVE-2014-2263 CC: libav-stable@libav.org Signed-off-by: Diego Biurrun <diego@biurrun.de>
+"proresenc_kostya: report buffer overflow
+
+If the allocated size, despite best efforts, is too small, exit
+with the appropriate error.
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+ffv1dec: check that global parameters do not change in version 0/1 Such changes are neither allowed nor supported Found-by: ami_stuff Bug-Id: CVE-2013-7020 CC: libav-stable@libav.org Signed-off-by: Anton Khirnov <anton@khirnov.net>
+"avcodec/iff: check pixfmt for rgb8 / rgbn
+
+Fixes out of array access
+
+Found-by: Piotr Bandurski <ami_stuff@o2.pl>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"error_concealment: avoid using the picture if not fully setup
+
+Fixes state becoming inconsistent and a null pointer dereference.
+
+CC: libav-stable@libav.org
+Bug-Id: CVE-2013-0860
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Vittorio Giovara <vittorio.giovara@gmail.com>
+Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+cdgraphics: switch to bytestream2 Fixes possible invalid memory accesses on corrupted data. CC:libav-stable@libav.org Bug-ID: CVE-2013-3674
+huffyuvdec: check width size for yuv422p Avoid out of array accesses. CC: libav-stable@libav.org Bug-Id: CVE-2013-0848 Signed-off-by: Vittorio Giovara <vittorio.giovara@gmail.com> Signed-off-by: Anton Khirnov <anton@khirnov.net>
+"mmvideo: check horizontal coordinate too Fixes out of array accesses. Bug-Id: CVE-2013-3672 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Vittorio Giovara <vittorio.giovara@gmail.com> Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"wmalosslessdec: fix mclms_coeffs* array size Fixes corruption of context Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind CC:libav-stable@libav.org Bug-Id: CVE-2014-2098 Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"huffyuv: Check and propagate function return values Bug-Id: CVE-2013-0868 inspired by a patch from Michael Niedermayer <michaelni@gmx.at> Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Diego Biurrun <diego@biurrun.de> CC: libav-stable@libav.org"
+"h264: prevent theoretical infinite loop in SEI parsing Properly address CVE-2011-3946 and parse bitstream as described in the spec. CC: libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"pgssubdec: Check RLE size before copying Make sure the buffer size does not exceed the expected RLE size. Prevent an out of array bound write. Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Bug-Id: CVE-2013-0852 Signed-off-by: Luca Barbato <lu_zero@gentoo.org>"
+"avutil/lzo: Fix integer overflow
+
+Embargoed-till: 2014-06-27 requested by researcher, but embargo broken by libav today (git and mailing list)
+
+Fixes: LMS-2014-06-16-4
+Found-by: ""Don A. Bailey"" <donb@securitymouse.com>
+See: ccda51b14c0fcae2fad73a24872dce75a7964996
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avutil/lzo: Fix integer overflow
+
+Embargoed-till: 2014-06-27 requested by researcher, but embargo broken by libav today (git and mailing list)
+
+Fixes: LMS-2014-06-16-4
+Found-by: ""Don A. Bailey"" <donb@securitymouse.com>
+See: ccda51b14c0fcae2fad73a24872dce75a7964996
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avformat/oggparsevorbis: check packet size before reading new_len from it
+
+Fixes out of array read
+Fixes: 34260c7981118fb38fba61809bf4dd5a-asan_heap-oob_93b923_1508_cov_951051643_DivX640x480_oggvorbis.avi
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/hevcpred_template: also initialize top[-1] for constrained intra prediction
+
+Fixes out of array read
+Fixes: 387713a12dc5cfa27fcb4178084ce1ea-asan_stack-oob_131176a_1182_cov_3861068719_CAINIT_C_SHARP_3.bit
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/h264: use subsample factors of the used pixel format
+
+Fixes out of array read
+Fixes: 1cb91c36c4e55463f14aacb9bdf55b38-asan_heap-oob_106cbce_5617_cov_11212800_h264_mmx_chroma_intra_lf.mp4
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/mpeg4videodec: Check for bitstream overread in decode_vol_header()
+
+Fixes out of array read
+Fixes: 08e48e9daae7d8f8ab6dbe3919e797e5-asan_heap-oob_157461c_5295_cov_1266798650_firefing.mpg
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/snow: split block clipping checks
+
+Fixes out of array read
+Fixes: d4476f68ca1c1c57afbc45806f581963-asan_heap-oob_2266b27_8607_cov_4044577381_snow_chroma_bug.avi
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/ansi: fix integer overflow
+
+Fixes out of array read
+Fixes: 5f9698e86d92f19bb08d54ff0d57027f-signal_sigsegv_b30756_3795_cov_2693691257_ansi256.ans
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/h264: more completely check the loop filter parameters
+
+Fixes out of array read
+Fixes: caa65cc01655505705129b677189f036-signal_sigsegv_fdcc43_2681_cov_3043376737_PPH422I5_Panasonic_A.264
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/msrle: use av_image_get_linesize() to calculate the linesize
+
+Fixes out of array access
+Fixes: 14a74a0a2dc67ede543f0e35d834fbbe-asan_heap-oob_49572c_556_cov_215466444_44_001_engine_room.mov
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/utils: set AVFrame format unconditional
+
+Fixes inconsistency and out of array accesses
+Fixes: 10cdd7e63e7f66e3e66273939e0863dd-asan_heap-oob_1a4ff32_7078_cov_4056274555_mov_h264_aac__mp4box_frag.mp4
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/alsdec: check predictor order against block length
+
+Fixes out of array access
+Fixes: abd3c041acbcb816be113455d138166b-asan_heap-oob_b11634_3707_cov_1707137151_als_05_2ch48k16b.mp4
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/msrle: use av_image_get_linesize() to calculate the linesize
+
+Fixes out of array access
+Fixes: 14a74a0a2dc67ede543f0e35d834fbbe-asan_heap-oob_49572c_556_cov_215466444_44_001_engine_room.mov
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/dxtory: fix src size checks
+
+Fixes integer overflow
+Fixes out of array read
+Fixes: d104661bb59b202df7671fb19a00ca6c-asan_heap-oob_d6429d_5066_cov_1729501105_dxtory_mic.avi
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/hevc: make *ps_id unsigned
+
+Fixes integer overflow
+Fixes out of array accesses
+Fixes 2f65e7dbd02a12f426a423bd7bf880b4-signal_sigsegv_127c952_2793_cov_2517424539_RPLM_A_qualcomm_4.bit
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avformat/mpegtsenc: Check data array size in mpegts_write_pmt()
+
+Prevents out of array writes
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"rpza: limit the number of blocks to the total remaining blocks in the frame
+
+Fixes invalid writes.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC:libav-stable@libav.org"
+"avcodec/wmalosslessdec: fix mclms_coeffs* array size
+
+Fixes corruption of context
+Fixes: 8835659dde6a4f7dcdf341de6a45c6c8-signal_sigsegv_1dce67b_4564_cov_2504444599_classical_22_16_1_14000_v3c_0_extend_0_29.wma
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"lagarith: reallocate rgb_planes when needed
+
+Fixes invalid writes on pixel format changes.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC:libav-stable@libav.org"
+"truemotion1: check the header size
+
+Fixes invalid reads.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC:libav-stable@libav.org"
+"shorten: pad the internal bitstream buffer
+
+Fixes invalid reads.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC:libav-stable@libav.org"
+"eacmv: clear references on frame dimensions change
+
+Fixes invalid reads.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC:libav-stable@libav.org"
+"h264: reset data partitioning at the beginning of each decode call
+
+Prevents using GetBitContexts with data from previous calls.
+
+Fixes access to freed memory.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC:libav-stable@libav.org"
+"hevc: check that the VCL NAL types are the same for all slice segments of a frame
+
+Fixes possible invalid memory access for mismatching skipped/non-skipped
+slice segments.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Sample-Id: 00001533-google"
+"avcodec/h264: update current_sps & sps->new only after the whole slice header decoder and init code finished
+
+This avoids them being cleared before the full initialization finished
+
+Fixes out of array read
+Fixes: asan_heap-oob_f0c5e6_7071_cov_1605985132_mov_h264_aac__Demo_FlagOfOurFathers.mov
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/aacdec: Fix pulse position checks in decode_pulses()
+
+Fixes out of array read
+Fixes: asan_static-oob_1efed25_1887_cov_2013541199_HeyYa_RA10_AAC_192K_30s.rm
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/takdec: always check bits_per_raw_sample
+
+Fixes out of array access
+Fixes: asan_heap-oob_19c7a94_6470_cov_1453611734_luckynight-partial.tak
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/vmnc: Check  that rectangles are within the picture
+
+Prevents out of array accesses with CODEC_FLAG_EMU_EDGE
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/jpeg2000dec: fix error detection in pix_fmt_match()
+
+Fixes out of array accesses with CODEC_FLAG_EMU_EDGE
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dnxhdenc: fix mb_rc size
+
+Fixes out of array access with RC_VARIANCE set to 0
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+lavf: make av_probe_input_buffer more robust Always use the actually read size as the offset instead of making possibly invalid assumptions. Addresses: CVE-2012-6618
+"avfilter/vf_fieldmatch: fix heap-buffer overflow
+
+Also fix use of uninitialized values.
+
+Fixes #8239"
+"avcodec/jpeg2000dec: non zero image offsets are not supported
+
+Fixes out of array accesses
+Fixes Ticket3080
+Found-by: ami_stuff
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/h264: do not trust last_pic_droppable when marking pictures as done
+
+This simplifies the code and fixes a deadlock
+
+Fixes Ticket2927
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/jpeg2000dec: fix context consistency with too large lowres
+
+Fixes out of array accesses
+Fixes Ticket2898
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/jpeg2000dec: prevent out of array accesses in pixel addressing
+
+Fixes Ticket2921
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/parser: reset indexes on realloc failure
+
+Fixes Ticket2982
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/g2meet: Fix framebuf size
+
+Currently the code can in some cases draw tiles that hang outside the
+allocated buffer. This patch increases the buffer size to avoid out
+of array accesses. An alternative would be to fail if such tiles are
+encountered.
+I do not know if any valid files use such hanging tiles.
+
+Fixes Ticket2971
+Found-by: ami_stuff
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/g2meet: Fix order of align and pixel size multiplication.
+
+Fixes out of array accesses
+Fixes Ticket2922
+
+Found-by: ami_stuff
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avfilter/vf_fps: make sure the fifo is not empty before using it
+
+Fixes Ticket2905
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"ffv1dec: Check bits_per_raw_sample and colorspace for equality in ver 0/1 headers
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/pngdsp: fix (un)signed type in end comparission
+
+Fixes out of array accesses
+Fixes Ticket2919
+
+Found_by: ami_stuff
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"ffv1dec: check that global parameters dont change in version 0/1
+
+Such changes are not allowed nor supported
+
+Fixes Ticket2906
+
+Found-by: ami_stuff
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/dsputil: fix signedness in sizeof() comparissions
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"jpeg2000: check log2_cblk dimensions
+
+Fixes out of array access
+Fixes Ticket2895
+
+Found-by: Piotr Bandurski <ami_stuff@o2.pl>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"jpeg2000: fix dereferencing invalid pointers
+
+Found-by: Laurent Butti <laurentb@gmail.com>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/jpeg2000dec: Check cdx/y values more carefully
+
+Some invalid values where not handled correctly in the later pixel
+format matching code.
+Fixes out of array accesses
+Fixes Ticket2848
+
+Found-by: Piotr Bandurski <ami_stuff@o2.pl>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/rpza: Perform pointer advance and checks before using the pointers
+
+Fixes out of array accesses
+Fixes Ticket2850
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/flashsv: check diff_start/height
+
+Fixes out of array accesses
+Fixes Ticket2844
+
+Found-by: ami_stuff
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avutil/mem: Fix flipped condition
+
+Fixes return code and later null pointer dereference
+
+Found-by: Laurent Butti <laurentb@gmail.com>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/g2meet: fix src pointer checks in kempf_decode_tile()
+
+Fixes Ticket2842
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avfilter: fix plane validity checks
+
+Fixes out of array accesses
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"sanm: Check dimensions before use
+
+Fixes integer overflow and out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec/cdgraphics: check buffer size before use
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"gifdec: reset previous Graphic Control Extension disposal type
+
+This fixes out of array accesses.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"mmvideo/mm_decode_inter: check horizontal coordinate too
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vmdav: Try to fix unpack_rle()
+
+This fixes out of array accesses
+The code prior to this commit could not have worked, thus obviously
+was untested. I was also not able to find a valid sample that uses this
+code.
+This fix is thus only based on the description of the format
+
+If someone has a sample that uses unpack_rle(), please mail me.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avutil/log: Fix context pointer used for get_category()
+
+Fixes calling a random pointer
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"iff: validate CMAP palette size Fixes CVE-2013-2495 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Luca Barbato <lu_zero@gentoo.org> CC: libav-stable@libav.org"
+"msrledec: fix output_end checks
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+avformat/movenc: Check pal_size before use Fixes: assertion failure Fixes: out of array read Fixes: Ticket8190 Fixes: CVE-2020-22015 Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
+h264: check for luma and chroma bit dept being equal The decoder assumes a single bit depth for all the planes while the specification allows different bit depths for luma and chroma. Avoid the possible problems described in CVE-2013-2277 CC: libav-stable@libav.org
+"vorbisdec: Error on bark_map_size equal to 0.
+
+The value is used to calculate output LSP curve and a division by zero
+and out of array accesses would occur.
+
+CVE-2013-0894
+
+CC: libav-stable@libav.org
+
+Reported-by: Dale Curtis <dalecurtis@chromium.org>
+Found-by: inferno@chromium.org
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>
+Signed-off-by: Luca Barbato <lu_zero@gentoo.org>"
+vorbisdec: Error on bark_map_size equal to 0. The value is used to calculate output LSP curve and a division by zero and out of array accesses would occur. CVE-2013-0894 CC: libav-stable@libav.org Reported-by: Dale Curtis <dalecurtis@chromium.org> Found-by: inferno@chromium.org Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Luca Barbato <lu_zero@gentoo.org>
+"h264: check that luma and chroma depth match
+
+Fixes out of array access
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec_decode_audio4: check got_frame_ptr before handling initial skip
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"shorten: dont leave invalid channel counts in the context.
+
+Fixes freeing invalid addresses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"swr: check channel layouts before using them.
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"sanm: add forgotten check for decoded_size in old_codec37()
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"sanm: Use the correct height variable in the decoded_size checks
+
+Fixes integer overflow and out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"pngdec/filter: dont access out of array elements at the end
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"tiff: Check buffer allocation and pointer increment more carefully in shorts2str() and double2str()
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"targa: Fix y check in advance_line
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"h264: skip error concealment when SPS and slices are mismatching
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"huffyuvdec: Check init_vlc() return codes.
+
+Prevents out of array writes
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"huffyuvdec: Skip len==0 cases
+
+Fixes vlc decoding for hypothetical files that would contain such cases.
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"h264: check the pixel format directly and force a reinit on mismatches.
+
+The existing checks are insufficient to detect a pixel format
+changes in case of some damaged streams.
+Fixes inconsistency and later out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vp3dec: move threads check out of header packet type check
+
+Prevents reconfiguration with threads which is unsupported
+and would bring the contexts into an inconsistent state.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"aacdec: check channel count
+
+Prevent out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vqavideo: check chunk sizes before reading chunks
+
+Fixes out of array writes
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"gifdec: gif_copy_img_rect: Fix end pointer
+
+Fixes out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"sanm: Check decoded_size.
+
+This prevents a buffer overflow in rle_decode()
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"sanm: check image dimensions before using them
+
+Avoids integer overflows and out of array accesses.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avcodec_decode_audio: do not trust the channel layout, use the channel count.
+
+Fixes memory corruption
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vorbisdec: Check bark_map_size.
+
+This fixes potential divisions by zero and out of array accesses.
+
+Reported-by: Dale Curtis <dalecurtis@chromium.org>
+Found-by: inferno@chromium.org
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"error_concealment: Check that the picture is not in a half setup state.
+
+Fixes state becoming inconsistent
+Fixes a null pointer dereference
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"matroska: Fix use after free
+
+Signed-off-by: Dale Curtis <dalecurtis@chromium.org>
+Signed-off-by: Luca Barbato <lu_zero@gentoo.org>"
+oggdec: make sure the private parse data is cleaned up
+"lavc/movtextdec: keep the min size instead of max to fix overread.
+
+Fixes Ticket #2087."
+"lavc/ass_split: check for NULL pointer in ff_ass_split_override_codes().
+
+This is consistent with the other ff_ass_split_* functions.
+
+It also fixes a crash when trying to split a dialog with text=NULL
+(which seems to happen when the text of the dialog is empty); basically,
+this commit fixes crashes when trying to encode an empty text subtitle
+dialog (see subrip and mov_text encoders).
+
+Fixes Ticket2048."
+mpeg12: do not decode extradata more than once. Fixes CVE-2012-2803. CC: libav-stable@libav.org
+h264: support frame parameter changes during frame-mt Fixes CVE-2012-2782.
+"Merge commit '072be3e8969f24113d599444be4d6a0ed04a6602'
+
+* commit '072be3e8969f24113d599444be4d6a0ed04a6602':
+  h264: set parameters from SPS whenever it changes
+  asyncts: cosmetics: reindent
+
+Conflicts:
+	libavcodec/h264.c
+
+Merged-by: Michael Niedermayer <michaelni@gmx.at>"
+ivi_common: check that scan pattern is set before using it. Fixes CVE-2012-2791. CC: libav-stable@libav.org
+vp56: release frames on error Fixes CVE-2012-2783 CC: libav-stable@libav.org
+"alsdec: check block length
+
+Fix writing over the end
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"adpcm: fix off by 1 error and out of array access in DK4
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"ffserver: set oformat
+
+Fix Ticket1986
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"lavf: compute probe buffer size more reliably.
+
+The previous code computes the offset by reversing the growth
+of the allocated buffer size: it is complex and did lead to
+inconsistencies when the size limit is reached.
+
+Fix trac ticket #1991."
+"qdm2: check array index before use, fix out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"roqvideodec: check dimensions validity
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"huffyuvdec: check width more completely, avoid out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"id3v2: check index against buffer size. Fix out of array access
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"h264: correct ref count check and limit, fix out of array accesses.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"eamad: fix out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"pgssubdec: check RLE size before copying. Fix out of array accesses
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"wavpack: fix out of array access
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"mjpegdec: check SE.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"alac: fix nb_samples < order case
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"alac: fix integer overflow leading to subsequent out of array accesses.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"tiffdec: check count in metadata reading.
+
+Fixes out of array access
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"atrac3dec: Check coding mode against channels.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"iff/ilbm: check remaining buffer size.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"ac3dec: ensure get_buffer() gets a buffer for the correct number of channels If there is an error during frame parsing, but AVCodecContext.channels was changed and AC3DecodeContext.out_channels was set previously, the two may not match. Fixes CVE-2012-2802 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind CC: libav-stable@libav.org"
+"avcodec/jpegxl_parser: fix various memory issues
+
+The spec caps the prefix alphabet size to 32768 (i.e. 1 << 15) so we
+should check for that and reject alphabets that are too large, in order
+to prevent over-allocating.
+
+Additionally, there's no need to allocate buffers that are as large as
+the maximum alphabet size as these aren't stack-allocated, they're heap
+allocated and thus can be variable size.
+
+Added an overflow check as well, which fixes leaking the buffer, and
+capping the alphabet size fixes two potential overruns as well.
+
+Fixes: out of array access
+Fixes: 62089/clusterfuzz-testcase-minimized-ffmpeg_DEMUXER_fuzzer-
+    5437089094959104.fuzz
+
+Found-by: continuous fuzzing process
+    https://github.com/google/oss-fuzz/tree/master/projects/ffmpeg
+Found-by: Hardik Shah of Vehere (Dawn Treaders team)
+Co-authored-by: Michael Niedermayer <michael@niedermayer.cc>
+Signed-off-by: Leo Izen <leo.izen@gmail.com>"
+"Fix Requirement: avcodec/vc2enc: Use LUT to avoid repeated av_log2()
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"avsdec: Set dimensions instead of relying on the demuxer. The decode function assumes that the video will have those dimensions. Fixes CVE-2012-2801 CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"cavsdec: check for changing w/h. Our decoder does not support changing w/h. Fixes CVE-2012-2777 and CVE-2012-2784. Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+dfa: check that the caller set width/height properly. Fixes CVE-2012-2786.
+dfa: improve boundary checks in decode_dds1() Fixes CVE-2012-2798 CC:libav-stable@libav.org
+"indeo3: fix out of cell write. Fixes CVE-2012-2776. CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"indeo4: update AVCodecContext width/height on size change Fixes CVE-2012-2787 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"indeo4/5: check empty tile size in decode_mb_info(). This prevents writing into a too small array if some parameters changed without the tile being reallocated. Based on a patch by Michael Niedermayer <michaelni@gmx.at> Fixes CVE-2012-2800 CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"indeo5dec: Make sure we have had a valid gop header. This prevents decoding happening on a half initialized context. Fixes CVE-2012-2779 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"lagarith: check count before writing zeros. Fixes CVE-2012-2793 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"wmalosslessdec: fix a get_bits(0) in decode_ac_filter Fixes a part of CVE-2012-2795 CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"wmalosslessdec: Fix reading too many bits in decode_channel_residues() Fixes a part of CVE-2012-2795 CC:libav-stable@libav.org Based on a patch by Michael Niedermayer <michaelni@gmx.at> Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"wmalosslessdec: increase channel_coeffs/residues size Fixes CVE-2012-2792 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"wmalosslessdec: make MCLMS arrays big enough for what is written into them. Fixes a part of CVE-2012-2795 CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"wmalosslessdec: Reset put bit buffer when num_saved_bits is reset. Fixes CVE-2012-2799 CC:libav-stable@libav.org Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"wmaprodec: check num_vec_coeffs for validity Fixes CVE-2012-2789 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Anton Khirnov <anton@khirnov.net>"
+"alsdec: fix number of decoded samples in first sub-block in BGMC mode. Fixes CVE-2012-2790 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Justin Ruggles <justin.ruggles@gmail.com>"
+"alsdec: check opt_order. Fixes out of array write in quant_cof. Also make sure no invalid opt_order stays in the context. Fixes CVE-2012-2775 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Justin Ruggles <justin.ruggles@gmail.com>"
+"smacker: add sanity check for length in smacker_decode_tree()
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vqavideo: return error if image size is not a multiple of block size The decoder assumes in various places that the image size is a multiple of the block size, and there is no obvious way to support odd sizes.  Bailing out early if the header specifies a bad size avoids various errors later on. Fixes CVE-2012-0947. Signed-off-by: Mans Rullgard <mans@mansr.com>"
+"mpeg12dec: reset data size after parsing extradata.
+
+This ended up corrupting data structures and may possibly
+lead to a double free.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo3: Fix reallocation code so that it doesnt become inconsistent.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"ac3dec: Check number of output channels.
+
+Fixes out of array write.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avsdec: Set dimensions instead of relying on the demuxer.
+
+This fixes out of array writes.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vc1dec: check that coded slice positions and interlacing match.
+
+This fixes out of array writes
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"mov: reset dref_count on realloc to keep values consistent.
+
+This fixes a potential crash.
+
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo: Check allocated tile size in ff_ivi_process_empty_tile()
+
+This prevents writing into a too small array if some parameters changed
+without the tile being reallocated.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo5: check tile size in decode_mb_info().
+
+This prevents writing into a too small array if some parameters changed
+without the tile being reallocated.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo4: check transform size.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"wmalosslessdec: Reset put bit buffer when num_saved_bits is reset.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"mp3on4: allocate a large enough frame.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"wmalosslessdec: make mclms arrays big enough for whats written into them.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"lagarith: check count before writing zeros.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"wmalosslessdec: Make arrays WMALL_BLOCK_MAX_SIZE big and check samples_per_frame.
+
+The samples_per_frame check is ported from wmaprodec.c
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"wmaprodec: check num_vec_coeffs for validity
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"avidec: update size when packet is shrunk
+
+Fixes out of array read
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo4: setup width/height properly.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dfa: Fix out of array write in decode_dds1()
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dfa: fix out of array write in decode_wdlt()
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vp56dec: avoid freeing the returned frame before returning it.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"h264: move resolution change check further up.
+
+This prevents some variables from being changed in case of a
+rejected resolution change.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo5dec: Make sure we have had a valid gop header.
+
+This prevents decoding happening on a half initialized context.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"cavsdec: check for changing w/h.
+
+Our decoder does not support changing w/h.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"indeo3: fix out of picture write.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"alsdec: check opt_order.
+
+Fixes out of array write in quant_cof
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"pthread/mpegvideo: detect and block attempts to init frames after setup.
+
+This fixes race conditions that ultimately lead to memory corruption.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+rv34: error out on size changes with frame threading
+"wmalossless: error out on invalid values for order.
+
+Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind
+CC: libav-stable@libav.org"
+"h263dec: Disallow width/height changing with frame threads. Fixes CVE-2011-3937 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dpcm: ignore extra unpaired bytes in stereo streams. Fixes: CVE-2011-3951 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+atrac3: Fix crash in tonal component decoding. Add a check to avoid writing past the end of the channel_unit.components[] array. Bug Found by: cosminamironesei Fixes CVE-2012-0853 CC: libav-stable@libav.org Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Justin Ruggles <justin.ruggles@gmail.com>
+shorten: Use separate pointers for the allocated memory for decoded samples. Fixes invalid free() if any of the buffers are not allocated due to either not decoding a header or an error prior to allocating all buffers. Fixes CVE-2012-0858 CC: libav-stable@libav.org Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Justin Ruggles <justin.ruggles@gmail.com>
+ws_snd1: Fix wrong samples counts. This makes the check that avoids overwrite of the samples array actually work properly. fixes CVE-2012-0848 CC: libav-stable@libav.org Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Justin Ruggles <justin.ruggles@gmail.com>
+"Merge remote-tracking branch 'qatar/master' * qatar/master: (22 commits) frwu: Employ more meaningful return values. fraps: Use av_fast_padded_malloc() instead of av_realloc() mjpegdec: use av_fast_padded_malloc() eatqi: use av_fast_padded_malloc() asv1: use av_fast_padded_malloc() avcodec: Add av_fast_padded_malloc(). swscale: enable dithering in MMX functions. swscale: make rgb24 function macros slightly smaller. avcodec.h: Remove some disabled cruft. swscale: remove obsolete comment. swscale-test: Drop unused argc and argv arguments from main(). zmbv: Employ more meaningful return values. zmbvenc: Employ more meaningful return values. vc1: prevent null pointer dereference on broken files zmbv: check av_realloc() return values and avoid memleaks on ENOMEM truespeech: align buffer ac3: Do not read past the end of ff_ac3_band_start_tab. dv: Fix small stack overread related to CVE-2011-3929 and CVE-2011-3936. dv: Fix null pointer dereference due to ach=0 dv: check stype ... Conflicts: doc/APIchanges libavcodec/asv1.c libavcodec/avcodec.h libavcodec/eatqi.c libavcodec/fraps.c libavcodec/frwu.c libavcodec/zmbv.c libavformat/dv.c libswscale/swscale.c Merged-by: Michael Niedermayer <michaelni@gmx.at> diff --cc doc/APIchanges index 84d821a7cd,df55c0a732..507a9381c3 --- a/doc/APIchanges +++ b/doc/APIchanges @@@ -13,9 -13,11 +13,14 @@@ libavutil:   2011-04-1 API changes, most recent first: +2012-01-24 - xxxxxxx - lavfi 2.60.100 +  Add avfilter_graph_dump. + + 2012-02-01 - xxxxxxx - lavc 54.01.0 +   Add av_fast_padded_malloc() as alternative for av_realloc() when aligned +   memory is required. The buffer will always have FF_INPUT_BUFFER_PADDING_SIZE +   zero-padded bytes at the end. + 2012-01-31 - xxxxxxx - lavf 54.01.0 Add avformat_get_riff_video_tags() and avformat_get_riff_audio_tags(). diff --cc libavcodec/avcodec.h index 43c2128042,fcbb68ad60..8db04109cd --- a/libavcodec/avcodec.h +++ b/libavcodec/avcodec.h @@@ -257,14 -244,6 +246,13 @@@ enum CodecID CODEC_ID_DXTORY, CODEC_ID_V410, CODEC_ID_XWD, +    CODEC_ID_Y41P       = MKBETAG('Y','4','1','P'), -     CODEC_ID_UTVIDEO = 0x800, +    CODEC_ID_ESCAPE130  = MKBETAG('E','1','3','0'), +    CODEC_ID_AVRP       = MKBETAG('A','V','R','P'), + +    CODEC_ID_G2M        = MKBETAG( 0 ,'G','2','M'), +    CODEC_ID_V308       = MKBETAG('V','3','0','8'), +    CODEC_ID_YUV4       = MKBETAG('Y','U','V','4'), /* various PCM ""codecs"" */ CODEC_ID_FIRST_AUDIO = 0x10000,     ///< A dummy id pointing at the start of audio codecs @@@ -397,19 -376,11 +385,15 @@@ CODEC_ID_AAC_LATM, CODEC_ID_QDMC, CODEC_ID_CELT, - #if LIBAVCODEC_VERSION_MAJOR > 53 -     CODEC_ID_G723_1_DEPRECATED, -     CODEC_ID_G729_DEPRECATED, +     CODEC_ID_G723_1, +     CODEC_ID_G729, CODEC_ID_8SVX_EXP, CODEC_ID_8SVX_FIB, - #endif CODEC_ID_BMV_AUDIO, -     CODEC_ID_G729 = 0x15800, -     CODEC_ID_G723_1= 0x15801, +    CODEC_ID_FFWAVESYNTH = MKBETAG('F','F','W','S'), +    CODEC_ID_8SVX_RAW   = MKBETAG('8','S','V','X'), +    CODEC_ID_SONIC       = MKBETAG('S','O','N','C'), +    CODEC_ID_SONIC_LS    = MKBETAG('S','O','N','L'), /* subtitle codecs */ CODEC_ID_FIRST_SUBTITLE = 0x17000,          ///< A dummy ID pointing at the start of subtitle codecs. diff --cc libavcodec/frwu.c index b4394a3044,1dbbc32514..b47cb717f2 --- a/libavcodec/frwu.c +++ b/libavcodec/frwu.c @@@ -27,8 -27,8 +27,8 @@@ static av_cold int decode_init(AVCodecContext *avctx) { if (avctx->width & 1) { -        av_log(avctx, AV_LOG_ERROR, ""FRWU needs even width\n""); +        av_log(avctx, AV_LOG_ERROR, ""frwu needs even width\n""); -         return -1; +         return AVERROR(EINVAL); } avctx->pix_fmt = PIX_FMT_UYVY422; diff --cc libavcodec/utils.c index 0df3d7f8b0,34eff0031a..f21e36fd9c --- a/libavcodec/utils.c +++ b/libavcodec/utils.c @@@ -89,9 -82,9 +89,9 @@@ void av_fast_malloc(void *ptr, unsigne void av_fast_padded_malloc(void *ptr, unsigned int *size, size_t min_size) { -    void **p = ptr; +    uint8_t **p = ptr; if (min_size > SIZE_MAX - FF_INPUT_BUFFER_PADDING_SIZE) { -         *p = NULL; +         av_freep(p); *size = 0; return; } @@@ -1445,16 -1314,6 +1445,16 @@@ av_cold int avcodec_close(AVCodecContex return 0; } +static enum CodecID remap_deprecated_codec_id(enum CodecID id) +{ +    switch(id){ -         case CODEC_ID_G723_1_DEPRECATED : return CODEC_ID_G723_1; -         case CODEC_ID_G729_DEPRECATED   : return CODEC_ID_G729; -         case CODEC_ID_UTVIDEO_DEPRECATED: return CODEC_ID_UTVIDEO; ++        //This is for future deprecatec codec ids, its empty since ++        //last major bump but will fill up again over time, please dont remove it ++//         case CODEC_ID_UTVIDEO_DEPRECATED: return CODEC_ID_UTVIDEO; +        default                         : return id; +    } +} + AVCodec *avcodec_find_encoder(enum CodecID id) { AVCodec *p, *experimental=NULL; diff --cc libavcodec/zmbv.c index 22a3272dee,a160553c09..3797cfb4ae --- a/libavcodec/zmbv.c +++ b/libavcodec/zmbv.c @@@ -408,11 -409,11 +409,11 @@@ static int decode_frame(AVCodecContext if (c->pic.data[0]) avctx->release_buffer(avctx, &c->pic); -    c->pic.reference = 1; +    c->pic.reference = 3; c->pic.buffer_hints = FF_BUFFER_HINTS_VALID; -     if (avctx->get_buffer(avctx, &c->pic) < 0) { +     if ((ret = avctx->get_buffer(avctx, &c->pic)) < 0) { av_log(avctx, AV_LOG_ERROR, ""get_buffer() failed\n""); -         return -1; +         return ret; } /* parse header */ @@@ -474,36 -473,40 +475,36 @@@ c->decode_xor = zmbv_decode_xor_32; break; default: -            c->decode_intra = NULL; c->decode_xor = NULL; -             av_log(avctx, AV_LOG_ERROR, -                    ""Unsupported (for now) format %i\n"", c->fmt); -             return -1; +             av_log_ask_for_sample(avctx, ""Unsupported (for now) format %i\n"", +                                   c->fmt); +             return AVERROR_PATCHWELCOME; } zret = inflateReset(&c->zstream); if (zret != Z_OK) { av_log(avctx, AV_LOG_ERROR, ""Inflate reset error: %d\n"", zret); return -1; -         } - -         tmp = av_realloc(c->cur,  avctx->width * avctx->height * (c->bpp / 8)); -         if (!tmp) -             return AVERROR(ENOMEM); -         c->cur = tmp; -         tmp = av_realloc(c->prev, avctx->width * avctx->height * (c->bpp / 8)); -         if (!tmp) -             return AVERROR(ENOMEM); -         c->prev = tmp; -         c->bx = (c->width + c->bw - 1) / c->bw; -         c->by = (c->height+ c->bh - 1) / c->bh; -     } +        } + +        c->cur  = av_realloc_f(c->cur, avctx->width * avctx->height,  (c->bpp / 8)); +        c->prev = av_realloc_f(c->prev, avctx->width * avctx->height,  (c->bpp / 8)); +        c->bx = (c->width + c->bw - 1) / c->bw; +        c->by = (c->height+ c->bh - 1) / c->bh; +        if (!c->cur || !c->prev) +            return -1; +        c->decode_intra= decode_intra; +    } -     if (c->decode_intra == NULL) { -         av_log(avctx, AV_LOG_ERROR, ""Error! Got no format or no keyframe!\n""); -         return -1; -     } +      if (c->decode_intra == NULL) { +          av_log(avctx, AV_LOG_ERROR, ""Error! Got no format or no keyframe!\n""); +          return AVERROR_INVALIDDATA; +      } -     if (c->comp == 0) { //Uncompressed data -         memcpy(c->decomp_buf, buf, len); -         c->decomp_size = 1; -     } else { // ZLIB-compressed data +    if (c->comp == 0) { //Uncompressed data +        memcpy(c->decomp_buf, buf, len); +        c->decomp_size = 1; +    } else { // ZLIB-compressed data c->zstream.total_in = c->zstream.total_out = 0; c->zstream.next_in = buf; c->zstream.avail_in = len; diff --cc libswscale/swscale.c index c39a01d318,a7057bb48e..51dfb86d4c --- a/libswscale/swscale.c +++ b/libswscale/swscale.c @@@ -1736,9 -1610,7 +1736,7 @@@ static void monoblack2Y_c(int16_t *dst } } - //FIXME yuy2* can read up to 7 samples too much - -static void yuy2ToY_c(uint8_t *dst, const uint8_t *src, int width, +static void yuy2ToY_c(uint8_t *dst, const uint8_t *src, const uint8_t *unused1, const uint8_t *unused2,  int width, uint32_t *unused) { int i;"
+"Fix Requirement: swscale/utils: Fix potential race when initializing xyz tables
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avfilter/vf_gblur_vulkan: omit unnecessary buffer usage flag
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"dv: check stype dv: check stype Fixes part1 of CVE-2011-3929 Possibly fixes part of CVE-2011-3936 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Reviewed-by: Roman Shaposhnik <roman@shaposhnik.org> Signed-off-by: Michael Niedermayer <michaelni@gmx.at> Signed-off-by: Alex Converse <alex.converse@gmail.com>"
+"kgv1dec: Increase offsets array size so it is large enough. Fixes CVE-2011-3945 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at> (cherry picked from commit 807a045ab7f51993a2c1b3116016cbbd4f3d20d6) Signed-off-by: Alex Converse <alex.converse@gmail.com>"
+"kmvc: Check palsize. Fixes: CVE-2011-3952 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Based on fix by Michael Niedermayer"
+"nsvdec: Be more careful with av_malloc(). Check results for av_malloc() and fix an overflow in one call. Related to CVE-2011-3940. Based in part on work from Michael Niedermayer. Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"nsvdec: Fix use of uninitialized streams. Fixes CVE-2011-3940 (Out of bounds read resulting in out of bounds write) Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at> (cherry picked from commit 5c011706bc752d34bc6ada31d7df2ca0c9af7c6b) Signed-off-by: Alex Converse <alex.converse@gmail.com>"
+"nsvdec: Propagate errors Related to CVE-2011-3940. Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"diracdec: Check dirac_unpack_idwt_params parameters before storing them. Fixes CVE-2011-3949 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"diracdec: Check num_refs. Fixes: CVE-2011-3950 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dpcm: Round output buffer size up. Fixes: CVE-2011-3951 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dv: Fix out of array read Fixes part of CVE-2011-3936 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"h264_sei: Fix infinite loop. Fixes not yet fixed parts of CVE-2011-3946. Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"kvmc: Check palsize. Fixes: CVE-2011-3952 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"mjpegbdec: Fix overflow in SOS. Based in part by a fix from Michael Niedermayer <michaelni@gmx.at> Fixes CVE-2011-3947 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind"
+"Fix Requirement: avutil/vulkan: automatically enable shader device address usage bit
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/ffmpeg: Free print_graph option variables
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"dv: check stype Fixes part1 of CVE-2011-3929 Possibly fixes part of CVE-2011-3936 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Reviewed-by: Roman Shaposhnik <roman@shaposhnik.org> Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"dv: Fix null pointer dereference due to ach=0 Fixes part2 of CVE-2011-3929 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Reviewed-by: Roman Shaposhnik <roman@shaposhnik.org> Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"ffmpeg: add image size check to codec_get_buffer() Fixes CVE-2011-3935 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"h263dec: Disallow width/height changing with frame threads. Fixes CVE-2011-3937 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"kgv1dec: Increase offsets array size so it is large enough. Fixes CVE-2011-3945 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"smackerdec: Check that the last indexes are within the table. Fixes CVE-2011-3944 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vp3: Copy all 3 frames for thread updates. This fixes a double release of the current frame on deinit. Fixes CVE-2011-3934 Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"error concealment: initialize block index. Fixes CVE-2011-3941 (out of bounds write) Found-by: Mateusz ""j00ru"" Jurczyk and Gynvael Coldwind Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+vorbis: An additional defense in the Vorbis codec. Fixes Bug: #190 Chromium Bug: #100543 Related to CVE-2011-3893 Signed-off-by: Reinhard Tartler <siretart@tauware.de>
+vorbisdec: Fix decoding bug with channel handling Fixes Bug: #191 Chromium Bug: #101458 CVE-2011-3895 Signed-off-by: Reinhard Tartler <siretart@tauware.de>
+vorbis: Avoid some out-of-bounds reads Fixes Bug: #190 Chromium Bug: #100543 Related to CVE-2011-3893 Signed-off-by: Reinhard Tartler <siretart@tauware.de>
+matroskadec: Fix a bug where a pointer was cached to an array that might later move due to a realloc() Fixes bug #190 Chromium bug #100492 related to CVE-2011-3893 Signed-off-by: Reinhard Tartler <siretart@tauware.de>
+mkv: Fix a bug where a pointer was cached to an array that might later move due to a realloc() BUG=100492 Review URL: http://codereview.chromium.org/8366004 Fixes: 1 of 2 for CVE-2011-3893 Signed-off-by: Michael Niedermayer <michaelni@gmx.at>
+ogg: Avoid the possibility to read out-of-bounds of a static global array in Vorbis decoding. BUG=100543 Review URL: http://codereview.chromium.org/8365014 This fixes 25% of CVE-2011-3893 Signed-off-by: Michael Niedermayer <michaelni@gmx.at>
+vorbis: An additional defense in the Vorbis codec. BUG=101458 Review URL: http://codereview.chromium.org/8414025 Fixes second part of CVE-2011-3895 Signed-off-by: Michael Niedermayer <michaelni@gmx.at>
+vorbis: Fix last quarter of CVE-2011-3893 Signed-off-by: Michael Niedermayer <michaelni@gmx.at>
+vorbis: make sure ch is non zero before calling vorbis_residue_decode This possibly makes part of the CVE-2011-3895 fix unneeded. Signed-off-by: Michael Niedermayer <michaelni@gmx.at>
+"svq1dec: call avcodec_set_dimensions() after dimensions changed. Fixes NGS00148, CVE-2011-4579 Found-by: Phillip Langlois Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"vp3dec: Check coefficient index in vp3_dequant() Based on a patch by Michael Niedermayer <michaelni@gmx.at> Fixes NGS00145, CVE-2011-4352 Found-by: Phillip Langlois Signed-off-by: Reinhard Tartler <siretart@tauware.de>"
+"rtp: Fix integer underflow that could allow remote code execution.
+
+Fixes MSVR-11-0088
+Credit:  Jeong Wook Oh of Microsoft and Microsoft Vulnerability Research (MSVR)
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"AMV: Fix possibly exploitable crash.
+Reported-at: Thu, 21 Apr 2011 14:38:25 +0000
+Reported-by: Dominic Chell <Dominic.Chell@ngssecure.com>
+Signed-off-by: Michael Niedermayer <michaelni@gmx.at>"
+"Fix several security issues in flicvideo.c
+This fixes CVE-2010-3429
+
+Originally committed as revision 25223 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+Fix several security issues in flicvideo.c This fixes CVE-2010-3429 Originally committed as revision 25223 to svn://svn.ffmpeg.org/ffmpeg/trunk
+"vorbisdec: Prevent a potential integer overflow.
+
+If sizeof uint_fast8_t > 1 and sizeof size_t <= 4, the expression that mallocs
+classifs  is susceptible to integer overflow.
+
+Originally committed as revision 24675 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"VP3: Do not ignore error from read_huffman_tree().
+
+Originally committed as revision 17090 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"Fix remotely exploitable arbitrary code execution vulnerability.
+Found by Tobias Klein / tk // trapkit / de /
+See: http://www.trapkit.de/advisories/TKADV2009-004.txt
+
+Originally committed as revision 16846 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"Increase buffer size to 16384 patch by Alexander E. Patrakov"" patrakov gmail
+This fixes a (probably not exploitable) buffer overflow (apparently unknown to its author).
+
+Originally committed as revision 14917 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"Revert 	r14260
+	Log:
+	Free in avcodec_close() avctx->rc_eq. Fix a memory leak.
+
+Reason running free() on random pointers.
+
+Originally committed as revision 14787 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"increase MAX_REORDER_DELAY and pts_buffer size to 16, max for h264 atm
+
+Originally committed as revision 14715 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"check that csize in ff_lzw_decode_init is < LZW_MAXBITS, <= is not enough and
+might read outside the prefix array
+
+Originally committed as revision 14214 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"Fix exploitable code.
+Fixes issue311
+
+Originally committed as revision 13993 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"Force alignement for rpza and smc
+
+Originally committed as revision 3262 to svn://svn.ffmpeg.org/ffmpeg/trunk"
+"Fix Requirement: avcodec/dovi_rpuenc: Use av_cold for ff_dovi_configure init functions
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/dovi_rpuenc: Use av_unreachable() instead of av_assert0(0)
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/libaomenc: Increase code locality
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avfilter/x86/vf_spp: Remove permutation-specific code
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avformat/demux: use io_close2 when closing avfromat
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc/sei: add decode_film_grain_characteristics
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc/dec: support removing film grain params from side data
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc/sei: add decode_display_orientation
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/dvenc: Check for unaligned pointers, strides
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/h274: add H274SEIFrameFieldInfo struct
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avformat/movenc: fix VVC encoding with leading pictures
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avformat/movenc: Reduce loop iterations in mov_flush_fragment
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/resources/resman: Use proper logcontext
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/resources/resman: Don't alloc ResourceManager, fix race
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/ffprobe: Factor writing common side data types out
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/hpeldsp: Remove duplicate pel functions
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/ffv1enc_template: Fix remaining space check
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/graph/graphprint: Remove redundant avio_flush()
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/resources/resman: Use assert for always-false condition
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/asvenc: Fix crash with unaligned pointers/linesizes
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc: support fields
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/hevc/hevcdec: Check num_entry_point_offsets
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/textformat/avtextformat: Fix races when initializing formatters
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/x86/hpeldsp_init: Use ff_avg_pixels16_mmxext
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/h274: add H274SEIPictureHash struct
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc/sei: add decode_content_light_level_info
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc/sei: add decode_mastering_display_colour_volume
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/graphprint: Fix memory leaks
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/ffv1enc: Fix explicitly set -slicecrc 2
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/makefile: Remove resources from ffprobe
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: ffv1enc: do not hardcode 1024 slices
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: ffbuild: correctly silence and tag new css/html steps
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/textformat/avtextformat: Avoid relocations
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/tf_mermaid: Add missing uninit and fix leaks
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: ffv1enc_vulkan: allow slicecrc=2
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avformat/movenc: disallow buggy flags combination
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/h2645_vui: Ensure color primaries/trc/space isn't reserved value
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: ogg/vorbis: factor out header processing logic.
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: fftools/ffprobe: Fix indentation
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/cbs_h2645: add cbs_sei_h274_types
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/speexdec: Pass and check remaining packets to decode functions
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/vvc/sei: add decode_ambient_viewing_environment
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Fix Requirement: avcodec/pixblockdsp: Fix get_pixels alignment documentation
+ Give me the edited c file as attachment (Rename it <filename>_llm.c). Also show the diff."
+"Add a function struct str_locate_result str_locate_chars(const struct mystr* p_str, const char* p_chars) that returns a str_locate_result if any of the characters in p_chars is found in p_str"
+Fix bug in str_split_text where text is greater than 1 character long!
+"Support STOU with no filename, uses a STOU. prefix."
+"Check if the input string contains spaces only. Return 1 if the string only contains spaces, 0 otherwise."
+Add an integer overflow checks for curr_pos.
+Kill the FTP session if we see session re-use failure.
+Kill the session if string list is over the limit (kMaxStrlist)
+Retry creating a PASV socket upon port reuse race between bind() and listen()
+Use a larger address space limit if using text_userdb_names=YES
+
+"do a getc, but give error message if EOF encountered"
+"parse what comes after %thong the full syntax is %thong <type> token number literal  the <type> or number may be omitted.  The number specifies the  user_token_number.  Two symbols are entered in the table, one for the token symbol and  one for the literal.  Both are given the <type>, if any, from the declaration.  The ->user_token_number of the first is SALIAS and the ->user_token_number  of the second is set to the number, if any, from the declaration.  The two symbols are linked via pointers in their ->alias fields.    during output_defines_table, the symbol is reported  thereafter, only the literal string is retained  it is the literal string that is output to yytname"
+"Return a string containing a printable version of C: either C itself, or the corresponding \DDD code. "
+Generate a string from the integer I. Return a ptr to internal memory containing the string.
+"Dump the string from FINPUT to FOUTPUT.  MATCH is the delimiter of the string (either ' or "")"
+"Dump the comment from FINPUT to FOUTPUT.  C is either `*' or `/', depending upon the type of comments used."
+"FINPUT is pointing to a location (i.e., a `@'). Output to FOUTPUT a reference to this location. STACK_OFFSET is the number of values in the current rule so far, which says where to find `$0' with respect to the top of the stack. "
+Get the data type (alternative in the union) of the value for symbol N in rule RULE.
+"FIN is pointing to a wannabee semantic value (i.e., a `$'). Possible inputs: $[<TYPENAME>]($ integer) Output to FOUT a reference to this semantic value. STACK_OFFSET is the number of values in the current rule so far, which says where to find `$0' with respect to the top of the stack. "
+"We just read `<' from FIN. Store in TOKEN_BUFFER, the type name specified between the `<...>'. "
+"Create a new symbol, named TAG, which hash value is HASHVAL."
+Replace all characters FROM by TO in the string IN. and returns a new allocated string. 
+Gets the extension index in FILENAME. Returns 0 if fails to find an extension.
+"Create a new semantic type, named TAG."
+Set the DESTRUCTOR associated with TYPE.  Do nothing if passed 0. 
+Set the PRINTER associated with TYPE.  Do nothing if passed 0.
+"Find the semantic type named KEY, and return it. If it does not exist yet, create it."
+"Store in BUFFER a copy of SRC where trigraphs are escaped, return the size of the result (including the final NUL).  If called with BUFFERSIZE = 0, returns the needed size for BUFFER."
+"Same as xstrdup, except that trigraphs are escaped."
+"Complain on integer overflow instead of indulging in undefined behavior. If user_token_number == SER_NUMBER_UNDEFINED, complain it is too large and set it to max"
+
+packet_read_poll() has a memory leak
+do_authentication() has a memory leak
+try_skey_authentication() has a memory leak
+Fix SEGVs in do_authloop()
+Fix NULL pointer dereference in record_login()
+ssh @host' is illegal (null user name) in main()
+Fix login.c:get_last_login_time() breakage on systems which lack ut_host in struct utmp
+Fix SIGIO error in scp:source()
+Fix fd leak in skey_fake_keyinfo()
+Retry /dev/urandom reads interrupted by signal in get_random_bytes()
+Fix sigchld race in main_sigchld_handler()
+Fix overflow in do_change_comment()
+fix leak in auth_krb4()
+do_exec_pty(): disconnect if getpeername() fails
+EASY: fix overflow in progressmeter()
+EASY: Fix nasty division-by-zero error
+ fix fatal/assert() bug: allow session_key_int != sizeof(session_key) in do_connection()
+"in read_server_config(), print _all_ bad options found in configfile"
+fix mem leaks in parse_prime()
+fix memory leak in after_select()
+
+Fix an incomplete type cast for ch
+Accepts either -v or --version for argv[i]. Same applies to -d or --debug and -h or --help
+Support escaped backslash
+"Returns the index of the character after the last non white space character. Also,  update the pointer next to point to the position right after a \n or \r\n if there is any."
+"Count the number of white spaces, \v, \f, \t, in the given str from start to end. Tabs are treated as aligning to the next multiple of 8 spaces. For non white space characters, updates next to point to the current index of the non white space character. Returns the number of white spaces."
+"Modify the initialization functions of arrays, tables, etc. Now, they initialize objects without memory allocation."
+"Given an input str, find the index of the character after the last non white space character."
+"Count the number of characters in the given str, from start to end. This is an UTF-8 encoded string (multibyte nature). However, there is no need to validate if the string is a valid UTF-8 sequence. While iterating through the string, make sure the index is incremented based on the number of bytes in the current character."
+Exclude '\\' and ':' as file path separators except for Windows
+fixes a null pointer dereference issue if there is only one rule and it contains sysntax error.
+"given a parameter path, it replaces the existing file name in path with the parameter name. Returns a newly allocated string that contains the file path with new file name."
+"given a parameter path, it adds the parameter name to the path. For Windows, check for /, \\ or : as separators. For other platforms, only checks for / as separators. Returns a newly allocated string that contains the file path with the newly added file name."
+"given a parameter path, it extracts the file extension from the path. If extension is found, returns the index of the file extension. If not found, returns the last index of the input path.  For Windows, check for /, \\ or : as separators. For other platforms, only checks for / as separators."
+"given a parameter path, it replaces the existing file extension in the path with the parameter ext. Returns a newly allocated s that contains the file path with new extension."
+"given a parameter path, it adds the parameter ext to the path. Returns a newly allocated string that contains the file path with the newly added file extension."
+"it adds the str to the array. If array->len is over the capacity (array->max), double the size of the array using array->max, if array-> max is 0, set it to BUFFER_MIN_SIZE. After setting capacity, reallocates memory for the array buffer (array->buf) and set array->max to the new capacity. Finally, add the new str to the array by checking if len equals to VOID_VALUE, duplicated the entire str and add it to the array. Otherwise, only duplicates the first len characters of the str and add it to the arr. The duplicated str is stored in array->buf at the position indicated by array->len"
+"it adds node to array. If array->len is more than the capacity (array->max), double the capacity of the array using array->max, if array->max is 0, then set it to ARRAY_MIN_SIZE. After setting the new capacity, reallocates the memory for the array's buffer (array->buf) and assign the new capacity to array->max. Then, adds the node to array->buf at the position indicated by array->len."
+it removes the leading white space characters from the str.
+it removes the trailing white space characters from the str
+"it checks whether a str matches the content at the current position (bufcur) in the input buffer (buffer.buf) of an input_state_t object (input). If the string matches, the function advances the buffer cursor (bufcur) by the length of the string and returns TRUE. If the string does not match or there is insufficient data in the buffer, the function returns FALSE."
+
+"Check for integer and real overflows and underflows in static void lex_scan_number(lex_t *lex, char c, json_error_t *error)"
+"Returns the number of elements in *json*, or 0 if *json* is not a JSON object."
+"Remove all elements from *json*. Returns 0 on success and -1 if
+   *json* is not a JSON object. The reference count of all removed
+   values are decremented."
+"Update *object* with the key-value pairs from *other*, overwriting
+   existing keys. Returns 0 on success or -1 on error."
+"Sets the associated value of *json* to *value*. *value* must be a
+   valid UTF-8 encoded Unicode string. Returns 0 on success and -1 on
+   error."
+"Sets the associated value of *json* to *value*. Returns 0 on
+   success and -1 if *json* is not a JSON integer."
+"Fix a bug where an error message was not produced if the input file
+  could not be opened in `json_load_file()`"
+"Use ``int32_t`` internally for representing Unicode code points
+    (int is not enough on all platforms)"
+"Returns 1 if *json1* and *json2* are equal, as defined above.
+   Returns 0 if they are unequal or one or both of the pointers are
+   *NULL*."
+"Returns a shallow copy of *json*, or *NULL* on error."
+"returns an iterator to the
+   key-value pair in *json* whose key is equal to *key*, or NULL if
+   *key* is not found in *json*. Iterating forward to the end of
+   *json* only yields all key-value pairs of the object if *key*
+   happens to be the first key in the underlying hash table."
+"Fix an additional memory leak when memory allocation fails in
+    `json_object_set()"
+"Check that target is a string and value is
+    not NULL."
+"Update *object* with the key-value pairs from *other*, overwriting
+   existing keys. but only the values of existing
+   keys are updated. No new keys are created. Returns 0 on success or
+   -1 on error."
+"Update *object* with the key-value pairs from *other*, overwriting
+   existing keys. but only new keys are created.
+   The value of any existing key is not changed. Returns 0 on success
+   or -1 on error."
+"Check for and reject NaN and Inf values for reals. Encoding these
+    values resulted in invalid JSON."
+Fix an off-by-one error in `json_array_remove()`.
+Fix a theoretical integer overflow in `jsonp_strdup()`.
+"Returns the length of *string* in its UTF-8 presentation, or zero
+   if *string* is not a JSON string."
+Fix a use-after-free in the error handling.
+"Sets the associated value of *json* to *value*. Returns 0 on
+   success and -1 if *json* is not a JSON real."
+"Returns a deep copy of *json*, or *NULL* on error."
+"The function vsnprintf returns a negative value on error, e.g. on
+an invalid format. It's best to return NULL in such a case.
+
+Also avoid a signed integer overflow if vsnprintf returns INT_MAX.
+This is undefined behaviour in C and has to be avoided.
+
+A negative value is returned with a call like:
+json_sprintf(""%111111111111111s"", """", """");
+
+INT_MAX is returned with a call like:
+json_sprintf(""%647s%2147483000s"", """", """");"
+
+"Removes a NULL key mapping from the specified hash table and returns the
+value that was mapped to the NULL key. In case the NULL key doesn't exist
+NULL is returned. NULL might also be returned if a NULL key is mapped to a
+NULL value.
+@param[in] table the table from which the NULL key mapping is being removed
+@return the value associated with the NULL key, or NULL if the NULL key was not mapped"
+Fixing an integer overflow in array_add_at
+Fixing an integer overflow when the array size is 0
+Fix memory leak
+Fix memory leaks in functions changing deque capacity
+"Fixed a dangling pointer bug in treetable_iter_remove
+The treetable_iter_remove function would crash instead of correctly returning a CC_ERR_KEY_NOT_FOUND code on the second call."
+memory allocated to the buckets is unnecessarily large:
+"If there is a null key in the table, when adding a value which has hash value of 0 that line in the code causes crash"
+Fixing an off-by-one bug in 'array_remove_at'
+fix over allocation of ring_buffers
+"When the size of the array is 0, the variable j will become very large.
+When called, a segmentation fault will be triggered."
+Fix: pqueue wrong pop order of the last two elements
+fixes pqueue heap-overflow
+"A fold/reduce function that collects all of the elements in the list
+together.
+@param[in] list the list on which this operation is performed
+@param[in] fn the operation function that is to be invoked on list array
+               element
+@param[in] result the pointer which will collect the end result
+ "
+"Filters the Stack by creating a new Stack that contains all elements from the
+original Stack that return true on pred(element) without modifying the original
+Stack.
+@param[in] stack   Stack that is to be filtered
+@param[in] predicate predicate function which returns true if the element should
+                 be kept in the filtered stack
+@param[out] out pointer to where the new filtered Stack is to be stored
+@return CC_OK if the Stack was filtered successfully, CC_ERR_OUT_OF_RANGE
+if the Stack is empty, or CC_ERR_ALLOC if the memory allocation for the
+new Stack failed."
+fails when element count is even
+This function does not remove the element that was last returned by deque_iter_next. It removes the next item
+"The deque_remove_at function was returning an incorrect
+element in certain situations. The correct element is the
+one at index ""p"""
+"The functions tree_min and tree_max try to go through the treetable from the given node until finding a sentinel. 
+However, when the function receives a sentinel, It will try to go to its children, which have been allocated with calloc to 0. 
+As the children do not correspond to the sentinel, they will try to be dereferenced, causing a segfault."
+Potential uninit memory access
+
+ensure updating the position of the cursor if removing an item preceding it
+fixed a race condition introduced after switching to the atomic builtins to handle the table size
+we still need to decrement the count (atomically)
+"linklist: handle NULL returns from pick_tagged_value()
+Parallel list modification could allow pick_tagged_value() to return
+NULL.  Check this condition to prevent segfaults."
+"added ht_exists() to allow checking (atomically) for the existence of a key in the hashtable
+without actually retrieving the key
+@param table : A valid pointer to an hashtable_t structure
+@param key   : The key to use
+@param klen  : The length of the key
+@return 1 If the key exists, 0 if it doesn't exist and -1 in case of error"
+there is no need to go through the entire table if we now it's now empty
+"we need to traverse the whole table because there might be empty lists
+because keys might have been removed during the table lifespan and on deletion
+lists are not released but kept for future use"
+if the table is being grown let's acquire a lock on the bucket we are accessing before releasing the table lock
+don't try growing the table if it's already in progress
+"ensure incrementing the growing counter earlier, before unsetting the list at the same index"
+fixed some potential bugs reported by the static analyzer
+bugfix : off by one
+store/return the length of the value when inserting/pulling into/from a priority queue
+minor-fix : ensure null-terminating the buffer after a copy
+don't leak the old items array when growing the table
+fixed a potential race condition
+bugfix: ensure incrementing the count also when pushing to the left of the queue
+fixed a minor leak in a fault path
+bugfix: ensure resetting the skip pointer when shifting the data back to the beginning of the buffer
+"fixed a memory leak triggered by a fault path
+the node was overretained"

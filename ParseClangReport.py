@@ -54,6 +54,21 @@ def save_to_excel(issues, output_file="clang_analysis_summary.xlsx"):
     df.sort_values(by=["Category", "File", "Line"], inplace=True)
     df.to_excel(output_file, index=False)
 
+def main():
+    folder_path = "Clang_Reports2"
+    all_issues = []
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith(".txt"):
+                print(f"Processing file: {file}")
+                file_path = os.path.join(root, file)
+                issues = parse_clang_report(file_path)
+                all_issues.extend(issues)
+    
+    save_to_excel(all_issues, output_file="clang_analysis_summary.xlsx")
+
+main()
+
 
 # issues = parse_clang_report(report_file)
 # save_to_excel(issues)
