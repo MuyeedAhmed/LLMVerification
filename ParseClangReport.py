@@ -11,6 +11,15 @@ CATEGORY_KEYWORDS = {
     "Uninitialized": ["uninitialized"],
     "Security": ["overflow", "security", "buffer", "format string"],
     "Logic": ["always true", "always false", "tautology", "redundant"],
+    "Syntax Error": ["expected", "extraneous", "invalid syntax", "parse error"],
+    "Unsafe Cast": ["implicit conversion", "incompatible type", "loss of", "cast"],
+    "Undeclared Identifier": ["undeclared identifier", "implicit function declaration", "call to undeclared"],
+    "Return Issue": ["does not return a value", "no return", "missing return"],
+    "Initializer Error": ["not a compile-time constant", "initializer element"],
+    "Assembly Constraint": ["invalid output constraint", "asm"],
+    "Standard Compliance": ["C99", "ISO C", "before C99", "standards before"],
+    "Struct Member Access": ["no member named", "incompatible struct", "invalid field"],
+    "Logic": ["always true", "always false", "tautology", "redundant"],
 }
 
 def classify_issue(message):
@@ -44,6 +53,21 @@ def save_to_excel(issues, output_file="clang_analysis_summary.xlsx"):
     df = pd.DataFrame(issues)
     df.sort_values(by=["Category", "File", "Line"], inplace=True)
     df.to_excel(output_file, index=False)
+
+def main():
+    folder_path = "Clang_Reports2"
+    all_issues = []
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith(".txt"):
+                print(f"Processing file: {file}")
+                file_path = os.path.join(root, file)
+                issues = parse_clang_report(file_path)
+                all_issues.extend(issues)
+    
+    save_to_excel(all_issues, output_file="clang_analysis_summary.xlsx")
+
+main()
 
 
 # issues = parse_clang_report(report_file)
