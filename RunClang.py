@@ -34,7 +34,7 @@ def CopyAnalyzerScript(project):
 def RunClang(project, commit_hash, change_file):
     CopyAnalyzerScript(project)
     EXCEL_PATH = f"ExcelFiles/{project}_{commit_hash}.xlsx"
-    BASE_DIR = "FileHistory"
+    BASE_DIR = f"FileHistory/{project}"
     PROJ_DIR = os.path.join("Projects", project)
     OUTPUT_DIR = os.path.join("Clang_Reports", project)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -45,9 +45,9 @@ def RunClang(project, commit_hash, change_file):
 
     orig_out_path = os.path.join(OUTPUT_DIR, f"{commit_hash}_original.txt")
     llm_out_path = os.path.join(OUTPUT_DIR, f"{commit_hash}_llm.txt")
-    # if os.path.exists(orig_out_path) and os.path.exists(llm_out_path):
-    #     print(f"Skipping {commit_hash}, output files already exist.")
-    #     continue
+    if os.path.exists(orig_out_path) and os.path.exists(llm_out_path):
+        print(f"Skipping {commit_hash}, output files already exist.")
+        return
         
     if not os.path.exists(llm_src_path):
         print(f"LLM file not found: {llm_src_path}")

@@ -98,10 +98,13 @@ if __name__ == "__main__":
         change_file_dir = commit_df["Changed File"].values[0]
         changed_function = commit_df["Changed Functions"].values[0]
         print(f"Processing commit {commit_hash} with message: {message}")
-        RunLLM(project, commit_hash, message, changed_function, change_file_dir)
 
-        MergeLLMOutput(project, commit_hash, change_file_dir, changed_function)
+        llm_dest_filename = change_file_dir.split("/")[-1].split(".")[0]
+        llm_dest = os.path.join(f"FileHistory/{project}", commit_hash, f"{llm_dest_filename}_llm_function.c")
+        if not os.path.exists(llm_dest):
+            RunLLM(project, commit_hash, message, changed_function, change_file_dir)
+            MergeLLMOutput(project, commit_hash, change_file_dir, changed_function)
+        else:
+            print(f"LLM output already exists for commit {commit_hash}, skipping LLM run.")
 
         RunClang(project, commit_hash, change_file_dir)
-
-
