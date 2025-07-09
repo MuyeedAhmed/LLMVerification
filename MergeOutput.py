@@ -99,12 +99,12 @@ def ReplaceFunctionAtOriginalLine_WithRE(content, function_name, changed_functio
 
 
 
-def MergeLLMOutput(commit, change_file_dir, changed_function):
+def MergeLLMOutput(project, commit, change_file_dir, changed_function):
     change_file_name = change_file_dir.split("/")[-1].split(".")[0]
 
-    source_file = os.path.join("FileHistory", commit, f"{change_file_name}_original.c")
-    source_file_llm_function = os.path.join("FileHistory", commit, f"{change_file_name}_llm_function.c")
-    destination_file = os.path.join("FileHistory", commit, f"{change_file_name}_llm.c")
+    source_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_original.c")
+    source_file_llm_function = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_llm_function.c")
+    destination_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_llm.c")
 
     with open(source_file, 'r') as file:
         source_code = file.read()
