@@ -23,11 +23,11 @@ class ExtractGitInfo:
             except subprocess.CalledProcessError as e:
                 print("Neither master nor main branch found. Please check the repository.")
                 raise e
-                
-    def GetCommitsByDate(self, since_date, until_date, commit_count=100):
+
+    def GetCommitsByDate(self, start_date, end_date, commit_count=100):
         try:
             log_result = subprocess.run(
-                ["git", "log", f"--since={since_date}", f"--until={until_date}", "-n", f"{commit_count}", "--format=%H"],
+                ["git", "log", f"--since={start_date}", f"--until={end_date}", "-n", f"{commit_count}", "--format=%H"],
                 cwd=self.repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -110,13 +110,22 @@ class ExtractGitInfo:
             for file in changed_files:
                 filename = os.path.basename(file)
                 name, ext = os.path.splitext(filename)
-                source_path = f"{self.repo_path}/{file}"
                 if ext != ".c":
                     continue
-                if os.path.exists(source_path):
-                    original_copy = os.path.join(destination_dir, f"{name}_human{ext}")
-                    print(f"Copying changed file: {source_path} to {original_copy}")
-                    shutil.copyfile(source_path, original_copy)
+                result = subprocess.run(
+                    ["git", "show", f"{commit_hash}:{file}"],
+                    cwd=self.repo_path,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=True,
+                    text=True
+                )
+
+                destination_path = os.path.join(destination_dir, f"{name}_human{ext}")
+                with open(destination_path, "w") as f:
+                    f.write(result.stdout)
+                print(f"Copied {file} from {commit_hash} to {destination_path}")
+
         except subprocess.CalledProcessError as e:
             print(f"Error copying changed files: {e}")
 
@@ -170,4 +179,25 @@ class ExtractGitInfo:
             return diff_result.stdout.strip(), list(functions)
         except subprocess.CalledProcessError as e:
             print(f"Error fetching changed functions for {commit_hash}: {e.stderr}")
+            return None
+    
+    def GetTotalLineChanges(self, commit_hash):
+        try:
+            diff_result = subprocess.run(
+                ["git", "show", "--numstat", commit_hash],
+                cwd=self.repo_path,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=True
+            )
+            added, deleted = 0, 0
+            for line in diff_result.stdout.splitlines():
+                parts = line.strip().split('\t')
+                if len(parts) == 3 and parts[0].isdigit() and parts[1].isdigit():
+                    added += int(parts[0])
+                    deleted += int(parts[1])
+            return added + deleted
+        except subprocess.CalledProcessError as e:
+            print(f"Error fetching total line changes for {commit_hash}: {e.stderr}")
             return None

@@ -10,21 +10,26 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 
-def RunLLM(commit, message, changed_function, change_file_dir):
+def RunLLM(project, commit, message, changed_function, change_file_dir, type_of_fix="Bug"):
     change_file_name = change_file_dir.split("/")[-1].split(".")[0]
-    source_file = os.path.join("FileHistory", commit, f"{change_file_name}_original.c")
-    destination_file = os.path.join("FileHistory", commit, f"{change_file_name}_llm_function.c")
+    source_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_original.c")
+    destination_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_llm_function.c")
 
     if not os.path.exists(source_file):
         print(f"Source file not found: {source_file}")
         return
 
-    updated_prompt = f"""
-    Fix Requirement: {message}
-    Function:{changed_function}
-    Please return only the updated definition of the function '{changed_function}' as a single C function. Do not include the full source file or any extra commentary.
-    """
-
+    if type_of_fix == "Bug":
+        updated_prompt = f"""
+        Modify the function in the provided C file such that it fixes the following issue: {message} in {changed_function}.
+        Please return only the updated definition of the function '{changed_function}' as a single C function. Do not include the full source file or any extra commentary.
+        """
+    else:
+        updated_prompt = f"""
+        Implement a function in the provided C file: {function_name} such that it {message}.
+        Please return only the updated definition of the function '{changed_function}' as a single C function. Do not include the full source file or any extra commentary.
+        """
+    
     upload = openai.files.create(
         file=open(source_file, "rb"),
         purpose="assistants"
