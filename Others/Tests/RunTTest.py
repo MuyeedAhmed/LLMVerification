@@ -1,5 +1,6 @@
 import pandas as pd
 from scipy.stats import ttest_ind
+from scipy import stats
 
 df_raw = pd.read_excel("Code Metrics Data.xlsx", header=[0, 1])
 
@@ -19,7 +20,7 @@ def run_t_test(c1, c2):
     mean1 = col1_clean.mean()
     mean2 = col2_clean.mean()
 
-    t_stat, p_val = ttest_ind(col1_clean, col2_clean, equal_var=False)
+    t_stat, p_val = stats.ttest_rel(col1_clean, col2_clean)
 
     print(f"Mean of {c1}: {mean1}")
     print(f"Mean of {c2}: {mean2}")
