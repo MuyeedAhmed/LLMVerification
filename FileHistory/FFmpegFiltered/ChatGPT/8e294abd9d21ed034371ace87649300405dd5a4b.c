@@ -5022,11 +5022,12 @@ static int mov_read_keys(MOVContext *c, AVIOContext *pb, MOVAtom atom)
     if (atom.size < 8)
         return 0;
 
-    avio_skip(pb, 8);  // Skip the first 8 bytes
+    avio_skip(pb, 4);
     count = avio_rb32(pb);
-    if (count > UINT_MAX / sizeof(*c->meta_keys) - 1) {
+    atom.size -= 8;
+    if (count > (SIZE_MAX - 1) / sizeof(*c->meta_keys)) {
         av_log(c->fc, AV_LOG_ERROR,
-               "The 'keys' atom with the invalid key count: %"PRIu32"\n", count);
+               "The 'keys' atom with the invalid key count: %"PRIu32"\\n", count);
         return AVERROR_INVALIDDATA;
     }
 
@@ -5040,14 +5041,14 @@ static int mov_read_keys(MOVContext *c, AVIOContext *pb, MOVAtom atom)
         uint32_t type = avio_rl32(pb);
         if (key_size < 8 || key_size > atom.size) {
             av_log(c->fc, AV_LOG_ERROR,
-                   "The key# %"PRIu32" in meta has invalid size:"
-                   "%"PRIu32"\n", i, key_size);
+                   "The key# %"PRIu32" in meta has invalid size:%"PRIu32"\\n", i, key_size);
             return AVERROR_INVALIDDATA;
         }
         atom.size -= key_size;
         key_size -= 8;
-        if (type != MKTAG('m','d','t','a')) {
+        if (type != MKTAG('m', 'd', 't', 'a')) {
             avio_skip(pb, key_size);
+            continue;
         }
         c->meta_keys[i] = av_mallocz(key_size + 1);
         if (!c->meta_keys[i])

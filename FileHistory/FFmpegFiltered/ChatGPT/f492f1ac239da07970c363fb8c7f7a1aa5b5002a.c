@@ -5022,7 +5022,7 @@ static int mov_read_keys(MOVContext *c, AVIOContext *pb, MOVAtom atom)
     if (atom.size < 8)
         return 0;
 
-    avio_skip(pb, 8);  // Skip the first 8 bytes
+    avio_skip(pb, 4);
     count = avio_rb32(pb);
     if (count > UINT_MAX / sizeof(*c->meta_keys) - 1) {
         av_log(c->fc, AV_LOG_ERROR,
@@ -5038,13 +5038,12 @@ static int mov_read_keys(MOVContext *c, AVIOContext *pb, MOVAtom atom)
     for (i = 1; i <= count; ++i) {
         uint32_t key_size = avio_rb32(pb);
         uint32_t type = avio_rl32(pb);
-        if (key_size < 8 || key_size > atom.size) {
+        if (key_size < 8) {
             av_log(c->fc, AV_LOG_ERROR,
                    "The key# %"PRIu32" in meta has invalid size:"
                    "%"PRIu32"\n", i, key_size);
             return AVERROR_INVALIDDATA;
         }
-        atom.size -= key_size;
         key_size -= 8;
         if (type != MKTAG('m','d','t','a')) {
             avio_skip(pb, key_size);
@@ -8821,7 +8820,7 @@ static void mov_read_chapters(AVFormatContext *s)
 
         if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
             st->disposition |= AV_DISPOSITION_ATTACHED_PIC | AV_DISPOSITION_TIMED_THUMBNAILS;
-            if (!st->attached_pic.data && sti->nb_index_entries) {
+            if (sti->nb_index_entries) {
                 // Retrieve the first frame, if possible
                 AVIndexEntry *sample = &sti->index_entries[0];
                 if (avio_seek(sc->pb, sample->pos, SEEK_SET) != sample->pos) {
@@ -9380,86 +9379,21 @@ fail:
     return ret;
 }
 
-static int mov_parse_tiles(AVFormatContext *s)
+static int mov_parse_tiles(MOVContext *mov, AVIOContext *pb, MOVFragmentStreamInfo *frag_info)
 {
-    MOVContext *mov = s->priv_data;
+    int i, tile_count;
+    int64_t tile_index;
 
-    for (int i = 0; i < mov->nb_heif_grid; i++) {
-        AVStreamGroup *stg = avformat_stream_group_create(s, AV_STREAM_GROUP_PARAMS_TILE_GRID, NULL);
-        AVStreamGroupTileGrid *tile_grid;
-        const HEIFGrid *grid = &mov->heif_grid[i];
-        int err, loop = 1;
-
-        if (!stg)
-            return AVERROR(ENOMEM);
-
-        stg->id = grid->item->item_id;
-        tile_grid = stg->params.tile_grid;
-
-        for (int j = 0; j < grid->nb_tiles; j++) {
-            int tile_id = grid->tile_id_list[j];
-            int k;
-
-            for (k = 0; k < mov->nb_heif_item; k++) {
-                HEIFItem *item = &mov->heif_item[k];
-                AVStream *st = item->st;
-
-                if (item->item_id != tile_id)
-                    continue;
-                if (!st) {
-                    av_log(s, AV_LOG_WARNING, "HEIF item id %d from grid id %d doesn't "
-                                              "reference a stream\n",
-                           tile_id, grid->item->item_id);
-                    ff_remove_stream_group(s, stg);
-                    loop = 0;
-                    break;
-                }
-
-                grid->tile_item_list[j] = item;
-
-                err = avformat_stream_group_add_stream(stg, st);
-                if (err < 0 && err != AVERROR(EEXIST))
-                    return err;
-
-                if (item->item_id != mov->primary_item_id)
-                    st->disposition |= AV_DISPOSITION_DEPENDENT;
-                break;
-            }
-
-            if (k == grid->nb_tiles) {
-                av_log(s, AV_LOG_WARNING, "HEIF item id %d referenced by grid id %d doesn't "
-                                          "exist\n",
-                       tile_id, grid->item->item_id);
-                ff_remove_stream_group(s, stg);
-                loop = 0;
-            }
-            if (!loop)
-                break;
+    tile_count = avio_rb32(pb);
+    for (i = 0; i < tile_count; i++) {
+        tile_index = avio_rb32(pb);
+        if (tile_index < 0 || tile_index >= mov->frag_index.nb_items) {
+            av_log(mov->fc, AV_LOG_ERROR, "Invalid tile index %d\n", tile_index);
+            return AVERROR_INVALIDDATA;
         }
-
-        if (!loop)
-            continue;
-
-        switch (grid->item->type) {
-        case MKTAG('g','r','i','d'):
-            err = read_image_grid(s, grid, tile_grid);
-            break;
-        case MKTAG('i','o','v','l'):
-            err = read_image_iovl(s, grid, tile_grid);
-            break;
-        default:
-            av_assert0(0);
-        }
-        if (err < 0)
-            return err;
-
-
-        if (grid->item->name)
-            av_dict_set(&stg->metadata, "title", grid->item->name, 0);
-        if (grid->item->item_id == mov->primary_item_id)
-            stg->disposition |= AV_DISPOSITION_DEFAULT;
+        frag_info->tiles[i] = mov->frag_index.item[tile_index].moof_offset;
     }
-
+    frag_info->tile_count = tile_count;
     return 0;
 }
 

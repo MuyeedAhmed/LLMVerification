@@ -282,7 +282,7 @@ static int pps_bd(VVCPPS *pps)
     pps->col_bd        = av_calloc(r->num_tile_columns  + 1, sizeof(*pps->col_bd));
     pps->row_bd        = av_calloc(r->num_tile_rows  + 1,    sizeof(*pps->row_bd));
     pps->ctb_to_col_bd = av_calloc(pps->ctb_width  + 1,      sizeof(*pps->ctb_to_col_bd));
-    pps->ctb_to_row_bd = av_calloc(pps->ctb_height + 1,      sizeof(*pps->ctb_to_row_bd));
+    pps->ctb_to_row_bd = av_calloc(pps->ctb_height + 1,      sizeof(*pps->ctb_to_col_bd));
     if (!pps->col_bd || !pps->row_bd || !pps->ctb_to_col_bd || !pps->ctb_to_row_bd)
         return AVERROR(ENOMEM);
 
@@ -292,9 +292,6 @@ static int pps_bd(VVCPPS *pps)
         for (int k = pps->col_bd[i]; k < j; k++)
             pps->ctb_to_col_bd[k] = pps->col_bd[i];
     }
-    pps->col_bd[r->num_tile_columns] = j;  // Initialize the last element
-    for (int k = pps->col_bd[r->num_tile_columns - 1]; k < j; k++)
-        pps->ctb_to_col_bd[k] = pps->col_bd[r->num_tile_columns - 1];
 
     for (int i = 0, j = 0; i < r->num_tile_rows; i++) {
         pps->row_bd[i] = j;
@@ -302,12 +299,9 @@ static int pps_bd(VVCPPS *pps)
         for (int k = pps->row_bd[i]; k < j; k++)
             pps->ctb_to_row_bd[k] = pps->row_bd[i];
     }
-    pps->row_bd[r->num_tile_rows] = j;  // Initialize the last element
-    for (int k = pps->row_bd[r->num_tile_rows - 1]; k < j; k++)
-        pps->ctb_to_row_bd[k] = pps->row_bd[r->num_tile_rows - 1];
-
     return 0;
 }
+
 
 static int next_tile_idx(int tile_idx, const int i, const H266RawPPS *r)
 {
