@@ -2,25 +2,36 @@ import os
 import re
 import sys
 import pandas as pd
+from collections import defaultdict
+
+# CATEGORY_KEYWORDS = {
+#     "Memory": ["use-after-free", "leak", "deallocated", "malloc", "free"],
+#     "Null Dereference": ["null", "nullptr", "null pointer", "dereference"],
+#     "Dead Store": ["dead store"],
+#     "Unix API": ["open", "close", "fopen", "fclose", "file descriptor"],
+#     "Uninitialized": ["uninitialized"],
+#     "Security": ["overflow", "security", "buffer", "format string"],
+#     "Logic": ["always true", "always false", "tautology", "redundant"],
+#     "Syntax Error": ["expected", "extraneous", "invalid syntax", "parse error"],
+#     "Unsafe Cast": ["implicit conversion", "incompatible type", "loss of", "cast"],
+#     "Undeclared Identifier": ["undeclared identifier", "implicit function declaration", "call to undeclared"],
+#     "Return Issue": ["does not return a value", "no return", "missing return"],
+#     "Initializer Error": ["not a compile-time constant", "initializer element"],
+#     "Assembly Constraint": ["invalid output constraint", "asm"],
+#     "Standard Compliance": ["C99", "ISO C", "before C99", "standards before"],
+#     "Struct Member Access": ["no member named", "incompatible struct", "invalid field"],
+#     "Logic": ["always true", "always false", "tautology", "redundant"],
+# }
 
 CATEGORY_KEYWORDS = {
-    "Memory": ["use-after-free", "leak", "deallocated", "malloc", "free"],
+    "Syntax": ["expected", "extraneous", "invalid syntax", "parse error"],
     "Null Dereference": ["null", "nullptr", "null pointer", "dereference"],
-    "Dead Store": ["dead store"],
-    "Unix API": ["open", "close", "fopen", "fclose", "file descriptor"],
-    "Uninitialized": ["uninitialized"],
-    "Security": ["overflow", "security", "buffer", "format string"],
-    "Logic": ["always true", "always false", "tautology", "redundant"],
-    "Syntax Error": ["expected", "extraneous", "invalid syntax", "parse error"],
-    "Unsafe Cast": ["implicit conversion", "incompatible type", "loss of", "cast"],
-    "Undeclared Identifier": ["undeclared identifier", "implicit function declaration", "call to undeclared"],
-    "Return Issue": ["does not return a value", "no return", "missing return"],
-    "Initializer Error": ["not a compile-time constant", "initializer element"],
-    "Assembly Constraint": ["invalid output constraint", "asm"],
-    "Standard Compliance": ["C99", "ISO C", "before C99", "standards before"],
-    "Struct Member Access": ["no member named", "incompatible struct", "invalid field"],
-    "Logic": ["always true", "always false", "tautology", "redundant"],
+    "Undeclared identifier": ["undeclared identifier", "implicit function declaration", "call to undeclared"],
+    "Invalid conversion": ["implicit conversion", "incompatible type", "loss of", "cast"],
+    "Free release memory": ["double free", "freeing", "already freed"],
+    "Use after free": ["use-after-free", "access after free", "dangling pointer"],
 }
+
 
 def classify_issue(message):
     msg = message.lower()
@@ -29,46 +40,36 @@ def classify_issue(message):
             return category
     return "Uncategorized"
 
-def parse_clang_report(file_path, code_by="Human"):
-    issues = []
+def parse_clang_report_summary(file_path):
+    summary = defaultdict(int)
     with open(file_path, "r") as f:
         content = f.read()
 
     pattern = r'^(.*?):(\d+):\d+:\s+(warning|error):\s+(.*)$'
     for match in re.finditer(pattern, content, re.MULTILINE):
-        file, line, level, message = match.groups()
+        _, _, _, message = match.groups()
         category = classify_issue(message)
-        issues.append({
-            "CodeBy": code_by,
-            "File": os.path.basename(file),
-            "Line": int(line),
-            "Level": level,
-            "Message": message,
-            "Category": category,
-            "Report": os.path.basename(file_path)
-        })
-    return issues
+        summary[category] += 1
 
-def save_to_excel(issues, output_file="clang_analysis_summary.xlsx"):
-    df = pd.DataFrame(issues)
-    df.sort_values(by=["Category", "File", "Line"], inplace=True)
+    file_name = os.path.basename(file_path)
+    result = {
+        "Report": file_name,
+        "Suffix": "llm" if "llm" in file_name else "original",
+    }
+    result.update(summary)
+    return result
+
+def generate_summary(folder_path, output_file="clang_analysis_summary.xlsx"):
+    all_summaries = []
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith(".txt"):
+                file_path = os.path.join(root, file)
+                summary = parse_clang_report_summary(file_path)
+                all_summaries.append(summary)
+
+    df = pd.DataFrame(all_summaries).fillna(0)
     df.to_excel(output_file, index=False)
 
-# def main():
-#     folder_path = "Clang_Reports2"
-#     all_issues = []
-#     for root, _, files in os.walk(folder_path):
-#         for file in files:
-#             if file.endswith(".txt"):
-#                 print(f"Processing file: {file}")
-#                 file_path = os.path.join(root, file)
-#                 issues = parse_clang_report(file_path)
-#                 all_issues.extend(issues)
-    
-#     save_to_excel(all_issues, output_file="clang_analysis_summary.xlsx")
 
-# main()
-
-
-# issues = parse_clang_report(report_file)
-# save_to_excel(issues)
+# generate_summary("Clang_Reports")
