@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 import pandas as pd
-from ParseClangReport import parse_clang_report, save_to_excel
+# from ParseClangReport import parse_clang_report, save_to_excel
 
 def run_command(cmd, cwd=None):
     result = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
@@ -83,13 +83,13 @@ def RunClang(project, commit_hash, change_file):
 
     shutil.move(backup_path, changed_file_path)
 
-    # Parse the clang output and save to Excel
-    issues = parse_clang_report(orig_out_path, code_by="Original")
-    issues_llm = parse_clang_report(llm_out_path, code_by="LLM")
-    all_issues = issues + issues_llm
-    if all_issues:
-        save_to_excel(all_issues, output_file=EXCEL_PATH)
-    else:
-        print(f"No issues found in the report for {commit_hash}.")
+    # # Parse the clang output and save to Excel
+    # issues = parse_clang_report(orig_out_path, code_by="Original")
+    # issues_llm = parse_clang_report(llm_out_path, code_by="LLM")
+    # all_issues = issues + issues_llm
+    # if all_issues:
+    #     save_to_excel(all_issues, output_file=EXCEL_PATH)
+    # else:
+    #     print(f"No issues found in the report for {commit_hash}.")
 
 
