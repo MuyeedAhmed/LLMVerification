@@ -3,6 +3,7 @@ from scipy.stats import ttest_ind
 from scipy import stats
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 df_raw = pd.read_excel("Code Metrics Data.xlsx", header=[0, 1])
 
@@ -28,6 +29,9 @@ def run_t_test(c1, c2):
     print(f"Mean of {c2}: {mean2}")
     print(f"Two-tailed p-value: {p_val}")
 
+def thousands_formatter(x, pos):
+    return f'{int(x/1000)}k'
+
 def Plot(c1, c2, stat):
     sorted_df = df_raw.sort_values(by=c1).reset_index(drop=True)
     col1 = sorted_df[c1]
@@ -43,10 +47,12 @@ def Plot(c1, c2, stat):
     fig, ax = plt.subplots(figsize=(6, 3))
     # bar1 = ax.bar(x - width/2, col1_clean, width, label=c1)
     # bar2 = ax.bar(x + width/2, col2_clean, width, label=c2)
-    plt.scatter(x, col1_clean, label=c1, marker='o', s=20, color='orange')
-    plt.scatter(x, col2_clean, label=c2, marker='x', s=20, color='blue')
-    ax.set_ylabel(stat)
+    plt.scatter(x, col1_clean, label="RSM", marker='o', s=5, color='orange')
+    plt.scatter(x, col2_clean, label="ChatGPT", marker='x', s=15, color='blue')
+    # ax.set_ylabel(stat)
     ax.set_xticks([])
+    if stat == 'Total eLOC':
+        ax.yaxis.set_major_formatter(FuncFormatter(thousands_formatter))
     ax.legend()
 
     plt.tight_layout()
@@ -66,10 +72,17 @@ total_loc_c2 = 'ChatGPT Output_Total eLOC'
 run_t_test(total_loc_c1, total_loc_c2)
 Plot(total_loc_c1, total_loc_c2, 'Total eLOC')
 
-""" Complexity """
-total_loc_c1 = 'RSM Output_Total Cyclomatic Comp'
-total_loc_c2 = 'ChatGPT Output_Total Cyclomatic Comp'
+""" Return Points """
+total_rp_c1 = 'RSM Output_Avg Return Points'
+total_rp_c2 = 'ChatGPT Output_Avg Return Points'
 
-run_t_test(total_loc_c1, total_loc_c2)
-Plot(total_loc_c1, total_loc_c2, 'Total Cyclomatic Complexity')
+run_t_test(total_rp_c1, total_rp_c2)
+Plot(total_rp_c1, total_rp_c2, 'Average Return Points')
 
+""" Average Parameters """
+
+total_ap_c1 = 'RSM Output_Avg Parameters'
+total_ap_c2 = 'ChatGPT Output_Avg Parameters'
+
+run_t_test(total_ap_c1, total_ap_c2)
+Plot(total_ap_c1, total_ap_c2, 'Average Parameters')
