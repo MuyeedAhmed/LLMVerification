@@ -59,7 +59,7 @@ def parse_clang_report_summary(file_path):
     result.update(summary)
     return result
 
-def generate_summary(folder_path, output_file="clang_analysis_summary.xlsx"):
+def generate_summary(folder_path, output_file="ExcelFiles/FFmpeg_Clang_Summary.xlsx"):
     all_summaries = []
     for root, _, files in os.walk(folder_path):
         for file in files:
@@ -72,4 +72,4 @@ def generate_summary(folder_path, output_file="clang_analysis_summary.xlsx"):
     df.to_excel(output_file, index=False)
 
 
-# generate_summary("Clang_Reports")
+generate_summary("Clang_Reports/FFmpeg")
