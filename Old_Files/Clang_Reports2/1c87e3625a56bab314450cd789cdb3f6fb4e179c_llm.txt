@@ -1,0 +1,17 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/sei.o
+libavcodec/vvc/sei.c:45:14: error: use of undeclared identifier 'VVC_SEI_FILM_GRAIN_CHARACTERISTICS'; did you mean 'SEI_TYPE_FILM_GRAIN_CHARACTERISTICS'?
+   45 |         case VVC_SEI_FILM_GRAIN_CHARACTERISTICS:
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |              SEI_TYPE_FILM_GRAIN_CHARACTERISTICS
+./libavcodec/sei.h:49:5: note: 'SEI_TYPE_FILM_GRAIN_CHARACTERISTICS' declared here
+   49 |     SEI_TYPE_FILM_GRAIN_CHARACTERISTICS                  = 19,
+      |     ^
+1 error generated.
+make: *** [libavcodec/vvc/sei.o] Error 1

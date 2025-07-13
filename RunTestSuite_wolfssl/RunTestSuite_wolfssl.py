@@ -55,8 +55,8 @@ def main():
 
         rel_path = os.path.relpath(changed_file_path, PROJ_DIR)
         
-        print(f"=== Analyzing original {rel_path} ===")
-        code, test_output = run_analyzer_script(rel_path, PROJ_DIR, orig_out_path)
+        # print(f"=== Analyzing original {rel_path} ===")
+        # code, test_output = run_analyzer_script(rel_path, PROJ_DIR, orig_out_path)
 
         print("=== Replacing with LLM version and reanalyzing ===")
         backup_path = changed_file_path + ".bak"
@@ -66,9 +66,8 @@ def main():
         shutil.copy2(llm_src_path, changed_file_path)
         
         code, clang_output_llm = run_analyzer_script(rel_path, PROJ_DIR, llm_out_path)
-
-
         shutil.move(backup_path, changed_file_path)
+
 
 def run_analyzer_script(target_path, cwd, output_path):
     script_cmd = f"./RunTestS.sh"

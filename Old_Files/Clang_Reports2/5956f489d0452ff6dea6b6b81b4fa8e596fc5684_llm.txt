@@ -1,0 +1,33 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/rtpdec_hevc.o
+libavformat/rtpdec_hevc.c:37:5: error: expected identifier or '('
+   37 |   * struct PayloadContext {
+      |     ^
+libavformat/rtpdec_hevc.c:43:9: error: expected identifier or '('
+   43 |   *   * static const uint8_t start_sequence[] = { 0x00, 0x00, 0x00, 0x01 };
+      |         ^
+libavformat/rtpdec_hevc.c:44:9: error: expected identifier or '('
+   44 |   *   * static av_cold int hevc_sdp_parse_fmtp_config(AVFormatContext *s,
+      |         ^
+libavformat/rtpdec_hevc.c:117:9: error: expected identifier or '('
+  117 |   *   * static av_cold int hevc_parse_sdp_line(AVFormatContext *ctx, int st_index,
+      |         ^
+libavformat/rtpdec_hevc.c:167:9: error: expected identifier or '('
+  167 |   *   * static int hevc_handle_packet(AVFormatContext *ctx, PayloadContext *rtp_hevc_ctx,
+      |         ^
+libavformat/rtpdec_hevc.c:315:9: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+  315 |   *   * RTPDynamicProtocolHandler ff_hevc_dynamic_handler = {
+      |         ^
+      |   int
+libavformat/rtpdec_hevc.c:315:9: error: redefinition of 'RTPDynamicProtocolHandler' as different kind of symbol
+libavformat/rtpdec.h:33:42: note: previous definition is here
+   33 | typedef struct RTPDynamicProtocolHandler RTPDynamicProtocolHandler;
+      |                                          ^
+libavformat/rtpdec_hevc.c:315:34: error: expected ';' after top level declarator
+  315 |   *   * RTPDynamicProtocolHandler ff_hevc_dynamic_handler = {
+      |                                  ^
+      |                                  ;
+8 errors generated.
+make: *** [libavformat/rtpdec_hevc.o] Error 1

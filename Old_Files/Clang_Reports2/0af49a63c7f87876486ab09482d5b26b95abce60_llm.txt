@@ -1,0 +1,9 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/avidec.o
+libavformat/avidec.c:261:9: error: mixing declarations and code is incompatible with standards before C99 [-Werror,-Wdeclaration-after-statement]
+  261 |     int read_size = avio_read(pb, value, size);
+      |         ^
+1 error generated.
+make: *** [libavformat/avidec.o] Error 1

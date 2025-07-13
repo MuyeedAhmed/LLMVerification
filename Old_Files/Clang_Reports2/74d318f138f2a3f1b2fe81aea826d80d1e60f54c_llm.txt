@@ -1,0 +1,34 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/rtsp.o
+libavformat/rtsp.c:188:37: error: no member named 'need_parsing' in 'struct RTPDynamicProtocolHandler'
+  188 |         st->need_parsing = handler->need_parsing;
+      |                            ~~~~~~~  ^
+libavformat/rtsp.c:189:18: error: no member named 'priv_data_size' in 'struct RTPDynamicProtocolHandler'
+  189 |     if (handler->priv_data_size) {
+      |         ~~~~~~~  ^
+libavformat/rtsp.c:190:65: error: no member named 'priv_data_size' in 'struct RTPDynamicProtocolHandler'
+  190 |         rtsp_st->dynamic_protocol_context = av_mallocz(handler->priv_data_size);
+      |                                                        ~~~~~~~  ^
+libavformat/rtsp.c:204:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  204 |                 if (rtsp_st->dynamic_handler->close)
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:205:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  205 |                     rtsp_st->dynamic_handler->close(
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:708:21: error: call to undeclared function 'ffio_free_dyn_buf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  708 |                     ffio_free_dyn_buf(&rtpctx->pb);
+      |                     ^
+libavformat/rtsp.c:708:21: note: did you mean 'avio_open_dyn_buf'?
+libavformat/avio.h:382:5: note: 'avio_open_dyn_buf' declared here
+  382 | int avio_open_dyn_buf(AVIOContext **s);
+      |     ^
+libavformat/rtsp.c:737:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  737 |                 if (rtsp_st->dynamic_handler->close)
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:738:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  738 |                     rtsp_st->dynamic_handler->close(
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+8 errors generated.
+make: *** [libavformat/rtsp.o] Error 1

@@ -1,0 +1,46 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/rtsp.o
+libavformat/rtsp.c:188:37: error: no member named 'need_parsing' in 'struct RTPDynamicProtocolHandler'
+  188 |         st->need_parsing = handler->need_parsing;
+      |                            ~~~~~~~  ^
+libavformat/rtsp.c:189:18: error: no member named 'priv_data_size' in 'struct RTPDynamicProtocolHandler'
+  189 |     if (handler->priv_data_size) {
+      |         ~~~~~~~  ^
+libavformat/rtsp.c:190:65: error: no member named 'priv_data_size' in 'struct RTPDynamicProtocolHandler'
+  190 |         rtsp_st->dynamic_protocol_context = av_mallocz(handler->priv_data_size);
+      |                                                        ~~~~~~~  ^
+libavformat/rtsp.c:204:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  204 |                 if (rtsp_st->dynamic_handler->close)
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:205:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  205 |                     rtsp_st->dynamic_handler->close(
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:497:9: error: 'break' statement not in loop or switch statement
+  497 |         break;
+      |         ^
+libavformat/rtsp.c:498:5: error: 'case' statement not in switch statement
+  498 |     case 'a':
+      |     ^
+libavformat/rtsp.c:634:9: error: 'break' statement not in loop or switch statement
+  634 |         break;
+      |         ^
+libavformat/rtsp.c:636:1: error: extraneous closing brace ('}')
+  636 | }
+      | ^
+libavformat/rtsp.c:709:21: error: call to undeclared function 'ffio_free_dyn_buf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  709 |                     ffio_free_dyn_buf(&rtpctx->pb);
+      |                     ^
+libavformat/rtsp.c:709:21: note: did you mean 'avio_open_dyn_buf'?
+libavformat/avio.h:382:5: note: 'avio_open_dyn_buf' declared here
+  382 | int avio_open_dyn_buf(AVIOContext **s);
+      |     ^
+libavformat/rtsp.c:738:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  738 |                 if (rtsp_st->dynamic_handler->close)
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:739:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  739 |                     rtsp_st->dynamic_handler->close(
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+12 errors generated.
+make: *** [libavformat/rtsp.o] Error 1

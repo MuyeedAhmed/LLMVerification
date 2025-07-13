@@ -55,16 +55,6 @@ def main():
             print(f"Changed file missing: {changed_file_path}")
             continue
 
-        
-
-        # print("=== Running configure ===")
-        # code, out = run_command("./configure && make config", cwd=FFMPEG_DIR)
-        # if code != 0:
-        #     code, out = run_command("./configure --disable-asm", cwd=FFMPEG_DIR)
-        #     print(out)
-        #     if code != 0:
-        #         continue
-
         rel_path = os.path.relpath(changed_file_path, FFMPEG_DIR)
         
         print(f"=== Analyzing original {rel_path} ===")
@@ -81,21 +71,6 @@ def main():
 
 
         shutil.move(backup_path, changed_file_path)
-
-        if test_output != clang_output_llm:
-            with open(MISMATCH_FILE, "a") as f:
-                f.write(f"=== Commit: {commit_hash} ===\n")
-                f.write("--- Original Output ---\n")
-                f.write(test_output + "\n")
-                f.write("--- LLM Output ---\n")
-                f.write(clang_output_llm + "\n\n")
-            with open(Summary, "a") as summary_file:
-                # summary_file.write(f"{commit_hash},{commit_message},{changed_file},Differences found\n")
-                summary_file.write(f"{commit_hash},{changed_file},Differences found\n")
-        else:
-            with open(Summary, "a") as summary_file:
-                # summary_file.write(f"{commit_hash},{commit_message},{changed_file},No differences\n")
-                summary_file.write(f"{commit_hash},{changed_file},No differences\n")
 
 def run_analyzer_script(target_path, cwd, output_path):
     script_cmd = f"./RunTestS.sh"

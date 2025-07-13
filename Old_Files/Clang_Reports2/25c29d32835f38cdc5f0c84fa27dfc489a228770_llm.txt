@@ -1,0 +1,381 @@
+install prefix            /usr/local
+source path               .
+C compiler                gcc
+C library                 default
+ARCH                      c (generic)
+big-endian                no
+runtime cpu detection     no
+debug symbols             yes
+optimize for size         no
+optimizations             yes
+static                    yes
+shared                    no
+new filter support        yes
+network support           yes
+threading support         pthreads
+safe bitstream reader     yes
+SDL support               no
+
+External libraries:
+bzlib			libxcb			libxcb_xfixes
+libopenh264		libxcb_shm		zlib
+
+Enabled decoders:
+aac			cdxl			interplay_video
+aac_latm		cinepak			jpeg2000
+aasc			cljr			jpegls
+ac3			cllc			jv
+adpcm_4xm		comfortnoise		kgv1
+adpcm_adx		cook			kmvc
+adpcm_ct		cscd			lagarith
+adpcm_ea		cyuv			loco
+adpcm_ea_maxis_xa	dca			mace3
+adpcm_ea_r1		dfa			mace6
+adpcm_ea_r2		dnxhd			mdec
+adpcm_ea_r3		dpx			metasound
+adpcm_ea_xas		dsicinaudio		mimic
+adpcm_g722		dsicinvideo		mjpeg
+adpcm_g726		dss_sp			mjpegb
+adpcm_ima_amv		dvbsub			mlp
+adpcm_ima_apc		dvdsub			mmvideo
+adpcm_ima_dk3		dvvideo			motionpixels
+adpcm_ima_dk4		dxa			mp1
+adpcm_ima_ea_eacs	dxtory			mp1float
+adpcm_ima_ea_sead	eac3			mp2
+adpcm_ima_iss		eacmv			mp2float
+adpcm_ima_qt		eamad			mp3
+adpcm_ima_smjpeg	eatgq			mp3adu
+adpcm_ima_wav		eatgv			mp3adufloat
+adpcm_ima_ws		eatqi			mp3float
+adpcm_ms		eightbps		mp3on4
+adpcm_sbpro_2		eightsvx_exp		mp3on4float
+adpcm_sbpro_3		eightsvx_fib		mpc7
+adpcm_sbpro_4		escape124		mpc8
+adpcm_swf		escape130		mpeg1video
+adpcm_thp		exr			mpeg2video
+adpcm_vima		ffv1			mpeg4
+adpcm_xa		ffvhuff			mpeg_xvmc
+adpcm_yamaha		fic			msa1
+aic			flac			msmpeg4v1
+alac			flashsv			msmpeg4v2
+alias_pix		flashsv2		msmpeg4v3
+als			flic			msrle
+amrnb			flv			mss1
+amrwb			fourxm			mss2
+amv			fraps			msvideo1
+anm			frwu			mszh
+ansi			g2m			mts2
+ape			g723_1			mvc1
+ass			gif			mvc2
+asv1			gsm			mxpeg
+asv2			gsm_ms			nellymoser
+atrac1			h261			nuv
+atrac3			h263			on2avc
+atrac3p			h263i			opus
+aura			h264			paf_audio
+aura2			hevc			paf_video
+avs			hnm4_video		pam
+bethsoftvid		hqx			pbm
+bfi			huffyuv			pcm_alaw
+bink			iac			pcm_bluray
+binkaudio_dct		idcin			pcm_dvd
+binkaudio_rdft		iff_byterun1		pcm_f32be
+bmp			iff_ilbm		pcm_f32le
+bmv_audio		imc			pcm_f64be
+bmv_video		indeo2			pcm_f64le
+brender_pix		indeo3			pcm_lxf
+c93			indeo4			pcm_mulaw
+cavs			indeo5			pcm_s16be
+cdgraphics		interplay_dpcm		pcm_s16le
+pcm_s16le_planar	rv10			vc1
+pcm_s24be		rv20			vc1image
+pcm_s24daud		rv30			vcr1
+pcm_s24le		rv40			vmdaudio
+pcm_s24le_planar	s302m			vmdvideo
+pcm_s32be		sanm			vmnc
+pcm_s32le		sgi			vorbis
+pcm_s32le_planar	sgirle			vp3
+pcm_s8			shorten			vp5
+pcm_s8_planar		sipr			vp6
+pcm_u16be		smackaud		vp6a
+pcm_u16le		smacker			vp6f
+pcm_u24be		smc			vp7
+pcm_u24le		sol_dpcm		vp8
+pcm_u32be		sp5x			vp9
+pcm_u32le		srt			vqa
+pcm_u8			sunrast			wavpack
+pcm_zork		svq1			webp
+pcx			svq3			wmalossless
+pgm			tak			wmapro
+pgmyuv			targa			wmav1
+pgssub			theora			wmav2
+pictor			thp			wmavoice
+png			tiertexseqvideo		wmv1
+ppm			tiff			wmv2
+prores			tmv			wmv3
+ptx			truehd			wmv3image
+qcelp			truemotion1		wnv1
+qdm2			truemotion2		ws_snd1
+qdraw			truespeech		xan_dpcm
+qpeg			tscc			xan_wc3
+qtrle			tscc2			xan_wc4
+r10k			tta			xbm
+r210			twinvq			xl
+ra_144			txd			xsub
+ra_288			ulti			xwd
+ralf			utvideo			yop
+rawvideo		v210			zerocodec
+rl2			v210x			zlib
+roq			v410			zmbv
+roq_dpcm		vb
+rpza			vble
+
+Enabled encoders:
+a64multi		h263			pcm_u32be
+a64multi5		h263p			pcm_u32le
+aac			huffyuv			pcm_u8
+ac3			jpegls			pcx
+ac3_fixed		libopenh264		pgm
+adpcm_adx		ljpeg			pgmyuv
+adpcm_g722		mjpeg			png
+adpcm_g726		mp2			ppm
+adpcm_ima_qt		mpeg1video		prores
+adpcm_ima_wav		mpeg2video		qtrle
+adpcm_ms		mpeg4			ra_144
+adpcm_swf		msmpeg4v2		rawvideo
+adpcm_yamaha		msmpeg4v3		roq
+alac			nellymoser		roq_dpcm
+alias_pix		pam			rv10
+ass			pbm			rv20
+asv1			pcm_alaw		sgi
+asv2			pcm_f32be		sunrast
+bmp			pcm_f32le		svq1
+cljr			pcm_f64be		targa
+comfortnoise		pcm_f64le		tiff
+dnxhd			pcm_mulaw		utvideo
+dpx			pcm_s16be		v210
+dvbsub			pcm_s16le		v410
+dvdsub			pcm_s24be		vorbis
+dvvideo			pcm_s24daud		wmav1
+eac3			pcm_s24le		wmav2
+ffv1			pcm_s32be		wmv1
+ffvhuff			pcm_s32le		wmv2
+flac			pcm_s8			xbm
+flashsv			pcm_u16be		xsub
+flv			pcm_u16le		xwd
+gif			pcm_u24be		zlib
+h261			pcm_u24le		zmbv
+
+Enabled hwaccels:
+h264_vda		h264_vda_old
+
+Enabled parsers:
+aac			dvdsub			opus
+aac_latm		flac			png
+ac3			gsm			pnm
+adx			h261			rv30
+bmp			h263			rv40
+cavsvideo		h264			tak
+cook			hevc			vc1
+dca			mjpeg			vorbis
+dirac			mlp			vp3
+dnxhd			mpeg4video		vp8
+dpx			mpegaudio
+dvbsub			mpegvideo
+
+Enabled demuxers:
+aac			image2pipe		pcm_u32le
+ac3			ingenient		pcm_u8
+adx			ipmovie			pmp
+aea			iss			pva
+aiff			iv8			qcp
+amr			ivf			r3d
+anm			jv			rawvideo
+apc			latm			rl2
+ape			lmlm4			rm
+asf			lxf			roq
+ass			m4v			rpl
+au			matroska		rso
+avi			mjpeg			rtp
+avs			mlp			rtsp
+bethsoftvid		mm			sap
+bfi			mmf			sdp
+bink			mov			segafilm
+bmv			mp3			shorten
+c93			mpc			siff
+caf			mpc8			smacker
+cavsvideo		mpegps			smjpeg
+cdg			mpegts			smush
+cdxl			mpegtsraw		sol
+daud			mpegvideo		sox
+dfa			msnwc_tcp		spdif
+dirac			mtv			srt
+dnxhd			mv			str
+dsicin			mvi			swf
+dss			mxf			tak
+dts			mxg			thp
+dv			nc			tiertexseq
+dxa			nsv			tmv
+ea			nut			truehd
+ea_cdata		nuv			tta
+eac3			ogg			tty
+ffmetadata		oma			txd
+filmstrip		paf			vc1
+flac			pcm_alaw		vc1t
+flic			pcm_f32be		vmd
+flv			pcm_f32le		voc
+fourxm			pcm_f64be		vqf
+g722			pcm_f64le		w64
+g723_1			pcm_mulaw		wav
+gsm			pcm_s16be		wc3
+gxf			pcm_s16le		wsaud
+h261			pcm_s24be		wsvqa
+h263			pcm_s24le		wtv
+h264			pcm_s32be		wv
+hevc			pcm_s32le		xa
+hls			pcm_s8			xmv
+hnm			pcm_u16be		xwma
+idcin			pcm_u16le		yop
+iff			pcm_u24be		yuv4mpegpipe
+ilbc			pcm_u24le
+image2			pcm_u32be
+
+Enabled muxers:
+a64			ipod			pcm_s24be
+ac3			ismv			pcm_s24le
+adts			ivf			pcm_s32be
+adx			latm			pcm_s32le
+aiff			m4v			pcm_s8
+amr			matroska		pcm_u16be
+asf			matroska_audio		pcm_u16le
+asf_stream		md5			pcm_u24be
+ass			mjpeg			pcm_u24le
+au			mlp			pcm_u32be
+avi			mmf			pcm_u32le
+avm2			mov			pcm_u8
+cavsvideo		mp2			psp
+crc			mp3			rawvideo
+dash			mp4			rm
+daud			mpeg1system		roq
+dirac			mpeg1vcd		rso
+dnxhd			mpeg1video		rtp
+dts			mpeg2dvd		rtp_mpegts
+dv			mpeg2svcd		rtsp
+eac3			mpeg2video		sap
+f4v			mpeg2vob		segment
+ffmetadata		mpegts			smjpeg
+filmstrip		mpjpeg			smoothstreaming
+flac			mxf			sox
+flv			mxf_d10			spdif
+framecrc		null			spx
+framemd5		nut			srt
+g722			oga			swf
+gif			ogg			tg2
+gxf			oma			tgp
+h261			opus			truehd
+h263			pcm_alaw		vc1t
+h264			pcm_f32be		voc
+hds			pcm_f32le		wav
+hevc			pcm_f64be		webm
+hls			pcm_f64le		wv
+ilbc			pcm_mulaw		yuv4mpegpipe
+image2			pcm_s16be
+image2pipe		pcm_s16le
+
+Enabled protocols:
+concat			httpproxy		rtmpt
+crypto			icecast			rtp
+ffrtmphttp		md5			srtp
+file			mmsh			tcp
+gopher			mmst			udp
+hls			pipe			unix
+http			rtmp
+
+Enabled filters:
+aformat			drawbox			pad
+amix			fade			pixdesctest
+anull			fieldorder		resample
+anullsink		format			rgbtestsrc
+anullsrc		fps			scale
+asetpts			framepack		select
+asettb			gradfun			setdar
+ashowinfo		hflip			setpts
+asplit			hqdn3d			setsar
+asyncts			interlace		settb
+atrim			join			showinfo
+blackframe		lut			shuffleplanes
+boxblur			lutrgb			split
+channelmap		lutyuv			testsrc
+channelsplit		movie			transpose
+color			negate			trim
+compand			noformat		unsharp
+copy			null			vflip
+crop			nullsink		volume
+cropdetect		nullsrc			yadif
+delogo			overlay
+
+Enabled bsfs:
+aac_adtstoasc		imx_dump_header		noise
+chomp			mjpeg2jpeg		remove_extradata
+dump_extradata		mjpega_dump_header	text2movsub
+h264_mp4toannexb	mov2textsub
+
+Enabled indevs:
+x11grab_xcb
+
+Enabled outdevs:
+
+License: GPL version 2 or later
+Creating config.mak and config.h...
+config.h is unchanged
+libavutil/avconfig.h is unchanged
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavcodec/libopenh264enc.o
+libavcodec/libopenh264enc.c:45:32: error: expected value in expression
+   45 | #if OPENH264_VER_AT_LEAST(1, 4)
+      |                                ^
+libavcodec/libopenh264enc.c:51:7: error: expected identifier or '('
+   51 |     ((OPENH264_MAJOR  > (maj)) || \
+      |       ^
+/opt/homebrew/include/wels/codec_ver.h:10:25: note: expanded from macro 'OPENH264_MAJOR'
+   10 | #define OPENH264_MAJOR (2)
+      |                         ^
+libavcodec/libopenh264enc.c:51:7: error: expected ')'
+/opt/homebrew/include/wels/codec_ver.h:10:25: note: expanded from macro 'OPENH264_MAJOR'
+   10 | #define OPENH264_MAJOR (2)
+      |                         ^
+libavcodec/libopenh264enc.c:51:7: note: to match this '('
+/opt/homebrew/include/wels/codec_ver.h:10:24: note: expanded from macro 'OPENH264_MAJOR'
+   10 | #define OPENH264_MAJOR (2)
+      |                        ^
+libavcodec/libopenh264enc.c:51:23: error: expected ')'
+   51 |     ((OPENH264_MAJOR  > (maj)) || \
+      |                       ^
+libavcodec/libopenh264enc.c:51:6: note: to match this '('
+   51 |     ((OPENH264_MAJOR  > (maj)) || \
+      |      ^
+libavcodec/libopenh264enc.c:51:32: error: expected ')'
+   51 |     ((OPENH264_MAJOR  > (maj)) || \
+      |                                ^
+libavcodec/libopenh264enc.c:51:5: note: to match this '('
+   51 |     ((OPENH264_MAJOR  > (maj)) || \
+      |     ^
+libavcodec/libopenh264enc.c:67:45: error: use of undeclared identifier 'options'
+   67 |     "libopenh264enc", av_default_item_name, options, LIBAVUTIL_VERSION_INT
+      |                                             ^
+libavcodec/libopenh264enc.c:118:32: error: expected value in expression
+  118 | #if OPENH264_VER_AT_LEAST(1, 4)
+      |                                ^
+libavcodec/libopenh264enc.c:121:11: error: no member named 'bEnableSpsPpsIdAddition' in 'struct TagEncParamExt'
+  121 |     param.bEnableSpsPpsIdAddition    = 0;
+      |     ~~~~~ ^
+libavcodec/libopenh264enc.c:140:29: error: no member named 'sSliceCfg' in 'SSpatialLayerConfig'
+  140 |     param.sSpatialLayers[0].sSliceCfg.uiSliceMode               = s->slice_mode;
+      |     ~~~~~~~~~~~~~~~~~~~~~~~ ^
+libavcodec/libopenh264enc.c:141:29: error: no member named 'sSliceCfg' in 'SSpatialLayerConfig'
+  141 |     param.sSpatialLayers[0].sSliceCfg.sSliceArgument.uiSliceNum = avctx->slices;
+      |     ~~~~~~~~~~~~~~~~~~~~~~~ ^
+10 errors generated.
+make: *** [libavcodec/libopenh264enc.o] Error 1

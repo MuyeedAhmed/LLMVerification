@@ -1,0 +1,14 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+GEN	libavutil/ffversion.h
+CC	fftools/ffprobe.o
+fftools/ffprobe.c:23:5: error: call to undeclared function 'print_str'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   23 |     print_str("side_data_type", name ? name : "unknown");
+      |     ^
+1 error generated.
+make: *** [fftools/ffprobe.o] Error 1

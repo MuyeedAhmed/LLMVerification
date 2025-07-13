@@ -1,0 +1,6 @@
+CC	libavdevice/v4l2.o
+libavdevice/v4l2.c:43:10: fatal error: 'linux/videodev2.h' file not found
+   43 | #include <linux/videodev2.h>
+      |          ^~~~~~~~~~~~~~~~~~~
+1 error generated.
+make: *** [libavdevice/v4l2.o] Error 1

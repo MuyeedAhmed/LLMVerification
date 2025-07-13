@@ -1,0 +1,19 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavfilter/x86/vf_spp.o
+libavfilter/x86/vf_spp.c:222:2: error: unterminated conditional directive
+  222 | #if HAVE_MMX_INLINE
+      |  ^
+libavfilter/x86/vf_spp.c:225:39: error: expected '}'
+  225 |     if (cpu_flags & AV_CPU_FLAG_MMX) {
+      |                                       ^
+libavfilter/x86/vf_spp.c:221:1: note: to match this '{'
+  221 | {
+      | ^
+2 errors generated.
+make: *** [libavfilter/x86/vf_spp.o] Error 1
