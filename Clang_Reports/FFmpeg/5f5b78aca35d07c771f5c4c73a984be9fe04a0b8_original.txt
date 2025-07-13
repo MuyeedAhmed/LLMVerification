@@ -1,8 +1,0 @@
-Detected Clang
-Makefile found: cleaning and building with Bear
-CC	libavdevice/xcbgrab.o
-libavdevice/xcbgrab.c:25:10: fatal error: 'xcb/xcb.h' file not found
-   25 | #include <xcb/xcb.h>
-      |          ^~~~~~~~~~~
-1 error generated.
-make: *** [libavdevice/xcbgrab.o] Error 1

@@ -1,7 +1,7 @@
 import os
 import shutil
 
-base_dir = "FFmpeg"
+base_dir = "FFmpeg_22"
 filtered_dir = "FFmpegFiltered/"
 
 dest_original = os.path.join(filtered_dir, "Original")

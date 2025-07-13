@@ -1,0 +1,24 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/wmaprodec.o
+clang output:
+libavcodec/wmaprodec.c:404:9: warning: Value stored to 'channel_mask' is never read [deadcode.DeadStores]
+  404 |         channel_mask       = AV_RL32(edata_ptr+2);
+      |         ^                    ~~~~~~~~~~~~~~~~~~~~
+libavcodec/wmaprodec.c:1692:17: warning: Value stored to 'num_frames' during its initialization is never read [deadcode.DeadStores]
+ 1692 |             int num_frames = get_bits(gb, 6);
+      |                 ^~~~~~~~~~   ~~~~~~~~~~~~~~~
+libavcodec/wmaprodec.c:1842:10: warning: Although the value stored to 'ret' is used in the enclosing expression, the value is never actually read from 'ret' [deadcode.DeadStores]
+ 1842 |     if ((ret = ff_get_buffer(avctx, frame, 0)) < 0) {
+      |          ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/wmaprodec.c:1920:22: warning: Although the value stored to 'i' is used in the enclosing expression, the value is never actually read from 'i' [deadcode.DeadStores]
+ 1920 |             min[1] = i = 0;
+      |                      ^   ~
+4 warnings generated.

@@ -1,8 +1,0 @@
-Detected Clang
-Makefile found: cleaning and building with Bear
-CC	libavcodec/libopenh264enc.o
-libavcodec/libopenh264enc.c:22:10: fatal error: 'wels/codec_api.h' file not found
-   22 | #include <wels/codec_api.h>
-      |          ^~~~~~~~~~~~~~~~~~
-1 error generated.
-make: *** [libavcodec/libopenh264enc.o] Error 1

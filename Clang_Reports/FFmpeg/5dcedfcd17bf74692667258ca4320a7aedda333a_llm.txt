@@ -1,0 +1,76 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/mpegts.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavformat/mpegts.c:34:
+./libavutil/dovi_meta.h:210:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  210 |     return (AVDOVIRpuDataHeader *)((uint8_t *) data + data->header_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:216:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  216 |     return (AVDOVIDataMapping *)((uint8_t *) data + data->mapping_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:222:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  222 |     return (AVDOVIColorMetadata *)((uint8_t *) data + data->color_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavformat/mpegts.c:36:
+./libavcodec/get_bits.h:516:26: warning: Array access (via field 'buffer') results in a null pointer dereference [core.NullDereference]
+  516 |     uint8_t result     = s->buffer[index >> 3];
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+libavformat/mpegts.c:457:71: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  457 |                 crc_valid = !av_crc(av_crc_get_table(AV_CRC_32_IEEE), -1, cur_section_buf, tss->section_h_size);
+      |                                                                       ^~
+libavformat/mpegts.c:490:12: warning: Access to field 'stream' results in a dereference of a null pointer (loaded from variable 'ts') [core.NullDereference]
+  490 |     av_log(ts->stream, AV_LOG_TRACE, "Filter: pid=0x%x type=%d\n", pid, type);
+      |            ^~~~~~~~~~
+libavformat/mpegts.c:1070:9: warning: Value stored to 'au_end_flag' is never read [deadcode.DeadStores]
+ 1070 |         au_end_flag = get_bits1(&gb);
+      |         ^             ~~~~~~~~~~~~~~
+libavformat/mpegts.c:1072:25: warning: Although the value stored to 'au_end_flag' is used in the enclosing expression, the value is never actually read from 'au_end_flag' [deadcode.DeadStores]
+ 1072 |         au_start_flag = au_end_flag = 1;
+      |                         ^             ~
+libavformat/mpegts.c:1103:19: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1103 |             dts = get_ts64(&gb, sl->timestamp_len);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mpegts.c:1105:19: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1105 |             cts = get_ts64(&gb, sl->timestamp_len);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mpegts.c:1975:36: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1975 |                     extradata[4] = get8(pp, desc_end); /* subtitling_type */
+      |                                    ^~~~~~~~~~~~~~~~~~
+libavformat/mpegts.c:2221:13: warning: 11th function call argument is an uninitialized value [core.CallAndMessage]
+ 2221 |             av_log(fc, AV_LOG_TRACE, "DOVI, version: %d.%d, profile: %d, level: %d, "
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2222 |                    "rpu flag: %d, el flag: %d, bl flag: %d, dependency_pid: %d, compatibility id: %d\n",
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2223 |                    dovi->dv_version_major, dovi->dv_version_minor,
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2224 |                    dovi->dv_profile, dovi->dv_level,
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2225 |                    dovi->rpu_present_flag,
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~
+ 2226 |                    dovi->el_present_flag,
+      |                    ~~~~~~~~~~~~~~~~~~~~~~
+ 2227 |                    dovi->bl_present_flag,
+      |                    ~~~~~~~~~~~~~~~~~~~~~~
+ 2228 |                    dependency_pid,
+      |                    ~~~~~~~~~~~~~~~
+ 2229 |                    dovi->dv_bl_signal_compatibility_id);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mpegts.c:2374:15: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 2374 |         tag = get8(&p, p_end);
+      |               ^~~~~~~~~~~~~~~
+libavformat/mpegts.c:2375:15: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 2375 |         len = get8(&p, p_end);
+      |               ^~~~~~~~~~~~~~~
+libavformat/mpegts.c:2921:27: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 2921 |             avio_seek(pb, pos, SEEK_SET);
+      |                           ^~~
+15 warnings generated.
