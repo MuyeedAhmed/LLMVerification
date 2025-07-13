@@ -1,0 +1,21 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/isom.o
+Detected Clang
+Makefile found. Make
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/isom.o
+clang output:

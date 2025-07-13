@@ -1,0 +1,80 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/huffyuvdec.o
+Detected Clang
+Makefile found. Make
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavcodec/huffyuvdec.o
+clang output:
+libavcodec/huffyuvdec.c:235:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  235 |                         map[i][G] = g;
+      |                                     ^
+libavcodec/huffyuvdec.c:236:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  236 |                         map[i][B] = g + b;
+      |                                     ^~~~~
+libavcodec/huffyuvdec.c:237:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  237 |                         map[i][R] = g + r;
+      |                                     ^~~~~
+libavcodec/huffyuvdec.c:239:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  239 |                         map[i][B] = g;
+      |                                     ^
+libavcodec/huffyuvdec.c:240:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  240 |                         map[i][G] = b;
+      |                                     ^
+libavcodec/huffyuvdec.c:241:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  241 |                         map[i][R] = r;
+      |                                     ^
+libavcodec/huffyuvdec.c:293:5: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+  293 |     ret = read_len_table(s->len[0], &gb, 256);
+      |     ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/huffyuvdec.c:298:5: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+  298 |     ret = read_len_table(s->len[1], &gb, 256);
+      |     ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/huffyuvdec.c:1301:13: warning: Value stored to 'slice_offset' is never read [deadcode.DeadStores]
+ 1301 |             slice_offset = 0;
+      |             ^              ~
+9 warnings generated.
+libavcodec/huffyuvdec.c:235:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  235 |                         map[i][G] = g;
+      |                                     ^
+libavcodec/huffyuvdec.c:236:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  236 |                         map[i][B] = g + b;
+      |                                     ^~~~~
+libavcodec/huffyuvdec.c:237:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  237 |                         map[i][R] = g + r;
+      |                                     ^~~~~
+libavcodec/huffyuvdec.c:239:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  239 |                         map[i][B] = g;
+      |                                     ^
+libavcodec/huffyuvdec.c:240:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  240 |                         map[i][G] = b;
+      |                                     ^
+libavcodec/huffyuvdec.c:241:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  241 |                         map[i][R] = r;
+      |                                     ^
+libavcodec/huffyuvdec.c:293:5: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+  293 |     ret = read_len_table(s->len[0], &gb, 256);
+      |     ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/huffyuvdec.c:298:5: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+  298 |     ret = read_len_table(s->len[1], &gb, 256);
+      |     ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/huffyuvdec.c:1301:13: warning: Value stored to 'slice_offset' is never read [deadcode.DeadStores]
+ 1301 |             slice_offset = 0;
+      |             ^              ~
+9 warnings generated.

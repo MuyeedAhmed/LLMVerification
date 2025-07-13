@@ -1,0 +1,58 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavformat/mov.o
+libavformat/mov.c:9431:58: error: too many arguments to function call, expected 2, have 3
+ 9431 |                 avformat_stream_group_add_stream(s, stg, st);
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~         ^~
+libavformat/avformat.h:2085:5: note: 'avformat_stream_group_add_stream' declared here
+ 2085 | int avformat_stream_group_add_stream(AVStreamGroup *stg, AVStream *st);
+      |     ^                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:9432:28: error: no member named 'tile' in 'struct AVStreamGroupTileGrid'
+ 9432 |                 tile_grid->tile[k].x_offset = item->x_offset;
+      |                 ~~~~~~~~~  ^
+libavformat/mov.c:9432:53: error: no member named 'x_offset' in 'struct HEIFItem'
+ 9432 |                 tile_grid->tile[k].x_offset = item->x_offset;
+      |                                               ~~~~  ^
+libavformat/mov.c:9433:28: error: no member named 'tile' in 'struct AVStreamGroupTileGrid'
+ 9433 |                 tile_grid->tile[k].y_offset = item->y_offset;
+      |                 ~~~~~~~~~  ^
+libavformat/mov.c:9433:53: error: no member named 'y_offset' in 'struct HEIFItem'
+ 9433 |                 tile_grid->tile[k].y_offset = item->y_offset;
+      |                                               ~~~~  ^
+libavformat/mov.c:9434:28: error: no member named 'tile' in 'struct AVStreamGroupTileGrid'
+ 9434 |                 tile_grid->tile[k].width = st->codecpar->width;
+      |                 ~~~~~~~~~  ^
+libavformat/mov.c:9435:28: error: no member named 'tile' in 'struct AVStreamGroupTileGrid'
+ 9435 |                 tile_grid->tile[k].height = st->codecpar->height;
+      |                 ~~~~~~~~~  ^
+libavformat/mov.c:9439:20: error: no member named 'columns' in 'struct AVStreamGroupTileGrid'
+ 9439 |         tile_grid->columns = grid->columns;
+      |         ~~~~~~~~~  ^
+libavformat/mov.c:9439:36: error: no member named 'columns' in 'struct HEIFGrid'
+ 9439 |         tile_grid->columns = grid->columns;
+      |                              ~~~~  ^
+libavformat/mov.c:9440:20: error: no member named 'rows' in 'struct AVStreamGroupTileGrid'
+ 9440 |         tile_grid->rows    = grid->rows;
+      |         ~~~~~~~~~  ^
+libavformat/mov.c:9440:36: error: no member named 'rows' in 'struct HEIFGrid'
+ 9440 |         tile_grid->rows    = grid->rows;
+      |                              ~~~~  ^
+libavformat/mov.c:9397:5: error: no previous prototype for function 'mov_parse_tiles' [-Werror,-Wmissing-prototypes]
+ 9397 | int mov_parse_tiles(AVFormatContext *s)
+      |     ^
+libavformat/mov.c:9397:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+ 9397 | int mov_parse_tiles(AVFormatContext *s)
+      | ^
+      | static 
+12 errors generated.
+make: *** [libavformat/mov.o] Error 1

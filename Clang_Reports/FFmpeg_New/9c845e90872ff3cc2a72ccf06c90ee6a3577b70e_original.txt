@@ -1,0 +1,41 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/vvc_ps.o
+Detected Clang
+Makefile found. Make
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/vvc_ps.o
+clang output:
+libavcodec/vvc/vvc_ps.c:312:21: warning: Out of bound access to memory preceding the field 'pps_tile_idx_delta_val' [alpha.security.ArrayBoundV2]
+  312 |         tile_idx += r->pps_tile_idx_delta_val[i];
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/vvc_ps.c:314:21: warning: Out of bound access to memory preceding the field 'pps_slice_width_in_tiles_minus1' [alpha.security.ArrayBoundV2]
+  314 |         tile_idx += r->pps_slice_width_in_tiles_minus1[i] + 1;
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/vvc_ps.c:962:58: warning: The right operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+  962 |             sl->scaling_matrix_rec[id][off] = (pred[off] + scaling_list[i]) & 255;
+      |                                                          ^ ~~~~~~~~~~~~~~~
+3 warnings generated.
+libavcodec/vvc/vvc_ps.c:312:21: warning: Out of bound access to memory preceding the field 'pps_tile_idx_delta_val' [alpha.security.ArrayBoundV2]
+  312 |         tile_idx += r->pps_tile_idx_delta_val[i];
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/vvc_ps.c:314:21: warning: Out of bound access to memory preceding the field 'pps_slice_width_in_tiles_minus1' [alpha.security.ArrayBoundV2]
+  314 |         tile_idx += r->pps_slice_width_in_tiles_minus1[i] + 1;
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/vvc_ps.c:962:58: warning: The right operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+  962 |             sl->scaling_matrix_rec[id][off] = (pred[off] + scaling_list[i]) & 255;
+      |                                                          ^ ~~~~~~~~~~~~~~~
+3 warnings generated.

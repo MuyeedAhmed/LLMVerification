@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/qsvdec.o
+libavcodec/qsvdec.c:30:10: fatal error: 'mfxvideo.h' file not found
+   30 | #include <mfxvideo.h>
+      |          ^~~~~~~~~~~~
+1 error generated.
+make: *** [libavcodec/qsvdec.o] Error 1

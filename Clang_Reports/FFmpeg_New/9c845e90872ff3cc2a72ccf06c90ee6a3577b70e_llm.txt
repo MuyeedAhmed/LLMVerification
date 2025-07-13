@@ -1,0 +1,24 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/vvc_ps.o
+libavcodec/vvc/vvc_ps.c:295:40: error: use of undeclared identifier 'j'
+  295 |     pps->col_bd[r->num_tile_columns] = j;  // Initialize the last element
+      |                                        ^
+libavcodec/vvc/vvc_ps.c:296:60: error: use of undeclared identifier 'j'
+  296 |     for (int k = pps->col_bd[r->num_tile_columns - 1]; k < j; k++)
+      |                                                            ^
+libavcodec/vvc/vvc_ps.c:305:37: error: use of undeclared identifier 'j'
+  305 |     pps->row_bd[r->num_tile_rows] = j;  // Initialize the last element
+      |                                     ^
+libavcodec/vvc/vvc_ps.c:306:57: error: use of undeclared identifier 'j'
+  306 |     for (int k = pps->row_bd[r->num_tile_rows - 1]; k < j; k++)
+      |                                                         ^
+4 errors generated.
+make: *** [libavcodec/vvc/vvc_ps.o] Error 1
