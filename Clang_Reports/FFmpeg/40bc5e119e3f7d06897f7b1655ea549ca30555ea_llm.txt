@@ -1,0 +1,64 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/sei.o
+libavcodec/vvc/sei.c:102:8: error: no member named 'cancel_flag' in 'struct H2645SEIDisplayOrientation'
+  102 |     h->cancel_flag = s->do_cancel_flag;
+      |     ~  ^
+libavcodec/vvc/sei.c:102:25: error: no member named 'do_cancel_flag' in 'struct SEIRawDisplayOrientation'
+  102 |     h->cancel_flag = s->do_cancel_flag;
+      |                      ~  ^
+libavcodec/vvc/sei.c:103:13: error: no member named 'cancel_flag' in 'struct H2645SEIDisplayOrientation'
+  103 |     if (!h->cancel_flag) {
+      |          ~  ^
+libavcodec/vvc/sei.c:104:23: error: no member named 'do_hor_flip' in 'struct SEIRawDisplayOrientation'
+  104 |         h->hflip = s->do_hor_flip;
+      |                    ~  ^
+libavcodec/vvc/sei.c:105:23: error: no member named 'do_ver_flip' in 'struct SEIRawDisplayOrientation'
+  105 |         h->vflip = s->do_ver_flip;
+      |                    ~  ^
+libavcodec/vvc/sei.c:106:37: warning: 'av_mod_uintp2_c' is deprecated [-Wdeprecated-declarations]
+  106 |         h->anticlockwise_rotation = av_mod_uintp2(s->do_anticlockwise_rotation, 16);
+      |                                     ^
+./libavutil/common.h:302:26: note: expanded from macro 'av_mod_uintp2'
+  302 | #   define av_mod_uintp2 av_mod_uintp2_c
+      |                          ^
+./libavutil/common.h:304:1: note: 'av_mod_uintp2_c' has been explicitly marked deprecated here
+  304 | attribute_deprecated
+      | ^
+./libavutil/attributes.h:100:49: note: expanded from macro 'attribute_deprecated'
+  100 | #    define attribute_deprecated __attribute__((deprecated))
+      |                                                 ^
+libavcodec/vvc/sei.c:106:54: error: no member named 'do_anticlockwise_rotation' in 'struct SEIRawDisplayOrientation'
+  106 |         h->anticlockwise_rotation = av_mod_uintp2(s->do_anticlockwise_rotation, 16);
+      |                                                   ~  ^
+libavcodec/vvc/sei.c:107:12: error: no member named 'persistence_flag' in 'struct H2645SEIDisplayOrientation'
+  107 |         h->persistence_flag = s->do_persistence_flag;
+      |         ~  ^
+libavcodec/vvc/sei.c:107:34: error: no member named 'do_persistence_flag' in 'struct SEIRawDisplayOrientation'
+  107 |         h->persistence_flag = s->do_persistence_flag;
+      |                               ~  ^
+libavcodec/vvc/sei.c:136:65: error: indirection requires pointer operand ('H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') invalid)
+  136 |             c->display_orientation = av_refstruct_allocz(sizeof(*c->display_orientation));
+      |                                                                 ^~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/sei.c:136:36: error: assigning to 'H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') from incompatible type 'void *'
+  136 |             c->display_orientation = av_refstruct_allocz(sizeof(*c->display_orientation));
+      |                                    ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/sei.c:137:17: error: invalid argument type 'H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') to unary expression
+  137 |             if (!c->display_orientation)
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/sei.c:139:47: error: passing 'H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') to parameter of incompatible type 'H2645SEIDisplayOrientation *' (aka 'struct H2645SEIDisplayOrientation *'); take the address with &
+  139 |             return decode_display_orientation(c->display_orientation, payload);
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~
+      |                                               &
+libavcodec/vvc/sei.c:99:67: note: passing argument to parameter 'h' here
+   99 | static int decode_display_orientation(H2645SEIDisplayOrientation *h, const SEIRawDisplayOrientation *s)
+      |                                                                   ^
+1 warning and 12 errors generated.
+make: *** [libavcodec/vvc/sei.o] Error 1

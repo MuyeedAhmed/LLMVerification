@@ -1,0 +1,109 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/movenc.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavformat/movenc.c:35:
+In file included from ./libavcodec/ac3_parser_internal.h:25:
+./libavcodec/get_bits.h:403:5: warning: Access to field 'l' results in a dereference of a null pointer [core.NullDereference]
+  403 |     UPDATE_CACHE(re, s);
+      |     ^~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:178:33: note: expanded from macro 'UPDATE_CACHE'
+  178 | # define UPDATE_CACHE(name, gb) UPDATE_CACHE_BE(name, gb)
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:165:7: note: expanded from macro 'UPDATE_CACHE_BE'
+  165 |       AV_RB32((gb)->buffer + (name ## _index >> 3)) << (name ## _index & 7)
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/intreadwrite.h:416:26: note: expanded from macro 'AV_RB32'
+  416 | #   define AV_RB32(p)    AV_RB(32, p)
+      |                          ^~~~~~~~~~~~
+note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+<scratch space>:289:1: note: expanded from here
+  289 | AV_RN32
+      | ^
+./libavutil/intreadwrite.h:364:23: note: expanded from macro 'AV_RN32'
+  364 | #   define AV_RN32(p) AV_RN(32, p)
+      |                       ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:224:24: note: expanded from macro 'AV_RN'
+  224 | #   define AV_RN(s, p) (((const union unaligned_##s *) (p))->l)
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavformat/movenc.c:35:
+In file included from ./libavcodec/ac3_parser_internal.h:25:
+./libavcodec/get_bits.h:515:26: warning: Array access (via field 'buffer') results in a null pointer dereference [core.NullDereference]
+  515 |     uint8_t result     = s->buffer[index >> 3];
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:212:21: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  212 |         int sSize = track->entry ? track->cluster[0].size / track->cluster[0].entries : 0;
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:268:19: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  268 |     avio_wb32(pb, track->entry); // entry count
+      |                   ^~~~~~~~~~~~
+libavformat/movenc.c:649:9: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  649 |         (AVCPBProperties*)av_stream_get_side_data(track->st,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  650 |                                                   AV_PKT_DATA_CPB_PROPERTIES,
+      |                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  651 |                                                   NULL) :
+      |                                                   ~~~~~
+libavformat/movenc.c:1023:19: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1023 |     avio_wb32(pb, track->vos_len + 8 + sizeof(buf));
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:1188:27: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1188 |             avio_wb16(pb, track->audio_vbr ? -2 : 0); /* compression ID */
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:2027:30: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2027 |     content_light_metadata = (const AVContentLightMetadata*)side_data;
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:2049:16: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2049 |     metadata = (const AVMasteringDisplayMetadata*)side_data;
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:2248:33: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2248 |         AVStereo3D* stereo_3d = (AVStereo3D*) av_stream_get_side_data(track->st, AV_PKT_DATA_STEREO3D, NULL);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:2249:49: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2249 |         AVSphericalMapping* spherical_mapping = (AVSphericalMapping*)av_stream_get_side_data(track->st, AV_PKT_DATA_SPHERICAL, NULL);
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:2250:50: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2250 |         AVDOVIDecoderConfigurationRecord *dovi = (AVDOVIDecoderConfigurationRecord *)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2251 |                                                  av_stream_get_side_data(track->st, AV_PKT_DATA_DOVI_CONF, NULL);
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:2534:36: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 2534 |     sgpd_entries = av_malloc_array(track->entry, sizeof(*sgpd_entries));
+      |                                    ^~~~~~~~~~~~
+libavformat/movenc.c:2589:27: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 2589 |             avio_wb16(pb, -sgpd_entries[i].roll_distance); /* roll_distance */
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:3189:27: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 3189 |             avio_wb64(pb, -1);
+      |                           ^~
+libavformat/movenc.c:3192:27: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 3192 |             avio_wb32(pb, -1);
+      |                           ^~
+libavformat/movenc.c:4361:18: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 4361 |         flags &= ~MOV_TFHD_BASE_DATA_OFFSET;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:4363:18: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 4363 |         flags &= ~MOV_TFHD_BASE_DATA_OFFSET;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:4375:18: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 4375 |         flags &= ~(MOV_TFHD_DEFAULT_SIZE | MOV_TFHD_DEFAULT_DURATION |
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 4376 |                    MOV_TFHD_BASE_DATA_OFFSET | MOV_TFHD_STSD_ID);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/movenc.c:5182:38: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 5182 |             trk->cluster[i].flags &= ~MOV_SYNC_SAMPLE;
+      |                                      ^~~~~~~~~~~~~~~~
+libavformat/movenc.c:5830:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 5830 |     prft = (AVProducerReferenceTime *)av_packet_get_side_data(pkt, AV_PKT_DATA_PRFT, &prft_size);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+21 warnings generated.

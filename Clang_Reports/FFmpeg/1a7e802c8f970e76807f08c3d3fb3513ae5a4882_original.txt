@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/demux.o
+clang output:
+libavformat/demux.c:1560:44: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1560 |                         if (av_compare_mod(pktl->pkt.pts, pktl->pkt.dts, 2ULL << (wrap_bits - 1))) {
+      |                                            ^~~~~~~~~~~~~
+1 warning generated.

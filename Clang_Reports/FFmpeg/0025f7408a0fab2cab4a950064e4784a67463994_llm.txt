@@ -1,0 +1,8 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavcodec/vorbisdec.o
+libavcodec/vorbisdec.c:1318:13: error: expected expression
+ 1318 |             if (temp < 0 || temp >= ff_vorbis_nth_root(vr->classifications, codebook->dimensions)) {
+      |             ^
+1 error generated.
+make: *** [libavcodec/vorbisdec.o] Error 1

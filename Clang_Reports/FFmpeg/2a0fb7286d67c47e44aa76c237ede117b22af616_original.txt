@@ -1,0 +1,68 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavcodec/alsdec.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavcodec/alsdec.c:29:
+In file included from libavcodec/get_bits.h:31:
+./libavutil/common.h:211:20: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  211 |     return av_log2((x - 1) << 1);
+      |                    ^~~~~~~~~~~~
+In file included from libavcodec/alsdec.c:29:
+libavcodec/get_bits.h:244:5: warning: Access to field 'l' results in a dereference of a null pointer [core.NullDereference]
+  244 |     UPDATE_CACHE(re, s);
+      |     ^~~~~~~~~~~~~~~~~~~
+libavcodec/get_bits.h:162:9: note: expanded from macro 'UPDATE_CACHE'
+  162 |         AV_RB32((gb)->buffer + (name ## _index >> 3)) << (name ## _index & 7)
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/intreadwrite.h:378:26: note: expanded from macro 'AV_RB32'
+  378 | #   define AV_RB32(p)    AV_RB(32, p)
+      |                          ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:351:39: note: expanded from macro 'AV_RB'
+  351 | #   define AV_RB(s, p)    av_bswap##s(AV_RN##s(p))
+      |                                       ^~~~~~~~~~~
+<scratch space>:87:1: note: expanded from here
+   87 | AV_RN32
+      | ^
+./libavutil/intreadwrite.h:326:23: note: expanded from macro 'AV_RN32'
+  326 | #   define AV_RN32(p) AV_RN(32, p)
+      |                       ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:192:24: note: expanded from macro 'AV_RN'
+  192 | #   define AV_RN(s, p) (((const union unaligned_##s *) (p))->l)
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavcodec/alsdec.c:29:
+libavcodec/get_bits.h:382:9: warning: Value stored to 'buffer_size' is never read [deadcode.DeadStores]
+  382 |         buffer_size = bit_size = 0;
+      |         ^             ~~~~~~~~~~~~
+libavcodec/alsdec.c:463:15: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  463 |     int max = get_bits_left(gb) - k;
+      |               ^~~~~~~~~~~~~~~~~~~~~
+libavcodec/alsdec.c:483:21: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  483 |     for (i = 0, j = k - 1; i < j; i++, j--) {
+      |                     ^~~~~
+libavcodec/alsdec.c:665:57: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  665 |             int opt_order_length = av_ceil_log2(av_clip((bd->block_length >> 3) - 1,
+      |                                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/alsdec.c:920:35: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+  920 |                 raw_samples[sb] = right[sb] - left[sb];
+      |                                   ^~~~~~~~~
+libavcodec/alsdec.c:926:33: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+  926 |                 raw_samples[sb] >>= *bd->shift_lsbs;
+      |                 ~~~~~~~~~~~~~~~ ^
+libavcodec/alsdec.c:943:18: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+  943 |             y += MUL64(lpc_cof[sb], raw_samples[sb]);
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/mathops.h:51:48: note: expanded from macro 'MUL64'
+   51 | #   define MUL64(a,b) ((int64_t)(a) * (int64_t)(b))
+      |                                                ^~~
+libavcodec/alsdec.c:1026:15: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+ 1026 |         count += div_blocks[b];
+      |               ^  ~~~~~~~~~~~~~
+libavcodec/alsdec.c:1058:29: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+ 1058 |         bd.block_length     = div_blocks[b];
+      |                             ^ ~~~~~~~~~~~~~
+libavcodec/alsdec.c:1115:28: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+ 1115 |         bd[0].block_length = div_blocks[b];
+      |                            ^ ~~~~~~~~~~~~~
+12 warnings generated.

@@ -1,0 +1,8 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavformat/rmdec.o
+clang output:
+libavformat/rmdec.c:181:27: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+  181 |             ast->deint_id = AV_RL32(buf);
+      |                           ^ ~~~~~~~~~~~~
+1 warning generated.

@@ -1,0 +1,12 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavcodec/utvideodec.o
+clang output:
+libavcodec/utvideodec.c:447:19: warning: 8th function call argument is an uninitialized value [core.CallAndMessage]
+  447 |             ret = decode_plane(c, i, frame.f->data[i], 1, frame.f->linesize[i],
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  448 |                                avctx->width >> !!i, avctx->height,
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  449 |                                plane_start[i], c->frame_pred == PRED_LEFT);
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.

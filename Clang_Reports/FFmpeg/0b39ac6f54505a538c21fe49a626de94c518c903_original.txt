@@ -1,0 +1,13 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavcodec/gifdec.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavcodec/gifdec.c:25:
+libavcodec/bytestream.h:263:5: warning: Memory copy function overflows the destination buffer [alpha.unix.cstring.OutOfBounds]
+  263 |     memcpy(dst, g->buffer, size2);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/secure/_string.h:63:3: note: expanded from macro 'memcpy'
+   63 |                 __builtin___memcpy_chk (dest, __VA_ARGS__, __darwin_obsz0 (dest))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
