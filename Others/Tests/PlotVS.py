@@ -47,7 +47,7 @@ def Plot(c1, c2, stat):
     fig, ax = plt.subplots(figsize=(6, 3))
     # bar1 = ax.bar(x - width/2, col1_clean, width, label=c1)
     # bar2 = ax.bar(x + width/2, col2_clean, width, label=c2)
-    plt.scatter(x, col1_clean, label="RSM", marker='o', s=5, color='orange')
+    plt.scatter(x, col1_clean, label="Actual", marker='o', s=5, color='orange')
     plt.scatter(x, col2_clean, label="ChatGPT", marker='x', s=15, color='blue')
     # ax.set_ylabel(stat)
     ax.set_xticks([])
