@@ -1,0 +1,32 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/dvenc.o
+libavcodec/dvenc.c:551:111: warning: format specifies type 'ptrdiff_t' (aka 'long') but the argument has type 'int' [-Wformat]
+  551 |         av_log(NULL, AV_LOG_WARNING, "Unaligned data pointer (%p) or stride (%td), using zero block\n", data, linesize);
+      |                                                                              ~~~                              ^~~~~~~~
+      |                                                                              %d
+libavcodec/dvenc.c:564:5: error: non-void function does not return a value [-Werror,-Wreturn-type]
+  564 |     } else {
+      |     ^
+libavcodec/dvenc.c:564:7: error: expected identifier or '('
+  564 |     } else {
+      |       ^
+libavcodec/dvenc.c:571:5: error: expected identifier or '('
+  571 |     if (DV_PROFILE_IS_HD(s->sys)) {
+      |     ^
+libavcodec/dvenc.c:582:7: error: expected identifier or '('
+  582 |     } else {
+      |       ^
+libavcodec/dvenc.c:589:5: error: expected identifier or '('
+  589 |     return bi->bit_size[0] + bi->bit_size[1] + bi->bit_size[2] + bi->bit_size[3];
+      |     ^
+libavcodec/dvenc.c:590:1: error: extraneous closing brace ('}')
+  590 | }
+      | ^
+1 warning and 6 errors generated.
+make: *** [libavcodec/dvenc.o] Error 1

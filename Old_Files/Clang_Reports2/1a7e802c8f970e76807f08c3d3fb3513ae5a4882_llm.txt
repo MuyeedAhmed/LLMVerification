@@ -1,0 +1,27 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavformat/demux.o
+libavformat/demux.c:390:12: error: no member named 'io_close' in 'struct AVFormatContext'; did you mean 'io_close2'?
+  390 |     if (s->io_close)
+      |            ^~~~~~~~
+      |            io_close2
+libavformat/avformat.h:1877:11: note: 'io_close2' declared here
+ 1877 |     int (*io_close2)(struct AVFormatContext *s, AVIOContext *pb);
+      |           ^
+libavformat/demux.c:391:8: error: no member named 'io_close' in 'struct AVFormatContext'; did you mean 'io_close2'?
+  391 |     s->io_close(s, &pb);
+      |        ^~~~~~~~
+      |        io_close2
+libavformat/avformat.h:1877:11: note: 'io_close2' declared here
+ 1877 |     int (*io_close2)(struct AVFormatContext *s, AVIOContext *pb);
+      |           ^
+2 errors generated.
+make: *** [libavformat/demux.o] Error 1

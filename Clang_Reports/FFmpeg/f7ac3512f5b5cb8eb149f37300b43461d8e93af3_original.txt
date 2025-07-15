@@ -1,0 +1,53 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/jpegxl_parser.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavcodec/jpegxl_parser.c:37:
+libavcodec/get_bits.h:340:5: warning: Out of bound access to memory after the end of the field 'cs_buffer' [alpha.security.ArrayBoundV2]
+  340 |     UPDATE_CACHE(re, s);
+      |     ^~~~~~~~~~~~~~~~~~~
+libavcodec/get_bits.h:218:33: note: expanded from macro 'UPDATE_CACHE'
+  218 | # define UPDATE_CACHE(name, gb) UPDATE_CACHE_LE(name, gb)
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/get_bits.h:209:36: note: expanded from macro 'UPDATE_CACHE_LE'
+  209 | # define UPDATE_CACHE_LE(name, gb) UPDATE_CACHE_LE_EXT(name, (gb), 32, 32)
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/get_bits.h:194:30: note: expanded from macro 'UPDATE_CACHE_LE_EXT'
+  194 |     (uint ## dst_bits ## _t)(AV_RL ## bits((gb)->buffer + (name ## _index >> 3)) >> (name ## _index & 7))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+<scratch space>:122:1: note: expanded from here
+  122 | AV_RN32
+      | ^
+./libavutil/intreadwrite.h:362:23: note: expanded from macro 'AV_RN32'
+  362 | #   define AV_RN32(p) AV_RN(32, p)
+      |                       ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:222:62: note: expanded from macro 'AV_RN'
+  222 | #   define AV_RN(s, p) (((const union unaligned_##s *) (p))->l)
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+In file included from libavcodec/jpegxl_parser.c:37:
+libavcodec/get_bits.h:390:26: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  390 |     unsigned int index = s->index;
+      |                          ^~~~~~~~
+libavcodec/get_bits.h:391:26: warning: Out of bound access to memory after the end of the field 'cs_buffer' [alpha.security.ArrayBoundV2]
+  391 |     uint8_t result     = s->buffer[index >> 3];
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+libavcodec/jpegxl_parser.c:1300:15: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1300 |         end = entropy_decoder_read_symbol(gb, &dec, toc_context(toc_count));
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/jpegxl_parser.c:1306:22: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1306 |             lehmer = entropy_decoder_read_symbol(gb, &dec, toc_context(lehmer));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5 warnings generated.

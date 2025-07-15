@@ -1,0 +1,26 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavformat/rtsp.o
+libavformat/rtsp.c:188:37: error: no member named 'need_parsing' in 'struct RTPDynamicProtocolHandler'
+  188 |         st->need_parsing = handler->need_parsing;
+      |                            ~~~~~~~  ^
+libavformat/rtsp.c:189:18: error: no member named 'priv_data_size' in 'struct RTPDynamicProtocolHandler'
+  189 |     if (handler->priv_data_size) {
+      |         ~~~~~~~  ^
+libavformat/rtsp.c:190:65: error: no member named 'priv_data_size' in 'struct RTPDynamicProtocolHandler'
+  190 |         rtsp_st->dynamic_protocol_context = av_mallocz(handler->priv_data_size);
+      |                                                        ~~~~~~~  ^
+libavformat/rtsp.c:204:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  204 |                 if (rtsp_st->dynamic_handler->close)
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:205:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  205 |                     rtsp_st->dynamic_handler->close(
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:737:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  737 |                 if (rtsp_st->dynamic_handler->close)
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+libavformat/rtsp.c:738:47: error: no member named 'close' in 'struct RTPDynamicProtocolHandler'
+  738 |                     rtsp_st->dynamic_handler->close(
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~  ^
+7 errors generated.
+make: *** [libavformat/rtsp.o] Error 1

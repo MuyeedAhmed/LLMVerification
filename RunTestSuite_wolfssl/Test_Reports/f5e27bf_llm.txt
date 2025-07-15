@@ -1,0 +1,960 @@
+ cd . && /bin/sh /Users/muyeedahmed/Desktop/Gitcode/LLMVerification/Projects/wolfssl/build-aux/missing automake-1.18 --foreign Makefile
+/bin/sh ./config.status --recheck
+running CONFIG_SHELL=/bin/sh /bin/sh ./configure --enable-crypttests --no-create --no-recursion
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking whether gcc understands -c and -o together... yes
+checking build system type... aarch64-apple-darwin24.5.0
+checking host system type... aarch64-apple-darwin24.5.0
+checking target system type... aarch64-apple-darwin24.5.0
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether sleep supports fractional seconds... yes
+checking filesystem timestamp resolution... 2
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... mkdir -p
+checking for gawk... no
+checking for mawk... no
+checking for nawk... no
+checking for awk... awk
+checking whether make sets $(MAKE)... yes
+checking whether make supports the include directive... yes (GNU style)
+checking whether make supports nested variables... yes
+checking xargs -n works... yes
+checking whether UID '501' is supported by ustar format... yes
+checking whether GID '20' is supported by ustar format... yes
+checking how to create a ustar tar archive... gnutar
+checking dependency style of gcc... gcc3
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /Library/Developer/CommandLineTools/usr/bin/ld
+checking if the linker (/Library/Developer/CommandLineTools/usr/bin/ld) is GNU ld... no
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 786432
+checking how to convert aarch64-apple-darwin24.5.0 file names to aarch64-apple-darwin24.5.0 format... func_convert_file_noop
+checking how to convert aarch64-apple-darwin24.5.0 file names to toolchain format... func_convert_file_noop
+checking for /Library/Developer/CommandLineTools/usr/bin/ld option to reload object files... -r
+checking for file... file
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for ranlib... ranlib
+checking for ar... ar
+checking for archiver @FILE support... no
+checking for strip... strip
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for a working dd... /bin/dd
+checking how to truncate binary pipes... /bin/dd bs=4096 count=1
+checking for mt... no
+checking if : is a manifest tool... no
+checking for dsymutil... dsymutil
+checking for nmedit... nmedit
+checking for lipo... lipo
+checking for otool... otool
+checking for otool64... no
+checking for -single_module linker flag... ld: warning: -single_module is obsolete
+no
+checking for -no_fixup_chains linker flag... yes
+checking for -exported_symbols_list linker flag... yes
+checking for -force_load linker flag... yes
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... yes
+checking for gcc option to produce PIC... -fno-common -DPIC
+checking if gcc PIC flag -fno-common -DPIC works... yes
+checking if gcc static flag -static works... no
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/Library/Developer/CommandLineTools/usr/bin/ld) supports shared libraries... yes
+checking dynamic linker characteristics... darwin24.5.0 dyld
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... no
+checking whether the -Werror option is usable... yes
+checking for simple visibility declarations... yes
+checking size of long long... 8
+checking size of long... 8
+checking size of time_t... 8
+checking for __uint128_t... yes
+checking for arpa/inet.h... yes
+checking for fcntl.h... yes
+checking for limits.h... yes
+checking for netdb.h... yes
+checking for netinet/in.h... yes
+checking for stddef.h... yes
+checking for time.h... yes
+checking for sys/ioctl.h... yes
+checking for sys/socket.h... yes
+checking for sys/time.h... yes
+checking for errno.h... yes
+checking for sys/un.h... yes
+checking for socket in -lnetwork... yes
+checking whether byte ordering is bigendian... no
+checking for __atomic... yes
+checking for stdatomic.h... yes
+checking for gethostbyname... yes
+checking for getaddrinfo... yes
+checking for gettimeofday... yes
+checking for gmtime_r... yes
+checking for gmtime_s... no
+checking for inet_ntoa... yes
+checking for memset... yes
+checking for socket... yes
+checking for strftime... yes
+checking for atexit... yes
+checking for gcc options needed to detect all undeclared functions... none needed
+checking whether gethostbyname is declared... yes
+checking whether getaddrinfo is declared... yes
+checking whether gettimeofday is declared... yes
+checking whether gmtime_r is declared... yes
+checking whether gmtime_s is declared... no
+checking whether inet_ntoa is declared... yes
+checking whether memset is declared... yes
+checking whether socket is declared... yes
+checking whether strftime is declared... yes
+checking whether atexit is declared... yes
+checking for size_t... yes
+checking for uint8_t... yes
+checking for uintptr_t... yes
+checking dependency style of gcc... gcc3
+checking for thread local storage (TLS) class... _Thread_local
+checking for debug... no
+checking how to run the C preprocessor... gcc -E
+checking for egrep -e... (cached) /usr/bin/grep -E
+checking whether gcc is Clang... yes
+checking whether pthreads work with "-pthread" and "-lpthread"... yes
+checking whether Clang needs flag to prevent "argument unused" warning when linking with -pthread... no
+checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
+checking whether more special flags are required for pthreads... no
+checking for PTHREAD_PRIO_INHERIT... yes
+checking for Security/SecTrustSettings.h... yes
+checking for Security/SecCertificate.h... yes
+checking for Security/SecTrust.h... yes
+checking for Security/SecPolicy.h... yes
+checking for library containing gethostbyname... none required
+checking for library containing socket... none required
+checking for vcs system... git
+checking for vcs checkout... yes
+checking whether the linker accepts -Werror... yes
+checking whether the linker accepts -z relro -z now... no
+checking whether the linker accepts -pie... yes
+checking whether C compiler accepts -Werror... yes
+checking whether C compiler accepts -Wno-pragmas... yes
+checking whether C compiler accepts -Wall... yes
+checking whether C compiler accepts -Wextra... yes
+checking whether C compiler accepts -Wunknown-pragmas... yes
+checking whether C compiler accepts -Wthis-test-should-fail... no
+checking whether C compiler accepts --param=ssp-buffer-size=1... yes
+checking whether C compiler accepts -Waddress... yes
+checking whether C compiler accepts -Warray-bounds... yes
+checking whether C compiler accepts -Wbad-function-cast... yes
+checking whether C compiler accepts -Wchar-subscripts... yes
+checking whether C compiler accepts -Wcomment... yes
+checking whether C compiler accepts -Wfloat-equal... yes
+checking whether C compiler accepts -Wformat-security... yes
+checking whether C compiler accepts -Wformat=2... yes
+checking whether C compiler accepts -Wmaybe-uninitialized... no
+checking whether C compiler accepts -Wmissing-field-initializers... yes
+checking whether C compiler accepts -Wmissing-noreturn... yes
+checking whether C compiler accepts -Wmissing-prototypes... yes
+checking whether C compiler accepts -Wnested-externs... yes
+checking whether C compiler accepts -Wnormalized=id... no
+checking whether C compiler accepts -Woverride-init... yes
+checking whether C compiler accepts -Wpointer-arith... yes
+checking whether C compiler accepts -Wpointer-sign... yes
+checking whether C compiler accepts -Wshadow... yes
+checking whether C compiler accepts -Wshorten-64-to-32... yes
+checking whether C compiler accepts -Wsign-compare... yes
+checking whether C compiler accepts -Wstrict-overflow=1... yes
+checking whether C compiler accepts -Wstrict-prototypes... yes
+checking whether C compiler accepts -Wswitch-enum... yes
+checking whether C compiler accepts -Wundef... yes
+checking whether C compiler accepts -Wunused... yes
+checking whether C compiler accepts -Wunused-result... yes
+checking whether C compiler accepts -Wunused-variable... yes
+checking whether C compiler accepts -Wwrite-strings... yes
+checking whether C compiler accepts -fwrapv... yes
+creating wolfssl-config - generic 5.7.0 for -lwolfssl -lnetwork -lpthread
+checking the number of available CPUs... 8
+configure: adding automake macro support
+configure: creating aminclude.am
+configure: added jobserver support to make for 9 jobs
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+configure: ---
+configure: Running make clean...
+configure: ---
+configure: Generating user options header...
+---
+Configuration summary for wolfssl version 5.7.0
+
+   * Installation prefix:        /usr/local
+   * System type:                apple-darwin24.5.0
+   * Host CPU:                   aarch64
+   * C Compiler:                 gcc
+   * C Flags:                       -Werror -Wno-pragmas -Wall -Wextra -Wunknown-pragmas --param=ssp-buffer-size=1 -Waddress -Warray-bounds -Wbad-function-cast -Wchar-subscripts -Wcomment -Wfloat-equal -Wformat-security -Wformat=2 -Wmissing-field-initializers -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Woverride-init -Wpointer-arith -Wpointer-sign -Wshadow -Wshorten-64-to-32 -Wsign-compare -Wstrict-overflow=1 -Wstrict-prototypes -Wswitch-enum -Wundef -Wunused -Wunused-result -Wunused-variable -Wwrite-strings -fwrapv
+   * C++ Compiler:               
+   * C++ Flags:                  
+   * CPP Flags:                  
+   * CCAS Flags:                   
+   * LD Flags:                    -framework CoreFoundation -framework Security
+   * LIB Flags:                   -pie -Werror 
+   * Library Suffix:             
+   * Debug enabled:              no
+   * Coverage enabled:           
+   * Warnings as failure:        yes
+   * make -j:                    9
+   * VCS checkout:               yes
+
+   Features 
+   * Experimental settings:      Forbidden
+   * FIPS:                       no
+   * Single threaded:            no
+   * Filesystem:                 yes
+   * OpenSSH Build:              no
+   * OpenSSL Extra API:          no
+   * OpenSSL Coexist:            no
+   * Old Names:                  yes
+   * Max Strength Build:         no
+   * Distro Build:               no
+   * Reproducible Build:         no
+   * Side-channel Hardening:     yes
+   * Single Precision Math:      no
+   * SP implementation:          all
+   * Fast Math:                  no
+   * Heap Math:                  no
+   * Assembly Allowed:           yes
+   * sniffer:                    no
+   * snifftest:                  no
+   * ARC4:                       no
+   * AES:                        yes
+   * AES-NI:                     no
+   * AES-CBC:                    yes
+   * AES-CBC length checks:      no
+   * AES-GCM:                    yes
+   * AES-GCM streaming:          no
+   * AES-CCM:                    no
+   * AES-CTR:                    no
+   * AES-CFB:                    no
+   * AES-OFB:                    no
+   * AES-XTS:                    no
+   * AES-XTS streaming:          no
+   * AES-SIV:                    no
+   * AES-EAX:                    no
+   * AES Bitspliced:             no
+   * AES Key Wrap:               no
+   * ARIA:                       no
+   * DES3:                       no
+   * DES3 TLS Suites:            no
+   * Camellia:                   no
+   * CUDA:                       no
+   * SM4-ECB:                    no
+   * SM4-CBC:                    no
+   * SM4-CTR:                    no
+   * SM4-GCM:                    no
+   * SM4-CCM:                    no
+   * NULL Cipher:                no
+   * MD2:                        no
+   * MD4:                        no
+   * MD5:                        yes
+   * RIPEMD:                     no
+   * SHA:                        yes
+   * SHA-224:                    yes
+   * SHA-384:                    yes
+   * SHA-512:                    yes
+   * SHA3:                       yes
+   * SHAKE128:                   no
+   * SHAKE256:                   no
+   * SM3:                        no
+   * BLAKE2:                     no
+   * BLAKE2S:                    no
+   * SipHash:                    no
+   * CMAC:                       no
+   * keygen:                     no
+   * certgen:                    no
+   * certreq:                    no
+   * certext:                    no
+   * certgencache:               no
+   * CHACHA:                     yes
+   * XCHACHA:                    no
+   * Hash DRBG:                  yes
+   * MmemUse Entropy:
+   * (AKA: wolfEntropy):         no
+   * PWDBASED:                   yes
+   * Encrypted keys:             no
+   * scrypt:                     no
+   * wolfCrypt Only:             no
+   * HKDF:                       yes
+   * HPKE:                       no
+   * X9.63 KDF:                  no
+   * SRTP-KDF:                   no
+   * PSK:                        no
+   * Poly1305:                   yes
+   * LEANPSK:                    no
+   * LEANTLS:                    no
+   * RSA:                        yes
+   * RSA-PSS:                    yes
+   * DSA:                        no
+   * DH:                         yes
+   * DH Default Parameters:      yes
+   * ECC:                        yes
+   * ECC Custom Curves:          no
+   * ECC Minimum Bits:           224
+   * FPECC:                      no
+   * ECC_ENCRYPT:                no
+   * Brainpool:                  no
+   * SM2:                        no
+   * CURVE25519:                 no
+   * ED25519:                    no
+   * ED25519 streaming:          no
+   * CURVE448:                   no
+   * ED448:                      no
+   * ED448 streaming:            no
+   * LMS:                        no
+   * LMS wolfSSL impl:           
+   * XMSS:                       no
+   * XMSS wolfSSL impl:          
+   * KYBER:                      no
+   * KYBER wolfSSL impl:         no
+   * DILITHIUM:                  no
+   * ECCSI                       no
+   * SAKKE                       no
+   * ASN:                        yes
+   * Anonymous cipher:           no
+   * CODING:                     yes
+   * MEMORY:                     yes
+   * I/O POOL:                   no
+   * wolfSentry:                 no
+   * LIGHTY:                     no
+   * WPA Supplicant:             no
+   * HAPROXY:                    no
+   * STUNNEL:                    no
+   * tcpdump:                    no
+   * libssh2:                    no
+   * ntp:                        no
+   * rsyslog:                    no
+   * Apache httpd:               no
+   * NGINX:                      no
+   * OpenResty:                  no
+   * ASIO:                       no
+   * LIBWEBSOCKETS:              no
+   * Qt:                         no
+   * Qt Unit Testing:            no
+   * SIGNAL:                     no
+   * chrony:                     no
+   * strongSwan:                 no
+   * OpenLDAP:                   no
+   * hitch:                      no
+   * memcached:                  no
+   * ERROR_STRINGS:              yes
+   * DTLS:                       no
+   * DTLS v1.3:                  no
+   * SCTP:                       no
+   * SRTP:                       no
+   * Indefinite Length:          no
+   * Multicast:                  no
+   * SSL v3.0 (Old):             no
+   * TLS v1.0 (Old):             no
+   * TLS v1.1 (Old):             no
+   * TLS v1.2:                   yes
+   * TLS v1.3:                   yes
+   * RPK:                        no
+   * Post-handshake Auth:        no
+   * Early Data:                 no
+   * QUIC:                       no
+   * Send State in HRR Cookie:   undefined
+   * OCSP:                       no
+   * OCSP Stapling:              no
+   * OCSP Stapling v2:           no
+   * CRL:                        no
+   * CRL-MONITOR:                no
+   * Persistent session cache:   no
+   * Persistent cert    cache:   no
+   * Atomic User Record Layer:   no
+   * Public Key Callbacks:       no
+   * libxmss:                    no
+   * liblms:                     no
+   * liboqs:                     no
+   * Whitewood netRandom:        no
+   * Server Name Indication:     yes
+   * ALPN:                       no
+   * Maximum Fragment Length:    no
+   * Trusted CA Indication:      no
+   * Truncated HMAC:             no
+   * Supported Elliptic Curves:  yes
+   * FFDHE only in client:       no
+   * Session Ticket:             no
+   * Extended Master Secret:     yes
+   * Renegotiation Indication:   no
+   * Secure Renegotiation:       no
+   * Fallback SCSV:              no
+   * Keying Material Exporter:   no
+   * All TLS Extensions:         no
+   * S/MIME:                     no
+   * PKCS#7:                     no
+   * PKCS#8:                     yes
+   * PKCS#11:                    no
+   * PKCS#12:                    yes
+   * wolfSSH:                    no
+   * wolfEngine:                 no
+   * wolfTPM:                    no
+   * wolfCLU:                    no
+   * wolfSCEP:                   no
+   * Secure Remote Password:     no
+   * Small Stack:                no
+   * Linux Kernel Module:        no
+   * valgrind unit tests:        no
+   * LIBZ:                       no
+   * Examples:                   yes
+   * Crypt tests:                yes
+   * Stack sizes in tests:       no
+   * Heap stats in tests:        no
+   * Asynchronous Crypto:        no
+   * Asynchronous Crypto (sim):  no
+   * Cavium Nitrox:              no
+   * Cavium Octeon (Sync):       no
+   * Intel Quick Assist:         no
+   * ARM ASM:                    no
+   * ARM ASM SHA512/SHA3 Crypto  no
+   * ARM ASM SM3/SM4 Crypto      no
+   * RISC-V ASM                  no
+   * Write duplicate:            no
+   * Xilinx Hardware Acc.:       no
+   * Inline Code:                yes
+   * Linux AF_ALG:               no
+   * Linux KCAPI:                no
+   * Linux devcrypto:            no
+   * PK callbacks:               no
+   * Crypto callbacks:           no
+   * i.MX CAAM:                  no
+   * IoT-Safe:                   no
+   * IoT-Safe HWRNG:             no
+   * NXP SE050:                  no
+   * Maxim Integrated MAXQ10XX:  no
+   * PSA:                        no
+   * System CA certs:            yes
+   * Dual alg cert support:      no
+   * ERR Queues per Thread:      yes
+   * rwlock:                     no
+   * keylog export:              no
+   * AutoSAR :                   no
+
+---
+./configure flags: --enable-crypttests
+ /bin/sh ./config.status
+config.status: creating stamp-h
+config.status: creating Makefile
+config.status: creating wolfssl/version.h
+config.status: creating wolfssl/options.h
+config.status: creating support/wolfssl.pc
+config.status: creating debian/control
+config.status: creating debian/changelog
+config.status: creating rpm/spec
+config.status: creating wolfcrypt/test/test_paths.h
+config.status: creating scripts/unit.test
+config.status: creating config.h
+config.status: config.h is unchanged
+config.status: executing depfiles commands
+config.status: executing libtool commands
+config.status: executing wolfssl/wolfcrypt/async.h commands
+config.status: executing wolfssl/wolfcrypt/fips.h commands
+config.status: executing wolfssl/wolfcrypt/port/cavium/cavium_nitrox.h commands
+config.status: executing wolfssl/wolfcrypt/port/intel/quickassist.h commands
+config.status: executing wolfssl/wolfcrypt/port/intel/quickassist_mem.h commands
+rm -f  
+rm -f    testsuite/testsuite.test 
+rm -f  ecc-key.der ecc-public-key.der cert.der cert.pem certecc.der certecc.pem certreq.der certreq.pem key.der key.pem ecc-key-pkcs8.der othercert.der othercert.pem pkcs7cert.der pkcs7authEnvelopedDataAES128GCM.der pkcs7authEnvelopedDataAES128GCM_ECDH_SHA1KDF.der pkcs7authEnvelopedDataAES128GCM_KEKRI.der pkcs7authEnvelopedDataAES128GCM_ORI.der pkcs7authEnvelopedDataAES128GCM_PWRI.der pkcs7authEnvelopedDataAES192GCM.der pkcs7authEnvelopedDataAES256GCM.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA256KDF.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA256KDF_authAttribs.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA256KDF_bothAttribs.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA256KDF_fw_bothAttribs.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA256KDF_unauthAttribs.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA512KDF.der pkcs7authEnvelopedDataAES256GCM_ECDH_SHA512KDF_ukm.der pkcs7authEnvelopedDataAES256GCM_firmwarePkgData.der pkcs7authEnvelopedDataAES256GCM_IANDS.der pkcs7authEnvelopedDataAES256GCM_SKID.der pkcs7compressedData_data_zlib.der pkcs7compressedData_firmwarePkgData_zlib.der pkcs7encryptedDataAES128CBC.der pkcs7encryptedDataAES192CBC.der pkcs7encryptedDataAES256CBC_attribs.der pkcs7encryptedDataAES256CBC.der pkcs7encryptedDataAES256CBC_firmwarePkgData.der pkcs7encryptedDataAES256CBC_multi_attribs.der pkcs7encryptedDataDES3.der pkcs7encryptedDataDES.der pkcs7envelopedDataAES256CBC_ECDH.der pkcs7envelopedDataAES128CBC_ECDH_SHA1KDF.der pkcs7envelopedDataAES256CBC_ECDH_SHA256KDF.der pkcs7envelopedDataAES256CBC_ECDH_SHA512KDF.der pkcs7envelopedDataAES256CBC_ECDH_SHA512KDF_ukm.der pkcs7envelopedDataDES3.der pkcs7envelopedDataAES128CBC.der pkcs7envelopedDataAES128CBC_KEKRI.der pkcs7envelopedDataAES128CBC_PWRI.der pkcs7envelopedDataAES128CBC_ORI.der pkcs7envelopedDataAES192CBC.der pkcs7envelopedDataAES256CBC.der pkcs7envelopedDataAES256CBC_IANDS.der pkcs7envelopedDataAES256CBC_SKID.der pkcs7signedData_RSA_SHA.der pkcs7signedData_RSA_SHA_noattr.der pkcs7signedData_RSA_SHA224.der pkcs7signedData_RSA_SHA256.der pkcs7signedData_RSA_SHA256_firmwarePkgData.der pkcs7signedData_RSA_SHA256_custom_contentType.der pkcs7signedData_RSA_SHA256_with_ca_cert.der pkcs7signedData_RSA_SHA256_SKID.der pkcs7signedData_RSA_SHA256_detachedSig.der pkcs7signedData_RSA_SHA384.der pkcs7signedData_RSA_SHA512.der pkcs7signedData_ECDSA_SHA.der pkcs7signedData_ECDSA_SHA_noattr.der pkcs7signedData_ECDSA_SHA224.der pkcs7signedData_ECDSA_SHA256.der pkcs7signedData_ECDSA_SHA256_firmwarePkgData.der pkcs7signedData_ECDSA_SHA256_custom_contentType.der pkcs7signedData_ECDSA_SHA256_SKID.der pkcs7signedData_ECDSA_SHA384.der pkcs7signedData_ECDSA_SHA512.der pkcs7signedFirmwarePkgData_ECDSA_SHA256.der pkcs7signedFirmwarePkgData_ECDSA_SHA256_SKID.der pkcs7signedFirmwarePkgData_ECDSA_SHA256_noattr.der pkcs7signedFirmwarePkgData_RSA_SHA256.der pkcs7signedFirmwarePkgData_RSA_SHA256_SKID.der pkcs7signedFirmwarePkgData_RSA_SHA256_noattr.der pkcs7signedFirmwarePkgData_RSA_SHA256_with_ca_cert.der pkcs7signedCompressedFirmwarePkgData_ECDSA_SHA256.der pkcs7signedCompressedFirmwarePkgData_ECDSA_SHA256_noattr.der pkcs7signedCompressedFirmwarePkgData_RSA_SHA256.der pkcs7signedCompressedFirmwarePkgData_RSA_SHA256_noattr.der pkcs7signedEncryptedFirmwarePkgData_RSA_SHA256.der pkcs7signedEncryptedFirmwarePkgData_RSA_SHA256_noattr.der pkcs7signedEncryptedFirmwarePkgData_ECDSA_SHA256.der pkcs7signedEncryptedFirmwarePkgData_ECDSA_SHA256_noattr.der pkcs7signedEncryptedCompressedFirmwarePkgData_ECDSA_SHA256.der pkcs7signedEncryptedCompressedFirmwarePkgData_ECDSA_SHA256_noattr.der pkcs7signedEncryptedCompressedFirmwarePkgData_RSA_SHA256.der pkcs7signedEncryptedCompressedFirmwarePkgData_RSA_SHA256_noattr.der tests/test-log-dump-to-file.txt MyKeyLog.txt
+rm -f  src/libwolfssl.la 
+rm -rf .libs _libs
+test -z "" || rm -f  testsuite/testsuite.test
+test -z "" || rm -f  
+rm -rf doc/build/
+rm -f  
+rm -rf examples/asn1/.libs examples/asn1/_libs
+rm -rf doc/html/
+rm -f  wolfcrypt/benchmark/benchmark  wolfcrypt/test/testwolfcrypt wolfcrypt/test/testwolfcrypt   examples/benchmark/tls_bench examples/client/client examples/echoclient/echoclient examples/echoserver/echoserver examples/server/server   examples/asn1/asn1 examples/pem/pem testsuite/testsuite.test tests/unit.test  
+rm -rf examples/async/.libs examples/async/_libs
+rm -f *.o
+rm -f  testsuite/testsuite.log scripts/resume.log scripts/tls13.log scripts/external.log scripts/google.log scripts/openssl.log scripts/unit.log scripts/pem.log
+rm -f doc/refman.pdf
+rm -rf examples/benchmark/.libs examples/benchmark/_libs
+rm -f src/so_locations
+rm -f examples/asn1/*.o
+rm -f doc/doxygen_warnings
+rm -f  testsuite/testsuite.trs scripts/resume.trs scripts/tls13.trs scripts/external.trs scripts/google.trs scripts/openssl.trs scripts/unit.trs scripts/pem.trs
+rm -f
+test -z "" || rm -f  wolfcrypt/benchmark/benchmark wolfcrypt/test/testwolfcrypt wolfcrypt/test/testwolfcrypt examples/benchmark/tls_bench examples/client/client examples/echoclient/echoclient examples/echoserver/echoserver examples/server/server examples/asn1/asn1 examples/pem/pem testsuite/testsuite.test tests/unit.test
+rm -f *.lo
+rm -rf examples/client/.libs examples/client/_libs
+rm -f *.tab.c
+rm -f  test-suite.log
+rm -f examples/async/*.o
+rm -f  stamp-h wolfssl/version.h wolfssl/options.h support/wolfssl.pc debian/control debian/changelog rpm/spec wolfcrypt/test/test_paths.h scripts/unit.test
+rm -rf examples/echoclient/.libs examples/echoclient/_libs
+rm -f config.h stamp-h1
+rm -f libtool config.lt
+rm -rf examples/echoserver/.libs examples/echoserver/_libs
+rm -f examples/benchmark/*.o
+test . = "." || rm -f  
+rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
+rm -rf examples/pem/.libs examples/pem/_libs
+rm -f cscope.out cscope.in.out cscope.po.out cscope.files
+rm -rf examples/sctp/.libs examples/sctp/_libs
+rm -f  aminclude.am .build_params wolfssl/debug-trace-error-codes.h wolfssl/debug-untrace-error-codes.h wolfcrypt/benchmark/.libs/benchmark wolfcrypt/test/.libs/testwolfcrypt examples/async/.libs/async_server examples/async/.libs/async_client examples/benchmark/.libs/tls_bench examples/client/.libs/client examples/echoclient/.libs/echoclient examples/echoserver/.libs/echoserver examples/server/.libs/server examples/sctp/.libs/sctp-server examples/sctp/.libs/sctp-server-dtls examples/sctp/.libs/sctp-client examples/sctp/.libs/sctp-client-dtls testsuite/.libs/testsuite.test tests/.libs/unit.test sslSniffer/sslSnifferTest/.libs/snifftest IDE/iotsafe/build wolfssl-config
+rm -f examples/client/*.o
+rm -rf examples/server/.libs examples/server/_libs
+rm -f  examples/asn1/.deps/.dirstamp
+rm -rf mcapi/.libs mcapi/_libs
+rm -rf src/.libs src/_libs
+rm -f  examples/asn1/.dirstamp
+rm -f examples/echoclient/*.o
+rm -rf sslSniffer/sslSnifferTest/.libs sslSniffer/sslSnifferTest/_libs
+rm -f  examples/async/.deps/.dirstamp
+rm -rf tests/.libs tests/_libs
+rm -f  examples/async/.dirstamp
+rm -rf testsuite/.libs testsuite/_libs
+rm -f  examples/benchmark/.deps/.dirstamp
+rm -f examples/echoserver/*.o
+rm -rf wolfcrypt/benchmark/.libs wolfcrypt/benchmark/_libs
+rm -f  examples/benchmark/.dirstamp
+rm -rf wolfcrypt/src/.libs wolfcrypt/src/_libs
+rm -f  examples/client/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/af_alg/.libs wolfcrypt/src/port/af_alg/_libs
+rm -f  examples/client/.dirstamp
+rm -f examples/pem/*.o
+rm -rf wolfcrypt/src/port/aria/.libs wolfcrypt/src/port/aria/_libs
+rm -f  examples/echoclient/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/arm/.libs wolfcrypt/src/port/arm/_libs
+rm -f  examples/echoclient/.dirstamp
+rm -f examples/sctp/*.o
+rm -rf wolfcrypt/src/port/atmel/.libs wolfcrypt/src/port/atmel/_libs
+rm -f  examples/echoserver/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/autosar/.libs wolfcrypt/src/port/autosar/_libs
+rm -f  examples/echoserver/.dirstamp
+rm -rf wolfcrypt/src/port/caam/.libs wolfcrypt/src/port/caam/_libs
+rm -f  examples/pem/.deps/.dirstamp
+rm -f examples/server/*.o
+rm -rf wolfcrypt/src/port/cavium/.libs wolfcrypt/src/port/cavium/_libs
+rm -f  examples/pem/.dirstamp
+rm -rf wolfcrypt/src/port/cuda/.libs wolfcrypt/src/port/cuda/_libs
+rm -f  examples/sctp/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/devcrypto/.libs wolfcrypt/src/port/devcrypto/_libs
+rm -f mcapi/*.o
+rm -f  examples/sctp/.dirstamp
+rm -rf wolfcrypt/src/port/intel/.libs wolfcrypt/src/port/intel/_libs
+rm -f  examples/server/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/iotsafe/.libs wolfcrypt/src/port/iotsafe/_libs
+rm -f  examples/server/.dirstamp
+rm -f src/*.o
+rm -rf wolfcrypt/src/port/kcapi/.libs wolfcrypt/src/port/kcapi/_libs
+rm -f  mcapi/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/liboqs/.libs wolfcrypt/src/port/liboqs/_libs
+rm -f  mcapi/.dirstamp
+rm -rf wolfcrypt/src/port/maxim/.libs wolfcrypt/src/port/maxim/_libs
+rm -f src/*.lo
+rm -f  src/.deps/.dirstamp
+rm -rf wolfcrypt/src/port/nxp/.libs wolfcrypt/src/port/nxp/_libs
+rm -f  src/.dirstamp
+rm -rf wolfcrypt/src/port/psa/.libs wolfcrypt/src/port/psa/_libs
+rm -f  sslSniffer/sslSnifferTest/.deps/.dirstamp
+rm -f sslSniffer/sslSnifferTest/*.o
+rm -rf wolfcrypt/src/port/riscv/.libs wolfcrypt/src/port/riscv/_libs
+rm -f  sslSniffer/sslSnifferTest/.dirstamp
+rm -rf wolfcrypt/src/port/xilinx/.libs wolfcrypt/src/port/xilinx/_libs
+rm -f  tests/.deps/.dirstamp
+rm -rf wolfcrypt/test/.libs wolfcrypt/test/_libs
+rm -f tests/*.o
+rm -f  tests/.dirstamp
+rm -f  testsuite/.deps/.dirstamp
+rm -f  testsuite/.dirstamp
+rm -f testsuite/*.o
+rm -f  wolfcrypt/benchmark/.deps/.dirstamp
+rm -f  wolfcrypt/benchmark/.dirstamp
+rm -f wolfcrypt/benchmark/*.o
+rm -f  wolfcrypt/src/.deps/.dirstamp
+rm -f  wolfcrypt/src/.dirstamp
+rm -f  wolfcrypt/src/port/af_alg/.deps/.dirstamp
+rm -f wolfcrypt/benchmark/*.lo
+rm -f  wolfcrypt/src/port/af_alg/.dirstamp
+rm -f  wolfcrypt/src/port/aria/.deps/.dirstamp
+rm -f wolfcrypt/src/*.o
+rm -f  wolfcrypt/src/port/aria/.dirstamp
+rm -f  wolfcrypt/src/port/arm/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/arm/.dirstamp
+rm -f wolfcrypt/src/*.lo
+rm -f  wolfcrypt/src/port/atmel/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/atmel/.dirstamp
+rm -f  wolfcrypt/src/port/autosar/.deps/.dirstamp
+rm -f wolfcrypt/src/port/af_alg/*.o
+rm -f  wolfcrypt/src/port/autosar/.dirstamp
+rm -f  wolfcrypt/src/port/caam/.deps/.dirstamp
+rm -f wolfcrypt/src/port/af_alg/*.lo
+rm -f  wolfcrypt/src/port/caam/.dirstamp
+rm -f  wolfcrypt/src/port/cavium/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/cavium/.dirstamp
+rm -f wolfcrypt/src/port/aria/*.o
+rm -f  wolfcrypt/src/port/cuda/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/cuda/.dirstamp
+rm -f  wolfcrypt/src/port/devcrypto/.deps/.dirstamp
+rm -f wolfcrypt/src/port/aria/*.lo
+rm -f  wolfcrypt/src/port/devcrypto/.dirstamp
+rm -f  wolfcrypt/src/port/intel/.deps/.dirstamp
+rm -f wolfcrypt/src/port/arm/*.o
+rm -f  wolfcrypt/src/port/intel/.dirstamp
+rm -f  wolfcrypt/src/port/iotsafe/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/iotsafe/.dirstamp
+rm -f wolfcrypt/src/port/arm/*.lo
+rm -f  wolfcrypt/src/port/kcapi/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/kcapi/.dirstamp
+rm -f  wolfcrypt/src/port/liboqs/.deps/.dirstamp
+rm -f wolfcrypt/src/port/atmel/*.o
+rm -f  wolfcrypt/src/port/liboqs/.dirstamp
+rm -f  wolfcrypt/src/port/maxim/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/maxim/.dirstamp
+rm -f wolfcrypt/src/port/atmel/*.lo
+rm -f  wolfcrypt/src/port/nxp/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/nxp/.dirstamp
+rm -f wolfcrypt/src/port/autosar/*.o
+rm -f  wolfcrypt/src/port/psa/.deps/.dirstamp
+rm -f  wolfcrypt/src/port/psa/.dirstamp
+rm -f  wolfcrypt/src/port/riscv/.deps/.dirstamp
+rm -f wolfcrypt/src/port/autosar/*.lo
+rm -f  wolfcrypt/src/port/riscv/.dirstamp
+rm -f  wolfcrypt/src/port/xilinx/.deps/.dirstamp
+rm -f wolfcrypt/src/port/caam/*.o
+rm -f  wolfcrypt/src/port/xilinx/.dirstamp
+rm -f  wolfcrypt/test/.deps/.dirstamp
+rm -f  wolfcrypt/test/.dirstamp
+rm -f wolfcrypt/src/port/caam/*.lo
+rm -f wolfcrypt/src/port/cavium/*.o
+rm -f wolfcrypt/src/port/cavium/*.lo
+rm -f wolfcrypt/src/port/cuda/*.o
+rm -f wolfcrypt/src/port/cuda/*.lo
+rm -f wolfcrypt/src/port/devcrypto/*.o
+rm -f wolfcrypt/src/port/devcrypto/*.lo
+rm -f wolfcrypt/src/port/intel/*.o
+rm -f wolfcrypt/src/port/intel/*.lo
+rm -f wolfcrypt/src/port/iotsafe/*.o
+rm -f wolfcrypt/src/port/iotsafe/*.lo
+rm -f wolfcrypt/src/port/kcapi/*.o
+rm -f wolfcrypt/src/port/kcapi/*.lo
+rm -f wolfcrypt/src/port/liboqs/*.o
+rm -f wolfcrypt/src/port/liboqs/*.lo
+rm -f wolfcrypt/src/port/maxim/*.o
+rm -f wolfcrypt/src/port/maxim/*.lo
+rm -f wolfcrypt/src/port/nxp/*.o
+rm -f wolfcrypt/src/port/nxp/*.lo
+rm -f wolfcrypt/src/port/psa/*.o
+rm -f wolfcrypt/src/port/psa/*.lo
+rm -f wolfcrypt/src/port/riscv/*.o
+rm -f wolfcrypt/src/port/riscv/*.lo
+rm -f wolfcrypt/src/port/xilinx/*.o
+rm -f wolfcrypt/src/port/xilinx/*.lo
+rm -f wolfcrypt/test/*.o
+rm -f wolfcrypt/test/*.lo
+rm -f config.status config.cache config.log configure.lineno config.status.lineno
+rm -f examples/asn1/.deps/asn1.Po
+rm -f examples/async/.deps/async_client-async_client.Po
+rm -f examples/async/.deps/async_client-async_tls.Po
+rm -f examples/async/.deps/async_server-async_server.Po
+rm -f examples/async/.deps/async_server-async_tls.Po
+rm -f examples/benchmark/.deps/tls_bench.Po
+rm -f examples/client/.deps/client-client.Po
+rm -f examples/client/.deps/tests_unit_test-client.Po
+rm -f examples/client/.deps/testsuite_testsuite_test-client.Po
+rm -f examples/echoclient/.deps/echoclient.Po
+rm -f examples/echoclient/.deps/testsuite_testsuite_test-echoclient.Po
+rm -f examples/echoserver/.deps/echoserver.Po
+rm -f examples/echoserver/.deps/testsuite_testsuite_test-echoserver.Po
+rm -f examples/pem/.deps/pem.Po
+rm -f examples/sctp/.deps/sctp-client-dtls.Po
+rm -f examples/sctp/.deps/sctp-client.Po
+rm -f examples/sctp/.deps/sctp-server-dtls.Po
+rm -f examples/sctp/.deps/sctp-server.Po
+rm -f examples/server/.deps/server-server.Po
+rm -f examples/server/.deps/tests_unit_test-server.Po
+rm -f examples/server/.deps/testsuite_testsuite_test-server.Po
+rm -f mcapi/.deps/crypto.Po
+rm -f mcapi/.deps/mcapi_test.Po
+rm -f src/.deps/libwolfssl_la-crl.Plo
+rm -f src/.deps/libwolfssl_la-dtls.Plo
+rm -f src/.deps/libwolfssl_la-dtls13.Plo
+rm -f src/.deps/libwolfssl_la-internal.Plo
+rm -f src/.deps/libwolfssl_la-keys.Plo
+rm -f src/.deps/libwolfssl_la-ocsp.Plo
+rm -f src/.deps/libwolfssl_la-quic.Plo
+rm -f src/.deps/libwolfssl_la-sniffer.Plo
+rm -f src/.deps/libwolfssl_la-ssl.Plo
+rm -f src/.deps/libwolfssl_la-tls.Plo
+rm -f src/.deps/libwolfssl_la-tls13.Plo
+rm -f src/.deps/libwolfssl_la-wolfio.Plo
+rm -f sslSniffer/sslSnifferTest/.deps/snifftest.Po
+rm -f tests/.deps/unit_test-api.Po
+rm -f tests/.deps/unit_test-hash.Po
+rm -f tests/.deps/unit_test-quic.Po
+rm -f tests/.deps/unit_test-srp.Po
+rm -f tests/.deps/unit_test-suites.Po
+rm -f tests/.deps/unit_test-unit.Po
+rm -f tests/.deps/unit_test-w64wrapper.Po
+rm -f testsuite/.deps/testsuite_test-testsuite.Po
+rm -f wolfcrypt/benchmark/.deps/benchmark.Po
+rm -f wolfcrypt/benchmark/.deps/libwolfcryptbench_la-benchmark.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-aes.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-aes_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-aes_gcm_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-aes_gcm_x86_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-aes_xts_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-arc4.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-asn.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-async.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-blake2b.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-blake2s.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-camellia.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-chacha.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-chacha20_poly1305.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-chacha_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-cmac.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-coding.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-compress.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-cpuid.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-cryptocb.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-curve25519.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-curve448.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-des3.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-dh.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-dilithium.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-dsa.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ecc.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-eccsi.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ed25519.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ed448.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-error.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ext_kyber.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ext_lms.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ext_xmss.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-falcon.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-fe_448.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-fe_low_mem.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-fe_operations.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-fe_x25519_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-fips.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-fips_test.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ge_448.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ge_low_mem.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ge_operations.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-hash.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-hmac.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-hpke.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-integer.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-kdf.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-logging.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-md2.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-md4.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-md5.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-memory.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-misc.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-pkcs12.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-pkcs7.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-poly1305.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-poly1305_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-pwdbased.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-random.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-rc2.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-ripemd.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-rsa.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sakke.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-selftest.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha256.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha256_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha3.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha3_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha512.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sha512_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-signature.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-siphash.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sm2.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sm3.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sm3_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sm4.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_arm32.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_arm64.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_armthumb.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_c32.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_c64.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_cortexm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_int.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_arm32.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_arm64.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_armthumb.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_c32.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_c64.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_cortexm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_x86_64.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_sm2_x86_64_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_x86_64.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sp_x86_64_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-sphincs.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-srp.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-tfm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_encrypt.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_kyber.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_kyber_asm.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_kyber_poly.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_lms.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_lms_impl.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_pkcs11.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_port.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_xmss.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wc_xmss_impl.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wolfcrypt_first.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wolfcrypt_last.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wolfevent.Plo
+rm -f wolfcrypt/src/.deps/src_libwolfssl_la-wolfmath.Plo
+rm -f wolfcrypt/src/port/af_alg/.deps/src_libwolfssl_la-afalg_aes.Plo
+rm -f wolfcrypt/src/port/af_alg/.deps/src_libwolfssl_la-afalg_hash.Plo
+rm -f wolfcrypt/src/port/af_alg/.deps/src_libwolfssl_la-wc_afalg.Plo
+rm -f wolfcrypt/src/port/aria/.deps/src_libwolfssl_la-aria-crypt.Plo
+rm -f wolfcrypt/src/port/aria/.deps/src_libwolfssl_la-aria-cryptocb.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-aes-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-aes-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-curve25519.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-curve25519_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-sha256-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-sha256-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-sha3-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-sha3-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-sha512-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-32-sha512-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-aes.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-chacha.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-curve25519.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-curve25519_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-poly1305.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-sha256.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-sha3-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-sha3-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-sha512-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-sha512-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-armv8-sha512.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-aes-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-aes-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-curve25519.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-curve25519_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-sha256-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-sha256-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-sha3-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-sha3-asm_c.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-sha512-asm.Plo
+rm -f wolfcrypt/src/port/arm/.deps/src_libwolfssl_la-thumb2-sha512-asm_c.Plo
+rm -f wolfcrypt/src/port/atmel/.deps/src_libwolfssl_la-atmel.Plo
+rm -f wolfcrypt/src/port/autosar/.deps/src_libwolfssl_la-cryif.Plo
+rm -f wolfcrypt/src/port/autosar/.deps/src_libwolfssl_la-crypto.Plo
+rm -f wolfcrypt/src/port/autosar/.deps/src_libwolfssl_la-csm.Plo
+rm -f wolfcrypt/src/port/autosar/.deps/test.Po
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_aes.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_cmac.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_ecdsa.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_hash.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_hmac.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_init.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_qnx.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_rsa.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_seco.Plo
+rm -f wolfcrypt/src/port/caam/.deps/src_libwolfssl_la-wolfcaam_x25519.Plo
+rm -f wolfcrypt/src/port/cavium/.deps/src_libwolfssl_la-cavium_nitrox.Plo
+rm -f wolfcrypt/src/port/cavium/.deps/src_libwolfssl_la-cavium_octeon_sync.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-devcrypto_aes.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-devcrypto_ecdsa.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-devcrypto_hash.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-devcrypto_hmac.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-devcrypto_rsa.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-devcrypto_x25519.Plo
+rm -f wolfcrypt/src/port/devcrypto/.deps/src_libwolfssl_la-wc_devcrypto.Plo
+rm -f wolfcrypt/src/port/intel/.deps/src_libwolfssl_la-quickassist.Plo
+rm -f wolfcrypt/src/port/intel/.deps/src_libwolfssl_la-quickassist_mem.Plo
+rm -f wolfcrypt/src/port/intel/.deps/src_libwolfssl_la-quickassist_sync.Plo
+rm -f wolfcrypt/src/port/iotsafe/.deps/src_libwolfssl_la-iotsafe.Plo
+rm -f wolfcrypt/src/port/kcapi/.deps/src_libwolfssl_la-kcapi_aes.Plo
+rm -f wolfcrypt/src/port/kcapi/.deps/src_libwolfssl_la-kcapi_dh.Plo
+rm -f wolfcrypt/src/port/kcapi/.deps/src_libwolfssl_la-kcapi_ecc.Plo
+rm -f wolfcrypt/src/port/kcapi/.deps/src_libwolfssl_la-kcapi_hash.Plo
+rm -f wolfcrypt/src/port/kcapi/.deps/src_libwolfssl_la-kcapi_hmac.Plo
+rm -f wolfcrypt/src/port/kcapi/.deps/src_libwolfssl_la-kcapi_rsa.Plo
+rm -f wolfcrypt/src/port/liboqs/.deps/src_libwolfssl_la-liboqs.Plo
+rm -f wolfcrypt/src/port/maxim/.deps/src_libwolfssl_la-maxq10xx.Plo
+rm -f wolfcrypt/src/port/nxp/.deps/src_libwolfssl_la-se050_port.Plo
+rm -f wolfcrypt/src/port/psa/.deps/src_libwolfssl_la-psa.Plo
+rm -f wolfcrypt/src/port/psa/.deps/src_libwolfssl_la-psa_aes.Plo
+rm -f wolfcrypt/src/port/psa/.deps/src_libwolfssl_la-psa_hash.Plo
+rm -f wolfcrypt/src/port/psa/.deps/src_libwolfssl_la-psa_pkcbs.Plo
+rm -f wolfcrypt/src/port/riscv/.deps/src_libwolfssl_la-riscv-64-aes.Plo
+rm -f wolfcrypt/src/port/xilinx/.deps/src_libwolfssl_la-xil-aesgcm.Plo
+rm -f wolfcrypt/test/.deps/libwolfcrypttest_la-test.Plo
+rm -f wolfcrypt/test/.deps/test.Po
+rm -f wolfcrypt/test/.deps/testsuite_testsuite_test-test.Po
+rm -f Makefile
+configure.ac:22: installing 'build-aux/compile'
+configure.ac:28: installing 'build-aux/missing'
+Makefile.am: installing 'build-aux/depcomp'
+make[2]: warning: -jN forced in submake: disabling jobserver mode.
+wolfcrypt/src/asn.c:22505:53: error: too many arguments to function call, expected 4, have 5
+ 22505 |     ret = ParseCertRelative(cert, type, verify, cm, NULL);
+       |           ~~~~~~~~~~~~~~~~~                         ^~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_null.h:26:14: note: expanded from macro 'NULL'
+   26 | #define NULL ((void*)0)
+      |              ^~~~~~~~~~
+./wolfssl/wolfcrypt/asn.h:2189:19: note: 'ParseCertRelative' declared here
+ 2189 | WOLFSSL_LOCAL int ParseCertRelative(DecodedCert* cert, int type, int verify,
+      |                   ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2190 |                                     void* cm);
+      |                                     ~~~~~~~~
+wolfcrypt/src/asn.c:23392:9: error: no previous prototype for function 'findSignerByName' [-Werror,-Wmissing-prototypes]
+ 23392 | Signer* findSignerByName(Signer *list, byte *hash)
+       |         ^
+wolfcrypt/src/asn.c:23392:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+ 23392 | Signer* findSignerByName(Signer *list, byte *hash)
+       | ^
+       | static 
+wolfcrypt/src/asn.c:23403:5: error: conflicting types for 'ParseCertRelative'
+ 23403 | int ParseCertRelative(DecodedCert* cert, int type, int verify, void* cm, Signer *extraCAList)
+       |     ^
+./wolfssl/wolfcrypt/asn.h:2189:19: note: previous declaration is here
+ 2189 | WOLFSSL_LOCAL int ParseCertRelative(DecodedCert* cert, int type, int verify,
+      |                   ^
+wolfcrypt/src/asn.c:24060:5: error: no previous prototype for function 'FillSigner' [-Werror,-Wmissing-prototypes]
+ 24060 | int FillSigner(Signer* signer, DecodedCert* cert, int type, DerBuffer *der)
+       |     ^
+wolfcrypt/src/asn.c:24060:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+ 24060 | int FillSigner(Signer* signer, DecodedCert* cert, int type, DerBuffer *der)
+       | ^
+       | static 
+4 errors generated.
+make[2]: *** [wolfcrypt/src/src_libwolfssl_la-asn.lo] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [all-recursive] Error 1
+make: *** [all] Error 2

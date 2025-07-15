@@ -1,0 +1,53 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/mov.o
+/usr/bin/gcc -I. -I. -D_ISOC99_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_DEFAULT_SOURCE -DPIC -DZLIB_CONST -DHAVE_AV_CONFIG_H -std=c99 -mdynamic-no-pic -fomit-frame-pointer -fPIC -pthread -g -Wdeclaration-after-statement -Wall -Wdisabled-optimization -Wpointer-arith -Wredundant-decls -Wcast-qual -Wwrite-strings -Wtype-limits -Wundef -Wmissing-prototypes -Wstrict-prototypes -Wno-parentheses -Wno-switch -Wno-format-zero-length -Wno-pointer-sign -O3 -fno-math-errno -fno-signed-zeros -Qunused-arguments -Werror=implicit-function-declaration -Werror=missing-prototypes -Werror=return-type -Wno-incompatible-function-pointer-types -Wno-string-plus-int -Wno-incompatible-pointer-types-discards-qualifiers -Werror -Wno-unused-but-set-variable -Wno-absolute-value -Wno-cast-qual -Wno-non-literal-null-conversion -Wno-int-in-bool-context -Wno-constant-conversion -Wno-shift-negative-value -Wno-incompatible-pointer-types -Wno-array-parameter -Wno-unused-const-variable -Wno-bool-operation -Wno-sometimes-uninitialized -Wno-deprecated-declarations -Wno-pointer-bool-conversion -c -o libavformat/mov.o libavformat/mov.c
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavformat/mov.c:45:
+./libavcodec/get_bits.h:245:5: warning: Access to field 'l' results in a dereference of a null pointer [core.NullDereference]
+  245 |     UPDATE_CACHE(re, s);
+      |     ^~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:163:9: note: expanded from macro 'UPDATE_CACHE'
+  163 |         AV_RB32((gb)->buffer + (name ## _index >> 3)) << (name ## _index & 7)
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/intreadwrite.h:378:26: note: expanded from macro 'AV_RB32'
+  378 | #   define AV_RB32(p)    AV_RB(32, p)
+      |                          ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:351:39: note: expanded from macro 'AV_RB'
+  351 | #   define AV_RB(s, p)    av_bswap##s(AV_RN##s(p))
+      |                                       ^~~~~~~~~~~
+<scratch space>:123:1: note: expanded from here
+  123 | AV_RN32
+      | ^
+./libavutil/intreadwrite.h:326:23: note: expanded from macro 'AV_RN32'
+  326 | #   define AV_RN32(p) AV_RN(32, p)
+      |                       ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:192:24: note: expanded from macro 'AV_RN'
+  192 | #   define AV_RN(s, p) (((const union unaligned_##s *) (p))->l)
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:866:20: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  866 |     st->duration = (version == 1) ? avio_rb64(pb) : avio_rb32(pb); /* duration */
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:894:19: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  894 |     c->duration = (version == 1) ? avio_rb64(pb) : avio_rb32(pb); /* duration */
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1335:10: warning: The last accessed element (at index 24) in the 1st argument is undefined [alpha.unix.cstring.UninitializedRead]
+ 1335 |     if (!memcmp(codec_name, "Planar Y'CbCr 8-bit 4:2:0", 25))
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1335:10: note: Other elements might also be undefined
+ 1335 |     if (!memcmp(codec_name, "Planar Y'CbCr 8-bit 4:2:0", 25))
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1390:13: warning: Value stored to 'color_count' is never read [deadcode.DeadStores]
+ 1390 |             color_count = avio_rb16(pb);
+      |             ^             ~~~~~~~~~~~~~
+libavformat/mov.c:2124:34: warning: Dereference of null pointer [core.NullDereference]
+ 2124 |           sc->stts_count == 1 && sc->stts_data[0].duration == 1)) {
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:2160:95: warning: Array access (via field 'keyframes') results in a null pointer dereference [core.NullDereference]
+ 2160 |                 if (!sc->keyframe_absent && (!sc->keyframe_count || current_sample+key_off == sc->keyframes[stss_index])) {
+      |                                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:2164:72: warning: Array access (via field 'stps_data') results in a null pointer dereference [core.NullDereference]
+ 2164 |                 } else if (sc->stps_count && current_sample+key_off == sc->stps_data[stps_index]) {
+      |                                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+8 warnings generated.

@@ -1,0 +1,77 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+GEN	libavutil/ffversion.h
+CC	fftools/ffprobe.o
+/usr/bin/gcc -I. -I./ -D_ISOC11_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -I./compat/dispatch_semaphore -DPIC -I./compat/stdbit -DZLIB_CONST -std=c17 -Werror=partial-availability -mdynamic-no-pic -fno-common -fomit-frame-pointer -fPIC -I/opt/homebrew/Cellar/libx11/1.8.12/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -I/opt/homebrew/Cellar/libxext/1.3.6/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -I/opt/homebrew/Cellar/libx11/1.8.12/include -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -pthread -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -I/opt/homebrew/Cellar/libxcb/1.17.0/include -I/opt/homebrew/Cellar/libxau/1.0.12/include -I/opt/homebrew/Cellar/libxdmcp/1.1.5/include -I/opt/homebrew/Cellar/xorgproto/2024.1/include -g -Wall -Wdisabled-optimization -Wpointer-arith -Wredundant-decls -Wwrite-strings -Wtype-limits -Wundef -Wmissing-prototypes -Wstrict-prototypes -Wempty-body -Wno-parentheses -Wno-switch -Wno-format-zero-length -Wno-pointer-sign -Wno-unused-const-variable -Wno-bool-operation -Wno-char-subscripts -Wno-implicit-const-int-float-conversion -O3 -fno-math-errno -fno-signed-zeros -mstack-alignment=16 -Qunused-arguments -Werror=implicit-function-declaration -Werror=missing-prototypes -Werror=return-type -c -o fftools/ffprobe.o fftools/ffprobe.c
+In file included from fftools/ffprobe.c:47:
+./libavutil/dovi_meta.h:357:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  357 |     return (AVDOVIRpuDataHeader *)((uint8_t *) data + data->header_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:363:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  363 |     return (AVDOVIDataMapping *)((uint8_t *) data + data->mapping_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:369:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  369 |     return (AVDOVIColorMetadata *)((uint8_t *) data + data->color_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:375:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  375 |     return (AVDOVIDmData *)((uint8_t *) data + data->ext_block_offset +
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  376 |                             data->ext_block_size * index);
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:976:40: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  976 |             const AVStereo3D *stereo = (AVStereo3D *)sd->data;
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:985:51: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  985 |             const AVSphericalMapping *spherical = (AVSphericalMapping *)sd->data;
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1008:51: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1008 |             print_mastering_display_metadata(tfc, (AVMasteringDisplayMetadata *)sd->data);
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1010:44: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1010 |             print_context_light_level(tfc, (AVContentLightMetadata *)sd->data);
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1013:22: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1013 |                 tfc, (const AVAmbientViewingEnvironment *)sd->data);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1015:42: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1015 |             AVDynamicHDRPlus *metadata = (AVDynamicHDRPlus *)sd->data;
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1018:54: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1018 |             AVDOVIDecoderConfigurationRecord *dovi = (AVDOVIDecoderConfigurationRecord *)sd->data;
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1042:43: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1042 |             const AVCPBProperties *prop = (AVCPBProperties *)sd->data;
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1316:51: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1316 |             print_mastering_display_metadata(tfc, (AVMasteringDisplayMetadata *)sd->data);
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1318:42: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1318 |             AVDynamicHDRPlus *metadata = (AVDynamicHDRPlus *)sd->data;
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1321:44: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1321 |             print_context_light_level(tfc, (AVContentLightMetadata *)sd->data);
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1328:38: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1328 |             print_dovi_metadata(tfc, (const AVDOVIMetadata *)sd->data);
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1330:43: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1330 |             AVDynamicHDRVivid *metadata = (AVDynamicHDRVivid *)sd->data;
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1333:52: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1333 |             print_ambient_viewing_environment(tfc, (const AVAmbientViewingEnvironment *)sd->data);
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1335:38: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1335 |             AVFilmGrainParams *fgp = (AVFilmGrainParams *)sd->data;
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1348:41: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1348 |     FrameData *fd = frame->opaque_ref ? (FrameData*)frame->opaque_ref->data : NULL;
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffprobe.c:1623:22: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1623 |                 fd = (FrameData*)pkt->opaque_ref->data;
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+21 warnings generated.

@@ -1,0 +1,31 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavformat/mov.o
+libavformat/mov.c:9391:70: warning: format specifies type 'int' but the argument has type 'int64_t' (aka 'long long') [-Wformat]
+ 9391 |             av_log(mov->fc, AV_LOG_ERROR, "Invalid tile index %d\n", tile_index);
+      |                                                               ~~     ^~~~~~~~~~
+      |                                                               %lld
+libavformat/mov.c:9394:20: error: no member named 'tiles' in 'struct MOVFragmentStreamInfo'
+ 9394 |         frag_info->tiles[i] = mov->frag_index.item[tile_index].moof_offset;
+      |         ~~~~~~~~~  ^
+libavformat/mov.c:9396:16: error: no member named 'tile_count' in 'struct MOVFragmentStreamInfo'
+ 9396 |     frag_info->tile_count = tile_count;
+      |     ~~~~~~~~~  ^
+libavformat/mov.c:9477:36: error: too few arguments to function call, expected 3, have 1
+ 9477 |             err = mov_parse_tiles(s);
+      |                   ~~~~~~~~~~~~~~~  ^
+libavformat/mov.c:9382:12: note: 'mov_parse_tiles' declared here
+ 9382 | static int mov_parse_tiles(MOVContext *mov, AVIOContext *pb, MOVFragmentStreamInfo *frag_info)
+      |            ^               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning and 3 errors generated.
+make: *** [libavformat/mov.o] Error 1

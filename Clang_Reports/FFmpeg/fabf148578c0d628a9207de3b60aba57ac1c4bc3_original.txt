@@ -1,0 +1,107 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/ffmpeg_enc.o
+Detected Clang
+Makefile found. Make
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/ffmpeg_enc.o
+clang output:
+fftools/ffmpeg_enc.c:99:10: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+   99 |         ((AVHWFramesContext*)frames_ref->data)->format ==
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:189:14: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  189 |         fd = (FrameData*)frame->opaque_ref->data;
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:208:20: warning: Access to field 'format' results in a dereference of a null pointer (loaded from variable 'frame') [core.NullDereference]
+  208 |         av_assert0(frame->format != AV_SAMPLE_FMT_NONE &&
+      |                    ^~~~~~~~~~~~~
+./libavutil/avassert.h:41:11: note: expanded from macro 'av_assert0'
+   41 |     if (!(cond)) {                                                      \
+      |           ^~~~
+fftools/ffmpeg_enc.c:225:20: warning: Access to field 'format' results in a dereference of a null pointer (loaded from variable 'frame') [core.NullDereference]
+  225 |         av_assert0(frame->format != AV_PIX_FMT_NONE &&
+      |                    ^~~~~~~~~~~~~
+./libavutil/avassert.h:41:11: note: expanded from macro 'av_assert0'
+   41 |     if (!(cond)) {                                                      \
+      |           ^~~~
+fftools/ffmpeg_enc.c:298:34: warning: Access to field 'par' results in a dereference of a null pointer (loaded from field 'ist') [core.NullDereference]
+  298 |             enc_ctx->width     = ost->ist->par->width;
+      |                                  ^~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:302:9: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  302 |         av_assert0(dec);
+      |         ^~~~~~~~~~~~~~~
+./libavutil/avassert.h:41:9: note: expanded from macro 'av_assert0'
+   41 |     if (!(cond)) {                                                      \
+      |         ^~~~~~~
+fftools/ffmpeg_enc.c:515:16: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  515 |         fd   = (const FrameData*)(frame ? frame->opaque_ref->data : pkt->opaque_ref->data);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:537:69: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  537 |         case ENC_STATS_FRAME_NUM_IN:    avio_printf(io, "%"PRIu64,  fd ? fd->dec.frame_num : -1);   continue;
+      |                                                                     ^~
+fftools/ffmpeg_enc.c:590:22: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  590 |     quality        = sd ? AV_RL32(sd) : -1;
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:590:41: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  590 |     quality        = sd ? AV_RL32(sd) : -1;
+      |                                         ^~
+fftools/ffmpeg_enc.c:817:38: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  817 |                                      (AVSubtitle*)frame->buf[0]->data : NULL;
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11 warnings generated.
+fftools/ffmpeg_enc.c:99:10: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+   99 |         ((AVHWFramesContext*)frames_ref->data)->format ==
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:189:14: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  189 |         fd = (FrameData*)frame->opaque_ref->data;
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:208:20: warning: Access to field 'format' results in a dereference of a null pointer (loaded from variable 'frame') [core.NullDereference]
+  208 |         av_assert0(frame->format != AV_SAMPLE_FMT_NONE &&
+      |                    ^~~~~~~~~~~~~
+./libavutil/avassert.h:41:11: note: expanded from macro 'av_assert0'
+   41 |     if (!(cond)) {                                                      \
+      |           ^~~~
+fftools/ffmpeg_enc.c:225:20: warning: Access to field 'format' results in a dereference of a null pointer (loaded from variable 'frame') [core.NullDereference]
+  225 |         av_assert0(frame->format != AV_PIX_FMT_NONE &&
+      |                    ^~~~~~~~~~~~~
+./libavutil/avassert.h:41:11: note: expanded from macro 'av_assert0'
+   41 |     if (!(cond)) {                                                      \
+      |           ^~~~
+fftools/ffmpeg_enc.c:298:34: warning: Access to field 'par' results in a dereference of a null pointer (loaded from field 'ist') [core.NullDereference]
+  298 |             enc_ctx->width     = ost->ist->par->width;
+      |                                  ^~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:302:9: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  302 |         av_assert0(dec);
+      |         ^~~~~~~~~~~~~~~
+./libavutil/avassert.h:41:9: note: expanded from macro 'av_assert0'
+   41 |     if (!(cond)) {                                                      \
+      |         ^~~~~~~
+fftools/ffmpeg_enc.c:515:16: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  515 |         fd   = (const FrameData*)(frame ? frame->opaque_ref->data : pkt->opaque_ref->data);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:537:69: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  537 |         case ENC_STATS_FRAME_NUM_IN:    avio_printf(io, "%"PRIu64,  fd ? fd->dec.frame_num : -1);   continue;
+      |                                                                     ^~
+fftools/ffmpeg_enc.c:590:22: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  590 |     quality        = sd ? AV_RL32(sd) : -1;
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_enc.c:590:41: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  590 |     quality        = sd ? AV_RL32(sd) : -1;
+      |                                         ^~
+fftools/ffmpeg_enc.c:817:38: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  817 |                                      (AVSubtitle*)frame->buf[0]->data : NULL;
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11 warnings generated.

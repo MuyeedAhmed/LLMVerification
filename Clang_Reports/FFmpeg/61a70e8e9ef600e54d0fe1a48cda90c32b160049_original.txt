@@ -1,0 +1,18 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/dvenc.o
+clang output:
+libavcodec/dvenc.c:181:12: warning: Out of bound access to memory preceding 'dv_vlc_map' [alpha.security.ArrayBoundV2]
+  181 |     return dv_vlc_map[run][l].size;
+      |            ^~~~~~~~~~~~~~~~~~
+libavcodec/dvenc.c:816:68: warning: Out of bound access to memory after the end of 'mb_area_start' [alpha.security.ArrayBoundV2]
+  816 |                                     for (a2 = a + 1; b->next[k] >= mb_area_start[a2 + 1]; a2++)
+      |                                                                    ^~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.

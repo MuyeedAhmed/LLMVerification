@@ -1,0 +1,39 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/x86/hpeldsp_init.o
+In file included from libavcodec/x86/hpeldsp_init.c:81:
+libavcodec/x86/rnd_template.c:49:20: error: expected ')'
+   49 |         "xor    %%"FF_REG_a", %%"FF_REG_a" \n\t"
+      |                    ^
+libavcodec/x86/rnd_template.c:119:20: error: expected ')'
+  119 |         "xor    %%"FF_REG_a", %%"FF_REG_a" \n\t"
+      |                    ^
+In file included from libavcodec/x86/hpeldsp_init.c:82:
+libavcodec/x86/hpeldsp_rnd_template.c:35:30: error: expected ')'
+   35 |         "lea    (%3, %3), %%"FF_REG_a"  \n\t"
+      |                              ^
+libavcodec/x86/hpeldsp_rnd_template.c:67:30: error: expected ')'
+   67 |         "lea    (%3, %3), %%"FF_REG_a"  \n\t"
+      |                              ^
+libavcodec/x86/hpeldsp_rnd_template.c:113:27: error: expected ')'
+  113 |         "lea (%3, %3), %%"FF_REG_a"     \n\t"
+      |                           ^
+libavcodec/x86/hpeldsp_rnd_template.c:160:37: error: invalid output constraint '+D' in asm
+  160 |             :"+g"(h), "+S"(pixels), "+D"(block)
+      |                                     ^
+libavcodec/x86/hpeldsp_rnd_template.c:169:30: error: expected ')'
+  169 |         "lea    (%3, %3), %%"FF_REG_a"  \n\t"
+      |                              ^
+In file included from libavcodec/x86/hpeldsp_init.c:106:
+libavcodec/x86/rnd_template.c:49:20: error: expected ')'
+   49 |         "xor    %%"FF_REG_a", %%"FF_REG_a" \n\t"
+      |                    ^
+8 errors generated.
+make: *** [libavcodec/x86/hpeldsp_init.o] Error 1

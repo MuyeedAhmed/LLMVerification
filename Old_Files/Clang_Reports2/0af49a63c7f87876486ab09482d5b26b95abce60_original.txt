@@ -1,0 +1,15 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/avidec.o
+/usr/bin/gcc -I. -I. -D_ISOC99_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DPIC -DHAVE_AV_CONFIG_H -std=c99 -mdynamic-no-pic -fomit-frame-pointer -fPIC -g -Wdeclaration-after-statement -Wall -Wno-parentheses -Wno-switch -Wno-format-zero-length -Wdisabled-optimization -Wpointer-arith -Wredundant-decls -Wno-pointer-sign -Wcast-qual -Wwrite-strings -Wtype-limits -Wundef -Wmissing-prototypes -Wstrict-prototypes -O3 -fno-math-errno -fno-signed-zeros -Qunused-arguments -Wno-incompatible-function-pointer-types -Wno-string-plus-int -Wno-incompatible-pointer-types-discards-qualifiers -Werror -Wno-unused-but-set-variable -Wno-absolute-value -Wno-cast-qual -Wno-non-literal-null-conversion -Wno-int-in-bool-context -Wno-constant-conversion -Wno-shift-negative-value -Wno-incompatible-pointer-types -Wno-array-parameter -Wno-unused-const-variable -Wno-bool-operation -Wno-sometimes-uninitialized -Wno-deprecated-declarations -Wno-pointer-bool-conversion -c -o libavformat/avidec.o libavformat/avidec.c
+libavformat/avidec.c:544:17: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  544 |             if (stream_index >= (unsigned)s->nb_streams || avi->dv_demux) {
+      |                 ^~~~~~~~~~~~
+libavformat/avidec.c:675:16: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  675 |             if(stream_index < (unsigned)s->nb_streams && size > 9*4){
+      |                ^~~~~~~~~~~~
+libavformat/avidec.c:753:10: warning: Null pointer passed as 1st argument to string comparison function [unix.cstring.NullArg]
+  753 |     if (!strcmp(pkt->data, "GAB2") && AV_RL16(pkt->data+5) == 2) {
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+3 warnings generated.

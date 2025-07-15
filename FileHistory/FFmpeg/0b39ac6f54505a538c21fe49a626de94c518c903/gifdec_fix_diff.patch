@@ -1,0 +1,28 @@
+--- gifdec_original.c
++++ gifdec_fixed.c
+@@ -116,20 +116,12 @@
+     ptr = ptr1;
+     pass = 0;
+     y1 = 0;
++    y1 = 0;
+     for (y = 0; y < height; y++) {
+-        ff_lzw_decode(s->lzw, ptr, width);
+-        if (is_interleaved) {
+-            switch(pass) {
+-            default:
+-            case 0:
+-            case 1:
+-                y1 += 8;
+-                ptr += linesize * 8;
+-                if (y1 >= height) {
+-                    y1 = pass ? 2 : 4;
+-                    ptr = ptr1 + linesize * y1;
+-                    pass++;
+-                }
++        if (y1 >= s->screen_height)
++            break;
++        ptr += linesize * 8;
++    }
+                 break;
+             case 2:
+                 y1 += 4;

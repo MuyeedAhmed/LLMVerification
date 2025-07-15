@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/resources/resman.o
+clang output:
+fftools/resources/resman.c:159:77: warning: Dereference of null pointer (loaded from field 'data_len') [core.NullDereference]
+  159 |         int ret = decompress_gzip(ctx, (uint8_t *)resource_definition.data, *resource_definition.data_len, &out, &out_len);
+      |                                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.

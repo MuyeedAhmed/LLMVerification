@@ -1,0 +1,63 @@
+CC	libavdevice/xcbgrab.o
+libavdevice/xcbgrab.c:4:8: error: unknown type name 'av_cold'
+    4 | static av_cold int xcbgrab_read_header(AVFormatContext *s)
+      |        ^
+libavdevice/xcbgrab.c:4:40: error: unknown type name 'AVFormatContext'
+    4 | static av_cold int xcbgrab_read_header(AVFormatContext *s)
+      |                                        ^
+libavdevice/xcbgrab.c:6:5: error: use of undeclared identifier 'XCBGrabContext'
+    6 |     XCBGrabContext *c = s->priv_data;
+      |     ^
+libavdevice/xcbgrab.c:6:21: error: use of undeclared identifier 'c'
+    6 |     XCBGrabContext *c = s->priv_data;
+      |                     ^
+libavdevice/xcbgrab.c:8:11: error: unknown type name 'xcb_setup_t'
+    8 |     const xcb_setup_t *setup;
+      |           ^
+libavdevice/xcbgrab.c:9:56: error: use of undeclared identifier 'NULL'
+    9 |     char *host        = s->filename[0] ? s->filename : NULL;
+      |                                                        ^
+libavdevice/xcbgrab.c:10:25: error: call to undeclared library function 'strchr' with type 'char *(const char *, int)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   10 |     const char *opts  = strchr(s->filename, '+');
+      |                         ^
+libavdevice/xcbgrab.c:10:25: note: include the header <string.h> or explicitly provide a declaration for 'strchr'
+libavdevice/xcbgrab.c:13:9: error: call to undeclared library function 'sscanf' with type 'int (const char *restrict, const char *restrict, ...)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   13 |         sscanf(opts, "%d,%d", &c->x, &c->y);
+      |         ^
+libavdevice/xcbgrab.c:13:9: note: include the header <stdio.h> or explicitly provide a declaration for 'sscanf'
+libavdevice/xcbgrab.c:13:32: error: use of undeclared identifier 'c'
+   13 |         sscanf(opts, "%d,%d", &c->x, &c->y);
+      |                                ^
+libavdevice/xcbgrab.c:13:39: error: use of undeclared identifier 'c'
+   13 |         sscanf(opts, "%d,%d", &c->x, &c->y);
+      |                                       ^
+libavdevice/xcbgrab.c:14:16: error: call to undeclared function 'av_strdup'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   14 |         host = av_strdup(s->filename);
+      |                ^
+libavdevice/xcbgrab.c:18:5: error: use of undeclared identifier 'c'
+   18 |     c->conn = xcb_connect(host, &screen_num);
+      |     ^
+libavdevice/xcbgrab.c:18:15: error: call to undeclared function 'xcb_connect'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   18 |     c->conn = xcb_connect(host, &screen_num);
+      |               ^
+libavdevice/xcbgrab.c:20:11: error: call to undeclared function 'xcb_connection_has_error'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   20 |     ret = xcb_connection_has_error(c->conn);
+      |           ^
+libavdevice/xcbgrab.c:20:36: error: use of undeclared identifier 'c'
+   20 |     ret = xcb_connection_has_error(c->conn);
+      |                                    ^
+libavdevice/xcbgrab.c:22:9: error: call to undeclared function 'av_freep'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   22 |         av_freep(&host);
+      |         ^
+libavdevice/xcbgrab.c:25:9: error: call to undeclared function 'av_log'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   25 |         av_log(s, AV_LOG_ERROR, "Cannot open display %s, error %d.\n",
+      |         ^
+libavdevice/xcbgrab.c:25:19: error: use of undeclared identifier 'AV_LOG_ERROR'
+   25 |         av_log(s, AV_LOG_ERROR, "Cannot open display %s, error %d.\n",
+      |                   ^
+libavdevice/xcbgrab.c:27:16: error: call to undeclared function 'AVERROR'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   27 |         return AVERROR(EIO);
+      |                ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make: *** [libavdevice/xcbgrab.o] Error 1

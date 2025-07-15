@@ -1,0 +1,8 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	avprobe.o
+clang output:
+avprobe.c:659:9: warning: Access to field 'bit_rate' results in a dereference of a null pointer (loaded from variable 'dec_ctx') [core.NullDereference]
+  659 |     if (dec_ctx->bit_rate)
+      |         ^~~~~~~~~~~~~~~~~
+1 warning generated.

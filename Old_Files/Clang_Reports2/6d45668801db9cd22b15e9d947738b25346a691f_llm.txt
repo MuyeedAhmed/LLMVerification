@@ -1,0 +1,28 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/hpeldsp.o
+libavcodec/hpeldsp.c:350:5: error: use of undeclared identifier 'put_no_rnd_pixels8_8_c'; did you mean 'put_no_rnd_pixels16_8_c'?
+  350 |     hpel_funcs(put_no_rnd, [1],  8);
+      |     ^
+libavcodec/hpeldsp.c:340:40: note: expanded from macro 'hpel_funcs'
+  340 |     c->prefix ## _pixels_tab idx [0] = prefix ## _pixels ## num ## _8_c; \
+      |                                        ^
+<scratch space>:132:1: note: expanded from here
+  132 | put_no_rnd_pixels8_8_c
+      | ^
+libavcodec/hpeldsp.c:333:1: note: 'put_no_rnd_pixels16_8_c' declared here
+  333 | PIXOP2(put, op_put)
+      | ^
+libavcodec/hpeldsp.c:317:16: note: expanded from macro 'PIXOP2'
+  317 | CALL_2X_PIXELS(OPNAME ## _no_rnd_pixels16_8_c,                          \
+      |                ^
+<scratch space>:41:1: note: expanded from here
+   41 | put_no_rnd_pixels16_8_c
+      | ^
+1 error generated.
+make: *** [libavcodec/hpeldsp.o] Error 1

@@ -1,0 +1,16 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavutil/vulkan.o
+In file included from libavutil/vulkan.c:24:
+In file included from libavutil/vulkan.h:29:
+In file included from libavutil/vulkan_functions.h:26:
+libavutil/hwcontext_vulkan.h:25:10: fatal error: 'vulkan/vulkan.h' file not found
+   25 | #include <vulkan/vulkan.h>
+      |          ^~~~~~~~~~~~~~~~~
+1 error generated.
+make: *** [libavutil/vulkan.o] Error 1

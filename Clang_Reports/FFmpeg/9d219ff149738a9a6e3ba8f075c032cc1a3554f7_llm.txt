@@ -1,0 +1,56 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavformat/mov.o
+libavformat/mov.c:8818:22: error: call to undeclared function 'av_rescale_chapter'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 8818 |         start_time = av_rescale_chapter(chapter->start, s);
+      |                      ^
+libavformat/mov.c:8818:22: note: did you mean 'av_rescale_delta'?
+./libavutil/mathematics.h:276:9: note: 'av_rescale_delta' declared here
+  276 | int64_t av_rescale_delta(AVRational in_tb, int64_t in_ts,  AVRational fs_tb, int duration, int64_t *last, AVRational out_tb);
+      |         ^
+libavformat/mov.c:8820:16: error: call to undeclared function 'mov_read_string'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 8820 |         name = mov_read_string(s, pb, size);
+      |                ^
+libavformat/mov.c:8820:14: error: incompatible integer to pointer conversion assigning to 'char *' from 'int' [-Wint-conversion]
+ 8820 |         name = mov_read_string(s, pb, size);
+      |              ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:8827:31: error: incompatible integer to pointer conversion assigning to 'AVDictionary *' (aka 'struct AVDictionary *') from 'int' [-Wint-conversion]
+ 8827 |             chapter->metadata = av_dict_set(&chapter->metadata, "title", name, 0);
+      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:8838:31: error: call to undeclared function 'mov_read_packet'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 8838 |                     int ret = mov_read_packet(mov, pb, size - (avio_tell(pb) - start));
+      |                               ^
+libavformat/mov.c:8838:31: note: did you mean 'ff_read_packet'?
+libavformat/demux.h:196:5: note: 'ff_read_packet' declared here
+  196 | int ff_read_packet(AVFormatContext *s, AVPacket *pkt);
+      |     ^
+libavformat/mov.c:8805:17: warning: variable 'start_time' set but not used [-Wunused-but-set-variable]
+ 8805 |         int64_t start_time, end_time;
+      |                 ^
+libavformat/mov.c:8805:29: warning: variable 'end_time' set but not used [-Wunused-but-set-variable]
+ 8805 |         int64_t start_time, end_time;
+      |                             ^
+libavformat/mov.c:9510:32: error: too few arguments to function call, expected 3, have 1
+ 9510 |             mov_read_chapters(s);
+      |             ~~~~~~~~~~~~~~~~~  ^
+libavformat/mov.c:8793:12: note: 'mov_read_chapters' declared here
+ 8793 | static int mov_read_chapters(MOVContext *mov, AVIOContext *pb, unsigned int size)
+      |            ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:9863:12: error: static declaration of 'mov_read_packet' follows non-static declaration
+ 9863 | static int mov_read_packet(AVFormatContext *s, AVPacket *pkt)
+      |            ^
+libavformat/mov.c:8838:31: note: previous implicit declaration is here
+ 8838 |                     int ret = mov_read_packet(mov, pb, size - (avio_tell(pb) - start));
+      |                               ^
+2 warnings and 7 errors generated.
+make: *** [libavformat/mov.o] Error 1

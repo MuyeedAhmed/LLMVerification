@@ -1,0 +1,57 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavcodec/gifdec.o
+libavcodec/gifdec.c:125:17: error: 'break' statement not in loop or switch statement
+  125 |                 break;
+      |                 ^
+libavcodec/gifdec.c:126:13: error: 'case' statement not in switch statement
+  126 |             case 2:
+      |             ^
+libavcodec/gifdec.c:134:17: error: 'break' statement not in loop or switch statement
+  134 |                 break;
+      |                 ^
+libavcodec/gifdec.c:135:13: error: 'case' statement not in switch statement
+  135 |             case 3:
+      |             ^
+libavcodec/gifdec.c:138:17: error: 'break' statement not in loop or switch statement
+  138 |                 break;
+      |                 ^
+libavcodec/gifdec.c:140:9: error: extraneous closing brace ('}')
+  140 |         } else {
+      |         ^
+libavcodec/gifdec.c:140:11: error: expected identifier or '('
+  140 |         } else {
+      |           ^
+libavcodec/gifdec.c:143:5: error: extraneous closing brace ('}')
+  143 |     }
+      |     ^
+libavcodec/gifdec.c:145:24: error: unknown type name 's'
+  145 |     ff_lzw_decode_tail(s->lzw);
+      |                        ^
+libavcodec/gifdec.c:145:25: error: expected ')'
+  145 |     ff_lzw_decode_tail(s->lzw);
+      |                         ^
+libavcodec/gifdec.c:145:23: note: to match this '('
+  145 |     ff_lzw_decode_tail(s->lzw);
+      |                       ^
+libavcodec/gifdec.c:147:22: error: expected parameter declarator
+  147 |     bytestream2_skip(&s->gb, ff_lzw_size_read(s->lzw));
+      |                      ^
+libavcodec/gifdec.c:147:22: error: expected ')'
+libavcodec/gifdec.c:147:21: note: to match this '('
+  147 |     bytestream2_skip(&s->gb, ff_lzw_size_read(s->lzw));
+      |                     ^
+libavcodec/gifdec.c:147:5: error: conflicting types for 'bytestream2_skip'
+  147 |     bytestream2_skip(&s->gb, ff_lzw_size_read(s->lzw));
+      |     ^
+libavcodec/bytestream.h:159:30: note: previous definition is here
+  159 | static av_always_inline void bytestream2_skip(GetByteContext *g,
+      |                              ^
+libavcodec/gifdec.c:148:5: error: expected identifier or '('
+  148 |     return 0;
+      |     ^
+libavcodec/gifdec.c:149:1: error: extraneous closing brace ('}')
+  149 | }
+      | ^
+15 errors generated.
+make: *** [libavcodec/gifdec.o] Error 1

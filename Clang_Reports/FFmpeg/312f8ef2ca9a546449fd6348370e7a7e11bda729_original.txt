@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/refs.o
+clang output:
+libavcodec/vvc/refs.c:364:37: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  364 |     const unsigned mask = use_msb ? ~0 : fc->ps.sps->max_pic_order_cnt_lsb - 1;
+      |                                     ^~
+1 warning generated.

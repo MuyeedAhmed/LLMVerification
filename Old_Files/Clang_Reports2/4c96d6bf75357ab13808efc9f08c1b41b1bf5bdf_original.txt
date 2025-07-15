@@ -1,0 +1,19 @@
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/dashdec.o
+libavformat/dashdec.c:2361:23: error: call to undeclared function 'NULL_IF_CONFIG_SMALL'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 2361 |     .p.long_name    = NULL_IF_CONFIG_SMALL("Dynamic Adaptive Streaming over HTTP"),
+      |                       ^
+libavformat/dashdec.c:2361:23: error: incompatible integer to pointer conversion initializing 'const char *' with an expression of type 'int' [-Wint-conversion]
+ 2361 |     .p.long_name    = NULL_IF_CONFIG_SMALL("Dynamic Adaptive Streaming over HTTP"),
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/dashdec.c:2361:23: error: initializer element is not a compile-time constant
+ 2361 |     .p.long_name    = NULL_IF_CONFIG_SMALL("Dynamic Adaptive Streaming over HTTP"),
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3 errors generated.
+make: *** [libavformat/dashdec.o] Error 1

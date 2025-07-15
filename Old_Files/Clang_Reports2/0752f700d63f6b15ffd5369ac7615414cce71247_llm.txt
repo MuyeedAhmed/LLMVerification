@@ -1,0 +1,29 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/rtpdec_h264.o
+libavformat/rtpdec_h264.c:179:6: error: no previous prototype for function 'ff_h264_parse_framesize' [-Werror,-Wmissing-prototypes]
+  179 | void ff_h264_parse_framesize(AVCodecContext *codec, const char *p)
+      |      ^
+libavformat/rtpdec_h264.c:179:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  179 | void ff_h264_parse_framesize(AVCodecContext *codec, const char *p)
+      | ^
+      | static 
+libavformat/rtpdec_h264.c:259:5: error: no previous prototype for function 'ff_h264_handle_frag_packet' [-Werror,-Wmissing-prototypes]
+  259 | int ff_h264_handle_frag_packet(AVPacket *pkt, const uint8_t *buf, int len,
+      |     ^
+libavformat/rtpdec_h264.c:259:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  259 | int ff_h264_handle_frag_packet(AVPacket *pkt, const uint8_t *buf, int len,
+      | ^
+      | static 
+libavformat/rtpdec_h264.c:412:6: error: field designator 'need_parsing' does not refer to any field in type 'RTPDynamicProtocolHandler' (aka 'struct RTPDynamicProtocolHandler')
+  412 |     .need_parsing     = AVSTREAM_PARSE_FULL,
+      |     ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/rtpdec_h264.c:413:6: error: field designator 'priv_data_size' does not refer to any field in type 'RTPDynamicProtocolHandler' (aka 'struct RTPDynamicProtocolHandler')
+  413 |     .priv_data_size   = sizeof(PayloadContext),
+      |     ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/rtpdec_h264.c:415:6: error: field designator 'close' does not refer to any field in type 'RTPDynamicProtocolHandler' (aka 'struct RTPDynamicProtocolHandler')
+  415 |     .close            = h264_close_context,
+      |     ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5 errors generated.
+make: *** [libavformat/rtpdec_h264.o] Error 1

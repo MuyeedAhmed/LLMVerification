@@ -1,0 +1,65 @@
+[1m
+WARNING:  newer than config.h, rerun configure
+
+(B[mCC	libavformat/rmdec.o
+libavformat/rmdec.c:4:17: error: unknown type name 'AVFormatContext'
+    4 | static int sync(AVFormatContext *s, int64_t *timestamp, int *flags, int *stream_index, int64_t *pos){
+      |                 ^
+libavformat/rmdec.c:4:37: error: unknown type name 'int64_t'
+    4 | static int sync(AVFormatContext *s, int64_t *timestamp, int *flags, int *stream_index, int64_t *pos){
+      |                                     ^
+libavformat/rmdec.c:4:88: error: unknown type name 'int64_t'
+    4 | static int sync(AVFormatContext *s, int64_t *timestamp, int *flags, int *stream_index, int64_t *pos){
+      |                                                                                        ^
+libavformat/rmdec.c:5:5: error: use of undeclared identifier 'RMDemuxContext'
+    5 |     RMDemuxContext *rm = s->priv_data;
+      |     ^
+libavformat/rmdec.c:5:21: error: use of undeclared identifier 'rm'
+    5 |     RMDemuxContext *rm = s->priv_data;
+      |                     ^
+libavformat/rmdec.c:6:5: error: use of undeclared identifier 'AVIOContext'
+    6 |     AVIOContext *pb = s->pb;
+      |     ^
+libavformat/rmdec.c:6:18: error: use of undeclared identifier 'pb'
+    6 |     AVIOContext *pb = s->pb;
+      |                  ^
+libavformat/rmdec.c:7:5: error: use of undeclared identifier 'AVStream'
+    7 |     AVStream *st;
+      |     ^
+libavformat/rmdec.c:7:15: error: use of undeclared identifier 'st'
+    7 |     AVStream *st;
+      |               ^
+libavformat/rmdec.c:8:5: error: use of undeclared identifier 'uint32_t'
+    8 |     uint32_t state=0xFFFFFFFF;
+      |     ^
+libavformat/rmdec.c:10:12: error: use of undeclared identifier 'pb'
+   10 |     while(!pb->eof_reached){
+      |            ^
+libavformat/rmdec.c:12:15: error: call to undeclared function 'avio_tell'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   12 |         *pos= avio_tell(pb) - 3;
+      |               ^
+libavformat/rmdec.c:12:25: error: use of undeclared identifier 'pb'
+   12 |         *pos= avio_tell(pb) - 3;
+      |                         ^
+libavformat/rmdec.c:13:12: error: use of undeclared identifier 'rm'
+   13 |         if(rm->remaining_len > 0){
+      |            ^
+libavformat/rmdec.c:14:18: error: use of undeclared identifier 'rm'
+   14 |             num= rm->current_stream;
+      |                  ^
+libavformat/rmdec.c:15:18: error: use of undeclared identifier 'rm'
+   15 |             len= rm->remaining_len;
+      |                  ^
+libavformat/rmdec.c:16:26: error: use of undeclared identifier 'AV_NOPTS_VALUE'
+   16 |             *timestamp = AV_NOPTS_VALUE;
+      |                          ^
+libavformat/rmdec.c:19:13: error: use of undeclared identifier 'state'
+   19 |             state= (state<<8) + avio_r8(pb);
+      |             ^
+libavformat/rmdec.c:19:21: error: use of undeclared identifier 'state'; did you mean 'static'?
+   19 |             state= (state<<8) + avio_r8(pb);
+      |                     ^~~~~
+      |                     static
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make: *** [libavformat/rmdec.o] Error 1

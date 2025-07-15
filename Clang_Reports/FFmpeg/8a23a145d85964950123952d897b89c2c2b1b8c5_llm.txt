@@ -1,0 +1,149 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavformat/mov.o
+Detected Clang
+Makefile found. Make
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+[1m
+WARNING:  newer than config_components.h, rerun configure
+
+(B[mCC	libavformat/mov.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavformat/mov.c:57:
+In file included from ./libavcodec/mlp_parse.h:28:
+./libavcodec/get_bits.h:433:9: warning: Access to field 'l' results in a dereference of a null pointer [core.NullDereference]
+  433 |         UPDATE_CACHE_32(re, s);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:226:36: note: expanded from macro 'UPDATE_CACHE_32'
+  226 | # define UPDATE_CACHE_32(name, gb) UPDATE_CACHE_BE_32(name, (gb))
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:199:39: note: expanded from macro 'UPDATE_CACHE_BE_32'
+  199 | # define UPDATE_CACHE_BE_32(name, gb) UPDATE_CACHE_BE_EXT(name, (gb), 64, 32)
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:191:5: note: expanded from macro 'UPDATE_CACHE_BE_EXT'
+  191 |     AV_RB ## bits((gb)->buffer + (name ## _index >> 3)) << (name ## _index & 7) >> (bits - dst_bits)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+<scratch space>:226:1: note: expanded from here
+  226 | AV_RN64
+      | ^
+./libavutil/intreadwrite.h:366:23: note: expanded from macro 'AV_RN64'
+  366 | #   define AV_RN64(p) AV_RN(64, p)
+      |                       ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:222:24: note: expanded from macro 'AV_RN'
+  222 | #   define AV_RN(s, p) (((const union unaligned_##s *) (p))->l)
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavformat/mov.c:64:
+In file included from libavformat/dovi_isom.h:25:
+./libavutil/dovi_meta.h:210:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  210 |     return (AVDOVIRpuDataHeader *)((uint8_t *) data + data->header_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:216:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  216 |     return (AVDOVIDataMapping *)((uint8_t *) data + data->mapping_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:222:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  222 |     return (AVDOVIColorMetadata *)((uint8_t *) data + data->color_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1680:18: warning: Although the value stored to 'ret' is used in the enclosing expression, the value is never actually read from 'ret' [deadcode.DeadStores]
+ 1680 |             if ((ret = mov_read_mfra(c, pb)) < 0) {
+      |                  ^     ~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1691:50: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1691 |     c->frag_index.current = update_frag_index(c, c->fragment.moof_offset);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1756:20: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1756 |     st->duration = (version == 1) ? avio_rb64(pb) : avio_rb32(pb); /* duration */
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1785:19: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1785 |     c->duration = (version == 1) ? avio_rb64(pb) : avio_rb32(pb); /* duration */
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:4430:31: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 4430 |             sc->time_offset = start_time -  (uint64_t)empty_duration;
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:5712:47: warning: The left operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+ 5712 |         frag_stream_info->next_trun_dts = dts + sc->time_offset;
+      |                                           ~~~ ^
+libavformat/mov.c:6568:9: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+ 6568 |         ret = avio_skip(pb, 4); // zeroes
+      |         ^     ~~~~~~~~~~~~~~~~
+libavformat/mov.c:6619:33: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 6619 |             ret = avio_skip(pb, len);
+      |                                 ^~~
+12 warnings generated.
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavformat/mov.c:57:
+In file included from ./libavcodec/mlp_parse.h:28:
+./libavcodec/get_bits.h:433:9: warning: Access to field 'l' results in a dereference of a null pointer [core.NullDereference]
+  433 |         UPDATE_CACHE_32(re, s);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:226:36: note: expanded from macro 'UPDATE_CACHE_32'
+  226 | # define UPDATE_CACHE_32(name, gb) UPDATE_CACHE_BE_32(name, (gb))
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:199:39: note: expanded from macro 'UPDATE_CACHE_BE_32'
+  199 | # define UPDATE_CACHE_BE_32(name, gb) UPDATE_CACHE_BE_EXT(name, (gb), 64, 32)
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavcodec/get_bits.h:191:5: note: expanded from macro 'UPDATE_CACHE_BE_EXT'
+  191 |     AV_RB ## bits((gb)->buffer + (name ## _index >> 3)) << (name ## _index & 7) >> (bits - dst_bits)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+<scratch space>:226:1: note: expanded from here
+  226 | AV_RN64
+      | ^
+./libavutil/intreadwrite.h:366:23: note: expanded from macro 'AV_RN64'
+  366 | #   define AV_RN64(p) AV_RN(64, p)
+      |                       ^~~~~~~~~~~~
+./libavutil/intreadwrite.h:222:24: note: expanded from macro 'AV_RN'
+  222 | #   define AV_RN(s, p) (((const union unaligned_##s *) (p))->l)
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from libavformat/mov.c:64:
+In file included from libavformat/dovi_isom.h:25:
+./libavutil/dovi_meta.h:210:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  210 |     return (AVDOVIRpuDataHeader *)((uint8_t *) data + data->header_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:216:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  216 |     return (AVDOVIDataMapping *)((uint8_t *) data + data->mapping_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:222:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  222 |     return (AVDOVIColorMetadata *)((uint8_t *) data + data->color_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1680:18: warning: Although the value stored to 'ret' is used in the enclosing expression, the value is never actually read from 'ret' [deadcode.DeadStores]
+ 1680 |             if ((ret = mov_read_mfra(c, pb)) < 0) {
+      |                  ^     ~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1691:50: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1691 |     c->frag_index.current = update_frag_index(c, c->fragment.moof_offset);
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1756:20: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1756 |     st->duration = (version == 1) ? avio_rb64(pb) : avio_rb32(pb); /* duration */
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:1785:19: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1785 |     c->duration = (version == 1) ? avio_rb64(pb) : avio_rb32(pb); /* duration */
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:4430:31: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 4430 |             sc->time_offset = start_time -  (uint64_t)empty_duration;
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/mov.c:5712:47: warning: The left operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+ 5712 |         frag_stream_info->next_trun_dts = dts + sc->time_offset;
+      |                                           ~~~ ^
+libavformat/mov.c:6568:9: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+ 6568 |         ret = avio_skip(pb, 4); // zeroes
+      |         ^     ~~~~~~~~~~~~~~~~
+libavformat/mov.c:6619:33: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 6619 |             ret = avio_skip(pb, len);
+      |                                 ^~~
+12 warnings generated.

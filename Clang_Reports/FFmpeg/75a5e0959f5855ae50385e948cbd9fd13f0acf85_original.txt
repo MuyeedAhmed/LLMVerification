@@ -1,0 +1,41 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/ffmpeg.o
+clang output:
+fftools/ffmpeg.c:222:28: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  222 |             tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  223 |                              |INLCR|IGNCR|ICRNL|IXON);
+      |                              ~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:225:28: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  225 |             tty.c_lflag &= ~(ECHO|ECHONL|ICANON|IEXTEN);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:226:28: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  226 |             tty.c_cflag &= ~(CSIZE|PARENB);
+      |                            ^~~~~~~~~~~~~~~
+fftools/ffmpeg.c:401:21: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  401 |     FrameData *fd = (FrameData *)data;
+      |                     ^~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:428:39: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  428 |             const FrameData *fd_src = (const FrameData *)src->data;
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:463:29: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  463 |     return ret < 0 ? NULL : (FrameData*)frame->opaque_ref->data;
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:469:29: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  469 |     return ret < 0 ? NULL : (const FrameData*)frame->opaque_ref->data;
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:475:29: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  475 |     return ret < 0 ? NULL : (FrameData*)pkt->opaque_ref->data;
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg.c:481:29: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  481 |     return ret < 0 ? NULL : (const FrameData*)pkt->opaque_ref->data;
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+9 warnings generated.

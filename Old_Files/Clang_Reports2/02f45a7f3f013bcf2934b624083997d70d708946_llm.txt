@@ -1,0 +1,714 @@
+install prefix            /usr/local
+source path               .
+C compiler                gcc
+C library                 
+ARCH                      aarch64 (generic)
+big-endian                no
+runtime cpu detection     yes
+NEON enabled              yes
+DOTPROD enabled           yes
+I8MM enabled              yes
+SVE enabled               yes
+SVE2 enabled              yes
+debug symbols             yes
+strip symbols             yes
+optimize for size         no
+optimizations             yes
+static                    yes
+shared                    no
+network support           yes
+threading support         pthreads
+safe bitstream reader     yes
+texi2html enabled         no
+perl enabled              yes
+pod2man enabled           yes
+makeinfo enabled          yes
+makeinfo supports HTML    yes
+xmllint enabled           yes
+
+External libraries:
+appkit                  iconv                   libxcb_xfixes
+avfoundation            libxcb                  securetransport
+bzlib                   libxcb_shape            zlib
+coreimage               libxcb_shm
+
+External libraries providing hardware acceleration:
+audiotoolbox            cuda_llvm               videotoolbox
+
+Libraries:
+avcodec                 avformat                swscale
+avdevice                avutil
+avfilter                swresample
+
+Programs:
+ffmpeg                  ffprobe
+
+Enabled decoders:
+aac                     fic                     pgmyuv
+aac_at                  fits                    pgssub
+aac_fixed               flac                    pgx
+aac_latm                flashsv                 phm
+aasc                    flashsv2                photocd
+ac3                     flic                    pictor
+ac3_at                  flv                     pixlet
+ac3_fixed               fmvc                    pjs
+acelp_kelvin            fourxm                  png
+adpcm_4xm               fraps                   ppm
+adpcm_adx               frwu                    prores
+adpcm_afc               ftr                     prosumer
+adpcm_agm               g2m                     psd
+adpcm_aica              g723_1                  ptx
+adpcm_argo              g729                    qcelp
+adpcm_ct                gdv                     qdm2
+adpcm_dtk               gem                     qdm2_at
+adpcm_ea                gif                     qdmc
+adpcm_ea_maxis_xa       gremlin_dpcm            qdmc_at
+adpcm_ea_r1             gsm                     qdraw
+adpcm_ea_r2             gsm_ms                  qoa
+adpcm_ea_r3             gsm_ms_at               qoi
+adpcm_ea_xas            h261                    qpeg
+adpcm_g722              h263                    qtrle
+adpcm_g726              h263i                   r10k
+adpcm_g726le            h263p                   r210
+adpcm_ima_acorn         h264                    ra_144
+adpcm_ima_alp           hap                     ra_288
+adpcm_ima_amv           hca                     ralf
+adpcm_ima_apc           hcom                    rasc
+adpcm_ima_apm           hdr                     rawvideo
+adpcm_ima_cunning       hevc                    realtext
+adpcm_ima_dat4          hnm4_video              rka
+adpcm_ima_dk3           hq_hqa                  rl2
+adpcm_ima_dk4           hqx                     roq
+adpcm_ima_ea_eacs       huffyuv                 roq_dpcm
+adpcm_ima_ea_sead       hymt                    rpza
+adpcm_ima_iss           iac                     rscc
+adpcm_ima_moflex        idcin                   rtv1
+adpcm_ima_mtf           idf                     rv10
+adpcm_ima_oki           iff_ilbm                rv20
+adpcm_ima_qt            ilbc                    rv30
+adpcm_ima_qt_at         ilbc_at                 rv40
+adpcm_ima_rad           imc                     rv60
+adpcm_ima_smjpeg        imm4                    s302m
+adpcm_ima_ssi           imm5                    sami
+adpcm_ima_wav           indeo2                  sanm
+adpcm_ima_ws            indeo3                  sbc
+adpcm_ima_xbox          indeo4                  scpr
+adpcm_ms                indeo5                  screenpresso
+adpcm_mtaf              interplay_acm           sdx2_dpcm
+adpcm_psx               interplay_dpcm          sga
+adpcm_sbpro_2           interplay_video         sgi
+adpcm_sbpro_3           ipu                     sgirle
+adpcm_sbpro_4           jacosub                 sheervideo
+adpcm_swf               jpeg2000                shorten
+adpcm_thp               jpegls                  simbiosis_imx
+adpcm_thp_le            jv                      sipr
+adpcm_vima              kgv1                    siren
+adpcm_xa                kmvc                    smackaud
+adpcm_xmd               lagarith                smacker
+adpcm_yamaha            lead                    smc
+adpcm_zork              loco                    smvjpeg
+agm                     lscr                    snow
+aic                     m101                    sol_dpcm
+alac                    mace3                   sonic
+alac_at                 mace6                   sp5x
+alias_pix               magicyuv                speedhq
+als                     mdec                    speex
+amr_nb_at               media100                srgc
+amrnb                   metasound               srt
+amrwb                   microdvd                ssa
+amv                     mimic                   stl
+anm                     misc4                   subrip
+ansi                    mjpeg                   subviewer
+anull                   mjpegb                  subviewer1
+apac                    mlp                     sunrast
+ape                     mmvideo                 svq1
+apng                    mobiclip                svq3
+aptx                    motionpixels            tak
+aptx_hd                 movtext                 targa
+apv                     mp1                     targa_y216
+arbc                    mp1_at                  tdsc
+argo                    mp1float                text
+ass                     mp2                     theora
+asv1                    mp2_at                  thp
+asv2                    mp2float                tiertexseqvideo
+atrac1                  mp3                     tiff
+atrac3                  mp3_at                  tmv
+atrac3al                mp3adu                  truehd
+atrac3p                 mp3adufloat             truemotion1
+atrac3pal               mp3float                truemotion2
+atrac9                  mp3on4                  truemotion2rt
+aura                    mp3on4float             truespeech
+aura2                   mpc7                    tscc
+av1                     mpc8                    tscc2
+avrn                    mpeg1video              tta
+avrp                    mpeg2video              twinvq
+avs                     mpeg4                   txd
+avui                    mpegvideo               ulti
+bethsoftvid             mpl2                    utvideo
+bfi                     msa1                    v210
+bink                    mscc                    v210x
+binkaudio_dct           msmpeg4v1               v308
+binkaudio_rdft          msmpeg4v2               v408
+bintext                 msmpeg4v3               v410
+bitpacked               msnsiren                vb
+bmp                     msp2                    vble
+bmv_audio               msrle                   vbn
+bmv_video               mss1                    vc1
+bonk                    mss2                    vc1image
+brender_pix             msvideo1                vcr1
+c93                     mszh                    vmdaudio
+cavs                    mts2                    vmdvideo
+cbd2_dpcm               mv30                    vmix
+ccaption                mvc1                    vmnc
+cdgraphics              mvc2                    vnull
+cdtoons                 mvdv                    vorbis
+cdxl                    mvha                    vp3
+cfhd                    mwsc                    vp4
+cinepak                 mxpeg                   vp5
+clearvideo              nellymoser              vp6
+cljr                    notchlc                 vp6a
+cllc                    nuv                     vp6f
+comfortnoise            on2avc                  vp7
+cook                    opus                    vp8
+cpia                    osq                     vp9
+cri                     paf_audio               vplayer
+cscd                    paf_video               vqa
+cyuv                    pam                     vqc
+dca                     pbm                     vvc
+dds                     pcm_alaw                wady_dpcm
+derf_dpcm               pcm_alaw_at             wavarc
+dfa                     pcm_bluray              wavpack
+dfpwm                   pcm_dvd                 wbmp
+dirac                   pcm_f16le               wcmv
+dnxhd                   pcm_f24le               webp
+dolby_e                 pcm_f32be               webvtt
+dpx                     pcm_f32le               wmalossless
+dsd_lsbf                pcm_f64be               wmapro
+dsd_lsbf_planar         pcm_f64le               wmav1
+dsd_msbf                pcm_lxf                 wmav2
+dsd_msbf_planar         pcm_mulaw               wmavoice
+dsicinaudio             pcm_mulaw_at            wmv1
+dsicinvideo             pcm_s16be               wmv2
+dss_sp                  pcm_s16be_planar        wmv3
+dst                     pcm_s16le               wmv3image
+dvaudio                 pcm_s16le_planar        wnv1
+dvbsub                  pcm_s24be               wrapped_avframe
+dvdsub                  pcm_s24daud             ws_snd1
+dvvideo                 pcm_s24le               xan_dpcm
+dxa                     pcm_s24le_planar        xan_wc3
+dxtory                  pcm_s32be               xan_wc4
+dxv                     pcm_s32le               xbin
+eac3                    pcm_s32le_planar        xbm
+eac3_at                 pcm_s64be               xface
+eacmv                   pcm_s64le               xl
+eamad                   pcm_s8                  xma1
+eatgq                   pcm_s8_planar           xma2
+eatgv                   pcm_sga                 xpm
+eatqi                   pcm_u16be               xsub
+eightbps                pcm_u16le               xwd
+eightsvx_exp            pcm_u24be               y41p
+eightsvx_fib            pcm_u24le               ylc
+escape124               pcm_u32be               yop
+escape130               pcm_u32le               yuv4
+evrc                    pcm_u8                  zero12v
+exr                     pcm_vidc                zerocodec
+fastaudio               pcx                     zlib
+ffv1                    pdv                     zmbv
+ffvhuff                 pfm
+ffwavesynth             pgm
+
+Enabled encoders:
+a64multi                h264_videotoolbox       phm
+a64multi5               hdr                     png
+aac                     hevc_videotoolbox       ppm
+aac_at                  huffyuv                 prores
+ac3                     ilbc_at                 prores_aw
+ac3_fixed               jpeg2000                prores_ks
+adpcm_adx               jpegls                  prores_videotoolbox
+adpcm_argo              ljpeg                   qoi
+adpcm_g722              magicyuv                qtrle
+adpcm_g726              mjpeg                   r10k
+adpcm_g726le            mlp                     r210
+adpcm_ima_alp           movtext                 ra_144
+adpcm_ima_amv           mp2                     rawvideo
+adpcm_ima_apm           mp2fixed                roq
+adpcm_ima_qt            mpeg1video              roq_dpcm
+adpcm_ima_ssi           mpeg2video              rpza
+adpcm_ima_wav           mpeg4                   rv10
+adpcm_ima_ws            msmpeg4v2               rv20
+adpcm_ms                msmpeg4v3               s302m
+adpcm_swf               msrle                   sbc
+adpcm_yamaha            msvideo1                sgi
+alac                    nellymoser              smc
+alac_at                 opus                    snow
+alias_pix               pam                     speedhq
+amv                     pbm                     srt
+anull                   pcm_alaw                ssa
+apng                    pcm_alaw_at             subrip
+aptx                    pcm_bluray              sunrast
+aptx_hd                 pcm_dvd                 svq1
+ass                     pcm_f32be               targa
+asv1                    pcm_f32le               text
+asv2                    pcm_f64be               tiff
+avrp                    pcm_f64le               truehd
+avui                    pcm_mulaw               tta
+bitpacked               pcm_mulaw_at            ttml
+bmp                     pcm_s16be               utvideo
+cfhd                    pcm_s16be_planar        v210
+cinepak                 pcm_s16le               v308
+cljr                    pcm_s16le_planar        v408
+comfortnoise            pcm_s24be               v410
+dca                     pcm_s24daud             vbn
+dfpwm                   pcm_s24le               vc2
+dnxhd                   pcm_s24le_planar        vnull
+dpx                     pcm_s32be               vorbis
+dvbsub                  pcm_s32le               wavpack
+dvdsub                  pcm_s32le_planar        wbmp
+dvvideo                 pcm_s64be               webvtt
+dxv                     pcm_s64le               wmav1
+eac3                    pcm_s8                  wmav2
+exr                     pcm_s8_planar           wmv1
+ffv1                    pcm_u16be               wmv2
+ffvhuff                 pcm_u16le               wrapped_avframe
+fits                    pcm_u24be               xbm
+flac                    pcm_u24le               xface
+flashsv                 pcm_u32be               xsub
+flashsv2                pcm_u32le               xwd
+flv                     pcm_u8                  y41p
+g723_1                  pcm_vidc                yuv4
+gif                     pcx                     zlib
+h261                    pfm                     zmbv
+h263                    pgm
+h263p                   pgmyuv
+
+Enabled hwaccels:
+av1_videotoolbox        hevc_videotoolbox       mpeg4_videotoolbox
+h263_videotoolbox       mpeg1_videotoolbox      prores_videotoolbox
+h264_videotoolbox       mpeg2_videotoolbox      vp9_videotoolbox
+
+Enabled parsers:
+aac                     dvd_nav                 mpeg4video
+aac_latm                dvdsub                  mpegaudio
+ac3                     evc                     mpegvideo
+adx                     ffv1                    opus
+amr                     flac                    png
+apv                     ftr                     pnm
+av1                     g723_1                  qoi
+avs2                    g729                    rv34
+avs3                    gif                     sbc
+bmp                     gsm                     sipr
+cavsvideo               h261                    tak
+cook                    h263                    vc1
+cri                     h264                    vorbis
+dca                     hdr                     vp3
+dirac                   hevc                    vp8
+dnxhd                   ipu                     vp9
+dnxuc                   jpeg2000                vvc
+dolby_e                 jpegxl                  webp
+dpx                     misc4                   xbm
+dvaudio                 mjpeg                   xma
+dvbsub                  mlp                     xwd
+
+Enabled demuxers:
+aa                      idf                     pcm_s16le
+aac                     iff                     pcm_s24be
+aax                     ifv                     pcm_s24le
+ac3                     ilbc                    pcm_s32be
+ac4                     image2                  pcm_s32le
+ace                     image2_alias_pix        pcm_s8
+acm                     image2_brender_pix      pcm_u16be
+act                     image2pipe              pcm_u16le
+adf                     image_bmp_pipe          pcm_u24be
+adp                     image_cri_pipe          pcm_u24le
+ads                     image_dds_pipe          pcm_u32be
+adx                     image_dpx_pipe          pcm_u32le
+aea                     image_exr_pipe          pcm_u8
+afc                     image_gem_pipe          pcm_vidc
+aiff                    image_gif_pipe          pdv
+aix                     image_hdr_pipe          pjs
+alp                     image_j2k_pipe          pmp
+amr                     image_jpeg_pipe         pp_bnk
+amrnb                   image_jpegls_pipe       pva
+amrwb                   image_jpegxl_pipe       pvf
+anm                     image_pam_pipe          qcp
+apac                    image_pbm_pipe          qoa
+apc                     image_pcx_pipe          r3d
+ape                     image_pfm_pipe          rawvideo
+apm                     image_pgm_pipe          rcwt
+apng                    image_pgmyuv_pipe       realtext
+aptx                    image_pgx_pipe          redspark
+aptx_hd                 image_phm_pipe          rka
+apv                     image_photocd_pipe      rl2
+aqtitle                 image_pictor_pipe       rm
+argo_asf                image_png_pipe          roq
+argo_brp                image_ppm_pipe          rpl
+argo_cvg                image_psd_pipe          rsd
+asf                     image_qdraw_pipe        rso
+asf_o                   image_qoi_pipe          rtp
+ass                     image_sgi_pipe          rtsp
+ast                     image_sunrast_pipe      s337m
+au                      image_svg_pipe          sami
+av1                     image_tiff_pipe         sap
+avi                     image_vbn_pipe          sbc
+avr                     image_webp_pipe         sbg
+avs                     image_xbm_pipe          scc
+avs2                    image_xpm_pipe          scd
+avs3                    image_xwd_pipe          sdns
+bethsoftvid             ingenient               sdp
+bfi                     ipmovie                 sdr2
+bfstm                   ipu                     sds
+bink                    ircam                   sdx
+binka                   iss                     segafilm
+bintext                 iv8                     ser
+bit                     ivf                     sga
+bitpacked               ivr                     shorten
+bmv                     jacosub                 siff
+boa                     jpegxl_anim             simbiosis_imx
+bonk                    jv                      sln
+brstm                   kux                     smacker
+c93                     kvag                    smjpeg
+caf                     laf                     smush
+cavsvideo               lc3                     sol
+cdg                     live_flv                sox
+cdxl                    lmlm4                   spdif
+cine                    loas                    srt
+codec2                  lrc                     stl
+codec2raw               luodat                  str
+concat                  lvf                     subviewer
+data                    lxf                     subviewer1
+daud                    m4v                     sup
+dcstr                   matroska                svag
+derf                    mca                     svs
+dfa                     mcc                     swf
+dfpwm                   mgsts                   tak
+dhav                    microdvd                tedcaptions
+dirac                   mjpeg                   thp
+dnxhd                   mjpeg_2000              threedostr
+dsf                     mlp                     tiertexseq
+dsicin                  mlv                     tmv
+dss                     mm                      truehd
+dts                     mmf                     tta
+dtshd                   mods                    tty
+dv                      moflex                  txd
+dvbsub                  mov                     ty
+dvbtxt                  mp3                     usm
+dxa                     mpc                     v210
+ea                      mpc8                    v210x
+ea_cdata                mpegps                  vag
+eac3                    mpegts                  vc1
+epaf                    mpegtsraw               vc1t
+evc                     mpegvideo               vividas
+ffmetadata              mpjpeg                  vivo
+filmstrip               mpl2                    vmd
+fits                    mpsub                   vobsub
+flac                    msf                     voc
+flic                    msnwc_tcp               vpk
+flv                     msp                     vplayer
+fourxm                  mtaf                    vqf
+frm                     mtv                     vvc
+fsb                     musx                    w64
+fwse                    mv                      wady
+g722                    mvi                     wav
+g723_1                  mxf                     wavarc
+g726                    mxg                     wc3
+g726le                  nc                      webm_dash_manifest
+g729                    nistsphere              webvtt
+gdv                     nsp                     wsaud
+genh                    nsv                     wsd
+gif                     nut                     wsvqa
+gsm                     nuv                     wtv
+gxf                     obu                     wv
+h261                    ogg                     wve
+h263                    oma                     xa
+h264                    osq                     xbin
+hca                     paf                     xmd
+hcom                    pcm_alaw                xmv
+hevc                    pcm_f32be               xvag
+hls                     pcm_f32le               xwma
+hnm                     pcm_f64be               yop
+iamf                    pcm_f64le               yuv4mpegpipe
+ico                     pcm_mulaw
+idcin                   pcm_s16be
+
+Enabled muxers:
+a64                     h263                    pcm_s24be
+ac3                     h264                    pcm_s24le
+ac4                     hash                    pcm_s32be
+adts                    hds                     pcm_s32le
+adx                     hevc                    pcm_s8
+aea                     hls                     pcm_u16be
+aiff                    iamf                    pcm_u16le
+alp                     ico                     pcm_u24be
+amr                     ilbc                    pcm_u24le
+amv                     image2                  pcm_u32be
+apm                     image2pipe              pcm_u32le
+apng                    ipod                    pcm_u8
+aptx                    ircam                   pcm_vidc
+aptx_hd                 ismv                    psp
+apv                     ivf                     rawvideo
+argo_asf                jacosub                 rcwt
+argo_cvg                kvag                    rm
+asf                     latm                    roq
+asf_stream              lc3                     rso
+ass                     lrc                     rtp
+ast                     m4v                     rtp_mpegts
+au                      matroska                rtsp
+avi                     matroska_audio          sap
+avif                    md5                     sbc
+avm2                    microdvd                scc
+avs2                    mjpeg                   segafilm
+avs3                    mkvtimestamp_v2         segment
+bit                     mlp                     smjpeg
+caf                     mmf                     smoothstreaming
+cavsvideo               mov                     sox
+codec2                  mp2                     spdif
+codec2raw               mp3                     spx
+crc                     mp4                     srt
+dash                    mpeg1system             stream_segment
+data                    mpeg1vcd                streamhash
+daud                    mpeg1video              sup
+dfpwm                   mpeg2dvd                swf
+dirac                   mpeg2svcd               tee
+dnxhd                   mpeg2video              tg2
+dts                     mpeg2vob                tgp
+dv                      mpegts                  truehd
+eac3                    mpjpeg                  tta
+evc                     mxf                     ttml
+f4v                     mxf_d10                 uncodedframecrc
+ffmetadata              mxf_opatom              vc1
+fifo                    null                    vc1t
+filmstrip               nut                     voc
+fits                    obu                     vvc
+flac                    oga                     w64
+flv                     ogg                     wav
+framecrc                ogv                     webm
+framehash               oma                     webm_chunk
+framemd5                opus                    webm_dash_manifest
+g722                    pcm_alaw                webp
+g723_1                  pcm_f32be               webvtt
+g726                    pcm_f32le               wsaud
+g726le                  pcm_f64be               wtv
+gif                     pcm_f64le               wv
+gsm                     pcm_mulaw               yuv4mpegpipe
+gxf                     pcm_s16be
+h261                    pcm_s16le
+
+Enabled protocols:
+async                   http                    rtmpt
+cache                   httpproxy               rtmpts
+concat                  https                   rtp
+concatf                 icecast                 srtp
+crypto                  ipfs_gateway            subfile
+data                    ipns_gateway            tcp
+fd                      md5                     tee
+ffrtmphttp              mmsh                    tls
+file                    mmst                    udp
+ftp                     pipe                    udplite
+gopher                  prompeg                 unix
+gophers                 rtmp
+hls                     rtmps
+
+Enabled filters:
+a3dscope                colortemperature        noise
+aap                     compand                 normalize
+abench                  compensationdelay       null
+abitscope               concat                  nullsink
+acompressor             convolution             nullsrc
+acontrast               convolve                oscilloscope
+acopy                   copy                    overlay
+acrossfade              coreimage               pad
+acrossover              coreimagesrc            pal100bars
+acrusher                corr                    pal75bars
+acue                    crop                    palettegen
+addroi                  crossfeed               paletteuse
+adeclick                crystalizer             pan
+adeclip                 cue                     perlin
+adecorrelate            curves                  perms
+adelay                  datascope               photosensitivity
+adenorm                 dblur                   pixdesctest
+aderivative             dcshift                 pixelize
+adrawgraph              dctdnoiz                pixscope
+adrc                    deband                  premultiply
+adynamicequalizer       deblock                 prewitt
+adynamicsmooth          decimate                pseudocolor
+aecho                   deconvolve              psnr
+aemphasis               dedot                   qp
+aeval                   deesser                 random
+aevalsrc                deflate                 readeia608
+aexciter                deflicker               readvitc
+afade                   dejudder                realtime
+afdelaysrc              deshake                 remap
+afftdn                  despill                 removegrain
+afftfilt                detelecine              removelogo
+afir                    dialoguenhance          replaygain
+afireqsrc               dilation                reverse
+afirsrc                 displace                rgbashift
+aformat                 doubleweave             rgbtestsrc
+afreqshift              drawbox                 roberts
+afwtdn                  drawgraph               rotate
+agate                   drawgrid                scale
+agraphmonitor           drmeter                 scale2ref
+ahistogram              dynaudnorm              scale_vt
+aiir                    earwax                  scdet
+aintegral               ebur128                 scharr
+ainterleave             edgedetect              scroll
+alatency                elbg                    segment
+alimiter                entropy                 select
+allpass                 epx                     selectivecolor
+allrgb                  equalizer               sendcmd
+allyuv                  erosion                 separatefields
+aloop                   estdif                  setdar
+alphaextract            exposure                setfield
+alphamerge              extractplanes           setparams
+amerge                  extrastereo             setpts
+ametadata               fade                    setrange
+amix                    feedback                setsar
+amovie                  fftdnoiz                settb
+amplify                 fftfilt                 shear
+amultiply               field                   showcqt
+anequalizer             fieldhint               showcwt
+anlmdn                  fieldmatch              showfreqs
+anlmf                   fieldorder              showinfo
+anlms                   fillborders             showpalette
+anoisesrc               firequalizer            showspatial
+anull                   flanger                 showspectrum
+anullsink               floodfill               showspectrumpic
+anullsrc                format                  showvolume
+apad                    fps                     showwaves
+aperms                  framepack               showwavespic
+aphasemeter             framerate               shuffleframes
+aphaser                 framestep               shufflepixels
+aphaseshift             freezedetect            shuffleplanes
+apsnr                   freezeframes            sidechaincompress
+apsyclip                fsync                   sidechaingate
+apulsator               gblur                   sidedata
+arealtime               geq                     sierpinski
+aresample               gradfun                 signalstats
+areverse                gradients               silencedetect
+arls                    graphmonitor            silenceremove
+arnndn                  grayworld               sinc
+asdr                    greyedge                sine
+asegment                guided                  siti
+aselect                 haas                    smptebars
+asendcmd                haldclut                smptehdbars
+asetnsamples            haldclutsrc             sobel
+asetpts                 hdcd                    spectrumsynth
+asetrate                headphone               speechnorm
+asettb                  hflip                   split
+ashowinfo               highpass                ssim
+asidedata               highshelf               ssim360
+asisdr                  hilbert                 stereotools
+asoftclip               histogram               stereowiden
+aspectralstats          hqx                     streamselect
+asplit                  hstack                  superequalizer
+astats                  hsvhold                 surround
+astreamselect           hsvkey                  swaprect
+asubboost               hue                     swapuv
+asubcut                 huesaturation           tblend
+asupercut               hwdownload              telecine
+asuperpass              hwmap                   testsrc
+asuperstop              hwupload                testsrc2
+atadenoise              hysteresis              thistogram
+atempo                  identity                threshold
+atilt                   idet                    thumbnail
+atrim                   il                      tile
+avectorscope            inflate                 tiltandshift
+avgblur                 interleave              tiltshelf
+avsynctest              join                    tlut2
+axcorrelate             kirsch                  tmedian
+backgroundkey           lagfun                  tmidequalizer
+bandpass                latency                 tmix
+bandreject              lenscorrection          tonemap
+bass                    life                    tpad
+bbox                    limitdiff               transpose
+bench                   limiter                 transpose_vt
+bilateral               loop                    treble
+biquad                  loudnorm                tremolo
+bitplanenoise           lowpass                 trim
+blackdetect             lowshelf                unpremultiply
+blend                   lumakey                 unsharp
+blockdetect             lut                     untile
+blurdetect              lut1d                   v360
+bm3d                    lut2                    varblur
+bwdif                   lut3d                   vectorscope
+cas                     lutrgb                  vflip
+ccrepack                lutyuv                  vfrdet
+cellauto                mandelbrot              vibrance
+channelmap              maskedclamp             vibrato
+channelsplit            maskedmax               vif
+chorus                  maskedmerge             vignette
+chromahold              maskedmin               virtualbass
+chromakey               maskedthreshold         vmafmotion
+chromanr                maskfun                 volume
+chromashift             mcompand                volumedetect
+ciescope                median                  vstack
+codecview               mergeplanes             w3fdif
+color                   mestimate               waveform
+colorbalance            metadata                weave
+colorchannelmixer       midequalizer            xbr
+colorchart              minterpolate            xcorrelate
+colorcontrast           mix                     xfade
+colorcorrect            monochrome              xmedian
+colorhold               morpho                  xpsnr
+colorize                movie                   xstack
+colorkey                msad                    yadif
+colorlevels             multiply                yaepblur
+colormap                negate                  yuvtestsrc
+colorspace              nlmeans                 zoneplate
+colorspectrum           noformat                zoompan
+
+Enabled bsfs:
+aac_adtstoasc           h264_mp4toannexb        pgs_frame_merge
+apv_metadata            h264_redundant_pps      prores_metadata
+av1_frame_merge         hapqa_extract           remove_extradata
+av1_frame_split         hevc_metadata           setts
+av1_metadata            hevc_mp4toannexb        showinfo
+chomp                   imx_dump_header         text2movsub
+dca_core                media100_to_mjpegb      trace_headers
+dovi_rpu                mjpeg2jpeg              truehd_core
+dts2pts                 mjpega_dump_header      vp9_metadata
+dump_extradata          mov2textsub             vp9_raw_reorder
+dv_error_marker         mpeg2_metadata          vp9_superframe
+eac3_core               mpeg4_unpack_bframes    vp9_superframe_split
+evc_frame_merge         noise                   vvc_metadata
+extract_extradata       null                    vvc_mp4toannexb
+filter_units            opus_metadata
+h264_metadata           pcm_rechunk
+
+Enabled indevs:
+avfoundation            lavfi                   xcbgrab
+
+Enabled outdevs:
+audiotoolbox
+
+License: LGPL version 2.1 or later
+config.h is unchanged
+config_components.h is unchanged
+libavutil/avconfig.h is unchanged
+libavfilter/filter_list.c is unchanged
+libavcodec/codec_list.c is unchanged
+libavcodec/parser_list.c is unchanged
+libavcodec/bsf_list.c is unchanged
+libavformat/demuxer_list.c is unchanged
+libavformat/muxer_list.c is unchanged
+libavdevice/indev_list.c is unchanged
+libavdevice/outdev_list.c is unchanged
+libavformat/protocol_list.c is unchanged
+ffbuild/config.sh is unchanged
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavfilter/vf_gblur_vulkan.o
+In file included from libavfilter/vf_gblur_vulkan.c:25:
+In file included from ./libavutil/vulkan_spirv.h:22:
+In file included from ./libavutil/vulkan.h:29:
+In file included from ./libavutil/vulkan_functions.h:26:
+./libavutil/hwcontext_vulkan.h:25:10: fatal error: 'vulkan/vulkan.h' file not found
+   25 | #include <vulkan/vulkan.h>
+      |          ^~~~~~~~~~~~~~~~~
+1 error generated.
+make: *** [libavfilter/vf_gblur_vulkan.o] Error 1

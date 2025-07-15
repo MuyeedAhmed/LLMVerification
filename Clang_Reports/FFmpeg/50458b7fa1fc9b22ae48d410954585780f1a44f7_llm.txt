@@ -1,0 +1,34 @@
+Detected Clang
+Makefile found: building with bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/isom.o
+libavformat/isom.c:358:24: error: call to undeclared function 'avpriv_mpeg4audio_get_config'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  358 |             if ((ret = avpriv_mpeg4audio_get_config(&cfg, st->codecpar->extradata, st->codecpar->extradata_size * 8, 1)) < 0)
+      |                        ^
+libavformat/isom.c:358:24: note: did you mean 'avpriv_mpeg4audio_get_config2'?
+./libavcodec/mpeg4audio.h:67:5: note: 'avpriv_mpeg4audio_get_config2' declared here
+   67 | int avpriv_mpeg4audio_get_config2(MPEG4AudioConfig *c, const uint8_t *buf,
+      |     ^
+libavformat/isom.c:360:55: error: no member named 'channel_layout' in 'struct AVCodecParameters'
+  360 |             if (cfg.chan_config == 0 && st->codecpar->channel_layout) {
+      |                                         ~~~~~~~~~~~~  ^
+libavformat/isom.c:363:31: error: no member named 'channels' in 'struct AVCodecParameters'
+  363 |                 st->codecpar->channels = ff_mpeg4audio_channels[cfg.chan_config].channels;
+      |                 ~~~~~~~~~~~~  ^
+libavformat/isom.c:363:81: error: member reference base type 'const uint8_t' (aka 'const unsigned char') is not a structure or union
+  363 |                 st->codecpar->channels = ff_mpeg4audio_channels[cfg.chan_config].channels;
+      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+libavformat/isom.c:364:31: error: no member named 'channel_layout' in 'struct AVCodecParameters'
+  364 |                 st->codecpar->channel_layout = ff_mpeg4audio_channels[cfg.chan_config].layout;
+      |                 ~~~~~~~~~~~~  ^
+libavformat/isom.c:364:87: error: member reference base type 'const uint8_t' (aka 'const unsigned char') is not a structure or union
+  364 |                 st->codecpar->channel_layout = ff_mpeg4audio_channels[cfg.chan_config].layout;
+      |                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+6 errors generated.
+make: *** [libavformat/isom.o] Error 1
