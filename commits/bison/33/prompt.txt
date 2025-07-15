@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: static const char *symbol_tag (const symbol *sym), such that it The tag to show in the generated parsers.  Use "end of file" rather than "$end".  But keep "$end" in the reports, it's shorter and more consistent.  Support i18n if the user already uses it.. Provide only the functional implementation. Do not include any explaination or use case.

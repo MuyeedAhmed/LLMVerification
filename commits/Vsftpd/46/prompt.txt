@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: int vsf_sysdep_check_auth(struct mystr* p_user_str, const struct mystr* p_pass_str, const struct mystr* p_remote_host), such that it Call pam_get_item(PAM_USER) after authentication in case a PAM module remapped the username.. Provide only the functional implementation. Do not include any explaination or use case.

@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+don't try growing the table if it's already in progress in 
+int _ht_set_internal(hashtable_t *table, void *key, size_t klen, void *data, size_t dlen, void **prev_data, size_t *prev_len, int copy).

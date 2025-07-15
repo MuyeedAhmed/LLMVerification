@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void handle_upload_common(struct vsf_session* p_sess, int is_append, int is_unique), such that it Change "File receive OK." to "Transfer complete." to placate some broken clients.. Provide only the functional implementation. Do not include any explaination or use case.

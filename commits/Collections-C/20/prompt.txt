@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+Potential uninit memory access in 
+enum cc_stat cc_queue_new_conf(CC_QueueConf const * const conf, CC_Queue **q)

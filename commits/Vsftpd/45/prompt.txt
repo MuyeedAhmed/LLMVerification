@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void ssl_init(struct vsf_session* p_sess), such that it Apply patch to set SSL context timeout to maximum. Provide only the functional implementation. Do not include any explaination or use case.

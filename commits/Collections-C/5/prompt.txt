@@ -1,0 +1,5 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+fix memory leaks in
+enum cc_stat deque_trim_capacity(Deque *deque)
+and
+static enum cc_stat expand_capacity(Deque *deque)

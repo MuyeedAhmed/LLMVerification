@@ -1,0 +1,3 @@
+Modify the function in the provided old.c 
+such that it 
+fixes a use-after-free in the error handling in `static json_t *pack_object(scanner_t *s, va_list *ap)`.

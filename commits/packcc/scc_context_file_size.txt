@@ -1,0 +1,12 @@
+1/old.c 3833 lines of C code
+3/old.c 4399 lines of C code
+6/old.c 4465 lines of C code
+9/old.c 4788 lines of C code
+10/old.c 5442 lines of C code
+
+--- Statistics ---
+Total files: 5
+Min: 3833
+Max: 5442
+Mean: 4585.40
+Median: 4465

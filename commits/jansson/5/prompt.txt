@@ -1,0 +1,5 @@
+Implement a function: int json_string_set(const json_t *json, const char *value)
+such that it 
+Sets the associated value of *json* to *value*. *value* must be a
+   valid UTF-8 encoded Unicode string. Returns 0 on success and -1 on
+   error.

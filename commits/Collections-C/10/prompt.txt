@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+fix over allocation of ring_buffers in 
+enum cc_stat rbuf_conf_new(RbufConf *rconf, Rbuf **rbuf)

@@ -1,0 +1,3 @@
+Implement a function: size_t json_string_length(const json_t *string)
+such that it 
+returns the length of *string* in its UTF-8 presentation, or zero if *string* is not a JSON string.

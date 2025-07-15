@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: uniqstr symbol_list_n_type_name_get (symbol_list *l, int n), such that it Simplify accordingly. In particular, discards a (translated) useless error message.. Provide only the functional implementation. Do not include any explaination or use case.

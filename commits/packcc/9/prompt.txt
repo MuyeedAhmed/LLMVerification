@@ -1,0 +1,1 @@
+Modify the function: static const char *extract_filename(const char *path) , such that it Exclude '\\' and ':' as file path separators except for Windows

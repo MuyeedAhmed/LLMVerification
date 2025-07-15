@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+an integer overflow in array_add_at in
+bool array_add_at(Array *ar, void *element, size_t index)

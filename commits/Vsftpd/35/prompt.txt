@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void handle_feat(struct vsf_session* p_sess), such that it Only advertise "AUTH SSL" if one of SSLv2, SSLv3 is enabled.. Provide only the functional implementation. Do not include any explaination or use case.

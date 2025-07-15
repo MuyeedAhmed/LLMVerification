@@ -1,0 +1,4 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+Fixed a dangling pointer bug in 
+enum cc_stat treetable_iter_remove(TreeTableIter *iter, void **out)
+The treetable_iter_remove function would crash instead of correctly returning a CC_ERR_KEY_NOT_FOUND code on the second call.

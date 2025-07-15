@@ -1,0 +1,3 @@
+Implement a function: json_t *json_copy(json_t *json)
+such that it 
+Returns a shallow copy of *json*, or *NULL* on error.

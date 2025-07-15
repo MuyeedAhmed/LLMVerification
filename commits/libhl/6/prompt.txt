@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+there is no need to go through the entire table if we now it's now empty in 
+void ht_clear(hashtable_t *table)

@@ -1,0 +1,4 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+memory allocated to the buckets is unnecessarily large in 
+enum cc_stat hashtable_new_conf(HashTableConf const * const conf, HashTable **out)
+static enum cc_stat resize(HashTable *t, size_t new_capacity).

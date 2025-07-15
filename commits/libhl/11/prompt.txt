@@ -1,0 +1,4 @@
+Modify the function in the provided old.c such that it does the following: 
+fixed some potential bugs reported by the static analyzer in 
+binomial_tree_node_increase_key(binomial_tree_node_t *node, int incr)
+binomial_tree_node_destroy(binomial_tree_node_t *node).

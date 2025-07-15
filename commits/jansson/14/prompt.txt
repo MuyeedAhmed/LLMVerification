@@ -1,0 +1,3 @@
+Modify the function in the provided old.c 
+such that it 
+Fix an additional memory leak when memory allocation fails in `int json_object_set_new_nocheck(json_t *json, const char *key, json_t *value)`

@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: static ptrdiff_t escape_trigraphs (char *buffer, ptrdiff_t buffersize, const char *src), such that it Store in BUFFER a copy of SRC where trigraphs are escaped, return the size of the result (including the final NUL).  If called with BUFFERSIZE = 0, returns the needed size for BUFFER.. Provide only the functional implementation. Do not include any explaination or use case.

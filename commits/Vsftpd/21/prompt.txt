@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void process_post_login(struct vsf_session* p_sess), such that it Kill the FTP session if we see HTTP protocol commands, to avoid cross-protocol attacks.. Provide only the functional implementation. Do not include any explaination or use case.

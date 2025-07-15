@@ -1,0 +1,1 @@
+Modify the function: static bool_t parse(context_t *ctx), such that it fixes a null pointer dereference issue if there is only one rule and it contains sysntax error.

@@ -1,0 +1,4 @@
+Modify the function in the provided old.c 
+such that it 
+checks for and reject NaN and Inf values for reals in `json_t *json_real(double value)`. 
+Encoding these values resulted in invalid JSON.

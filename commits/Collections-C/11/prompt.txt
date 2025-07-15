@@ -1,0 +1,4 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+When the size of the array is 0, the variable j will become very large.
+When called, a segmentation fault will be triggered in 
+void array_reverse(Array *ar)

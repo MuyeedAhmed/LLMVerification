@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: staic void limits_init(void), such that it Use a larger address space limit if using text_userdb_names=YES. Provide only the functional implementation. Do not include any explaination or use case.

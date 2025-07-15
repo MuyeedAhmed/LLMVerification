@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void handle_user_command(struct vsf_session* p_sess), such that it Boot the session if we see a USER where encryption was required.. Provide only the functional implementation. Do not include any explaination or use case.

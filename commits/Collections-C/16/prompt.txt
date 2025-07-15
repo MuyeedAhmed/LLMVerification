@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+fails when element count is even in 
+void cc_array_reverse(CC_Array *ar)

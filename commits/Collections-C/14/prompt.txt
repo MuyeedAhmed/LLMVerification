@@ -1,0 +1,8 @@
+Implement a function in old.c: enum cc_stat cc_list_reduce(CC_List *list, void (*fn)(void *, void *, void *), void *result)
+such that it 
+acts as a fold/reduce function that collects all of the elements in the list
+together.
+@param[in] list the list on which this operation is performed
+@param[in] fn the operation function that is to be invoked on list array
+               element
+@param[in] result the pointer which will collect the end result

@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void vsf_sysutil_activate_linger(int fd), such that it Use 10 minutes as a max linger time just in case an alarm gets lost.. Provide only the functional implementation. Do not include any explaination or use case.

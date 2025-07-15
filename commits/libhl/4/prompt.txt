@@ -1,0 +1,5 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+linklist: handle NULL returns from pick_tagged_value()
+Parallel list modification could allow pick_tagged_value() to return
+NULL.  Check this condition to prevent segfaults in 
+tagged_value_t *get_tagged_value(linked_list_t *list, char *tag)

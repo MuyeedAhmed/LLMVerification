@@ -1,0 +1,4 @@
+Implement a function: int json_integer_set(const json_t *json, int value)
+such that it 
+Sets the associated value of *json* to *value*. Returns 0 on
+   success and -1 if *json* is not a JSON integer.

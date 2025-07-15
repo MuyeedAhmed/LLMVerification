@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: static long ssl_sni_callback(SSL* p_ssl, int* p_al, void* p_arg), such that it Add ssl_sni_hostname option to require a match on incoming SNI hostname.. Provide only the functional implementation. Do not include any explaination or use case.

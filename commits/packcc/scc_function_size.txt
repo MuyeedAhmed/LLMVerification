@@ -1,0 +1,12 @@
+1/human.c 22 lines of C code
+3/human.c 138 lines of C code
+6/human.c 5 lines of C code
+9/human.c 12 lines of C code
+10/human.c 55 lines of C code
+
+--- Statistics ---
+Total files: 5
+Min: 5
+Max: 138
+Mean: 46.40
+Median: 22

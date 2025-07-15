@@ -1,0 +1,3 @@
+Modify the function in the provided old.c 
+such that it 
+Checks that target is a string and value is not NULL in `int json_string_set_nocheck(json_t *json, const char *value)`.

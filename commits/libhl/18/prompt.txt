@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it does the following: 
+fixed a minor leak in a fault path in 
+int queue_push_right(queue_t *q, void *value).

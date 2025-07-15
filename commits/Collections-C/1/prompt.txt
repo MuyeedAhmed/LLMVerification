@@ -1,0 +1,8 @@
+Implement a function in new.c: void *remove_null_key(HashTable *table) 
+such that it 
+Removes a NULL key mapping from the specified hash table and returns the
+value that was mapped to the NULL key. In case the NULL key doesn't exist
+NULL is returned. NULL might also be returned if a NULL key is mapped to a
+NULL value.
+@param[in] table the table from which the NULL key mapping is being removed
+@return the value associated with the NULL key, or NULL if the NULL key was not mapped

@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it does the following: 
+minor-fix : ensure null-terminating the buffer after a copy in 
+fbuf_copy(fbuf_t *fbufsrc, fbuf_t *fbufdst).

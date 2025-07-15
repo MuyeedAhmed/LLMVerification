@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+Fixing an off-by-one bug in 
+enum cc_stat array_remove_at(Array *ar, size_t index, void **out)

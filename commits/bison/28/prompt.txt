@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void grammar_rule_check_and_complete (symbol_list *r), such that it Generate the actions of the rules for each start symbol. For each start symbol, build the action of its start rule.  Use the same obstack as the one used by scan-code, which is in charge of actions.. Provide only the functional implementation. Do not include any explaination or use case.

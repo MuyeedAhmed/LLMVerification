@@ -1,0 +1,5 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+we need to traverse the whole table because there might be empty lists
+because keys might have been removed during the table lifespan and on deletion
+lists are not released but kept for future use in 
+void ht_clear(hashtable_t *table)

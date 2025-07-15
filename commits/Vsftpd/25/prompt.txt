@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: int str_all_space(const struct mystr* p_str), such that it Check if the input string contains spaces only. Return 1 if the string only contains spaces, 0 otherwise.. Provide only the functional implementation. Do not include any explaination or use case.

@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static int ssl_alpn_callback(SSL* p_ssl, const unsigned char** p_out,unsigned char* outlen, const unsigned char* p_in, unsigned int inlen, void* p_arg), such that it Fix ALPN callback to correctly select the 'ftp' string if present. Works with FileZilla-3.55.0. Look for "3FTP" in p_in.. Provide only the functional implementation. Do not include any explaination or use case.

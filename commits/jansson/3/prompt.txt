@@ -1,0 +1,3 @@
+Implement a function: int json_object_clear(json_t *json) such that it Remove all elements from *json*. Returns 0 on success and -1 if
+   *json* is not a JSON object. The reference count of all removed
+   values are decremented.

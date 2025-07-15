@@ -1,0 +1,6 @@
+Implement a function: int json_object_update_existing(json_t *object, json_t *other)
+such that it 
+updates *object* with the key-value pairs from *other*, overwriting
+   existing keys. but only the values of existing
+   keys are updated. No new keys are created. Returns 0 on success or
+   -1 on error.

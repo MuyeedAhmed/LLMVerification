@@ -1,0 +1,33 @@
+21/old.c 1823 lines of C code
+22/old.c 1823 lines of C code
+23/old.c 598 lines of C code
+24/old.c 2520 lines of C code
+25/old.c 581 lines of C code
+26/old.c 577 lines of C code
+27/old.c 863 lines of C code
+28/old.c 749 lines of C code
+29/old.c 749 lines of C code
+30/old.c 594 lines of C code
+31/old.c 149 lines of C code
+32/old.c 2554 lines of C code
+33/old.c 339 lines of C code
+34/old.c 466 lines of C code
+35/old.c 37 lines of C code
+36/old.c 1799 lines of C code
+37/old.c 108 lines of C code
+38/old.c 2529 lines of C code
+39/old.c 240 lines of C code
+40/old.c 276 lines of C code
+41/old.c 189 lines of C code
+42/old.c 1734 lines of C code
+43/old.c 325 lines of C code
+44/old.c 715 lines of C code
+45/old.c 715 lines of C code
+46/old.c 1124 lines of C code
+
+--- Statistics ---
+Total files: 26
+Min: 37
+Max: 2554
+Mean: 929.85
+Median: 656.5

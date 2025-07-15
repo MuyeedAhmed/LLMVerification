@@ -1,0 +1,1 @@
+Modify the function: static void char_array__init(char_array_t *array, size_t max), such that it Modify the initialization functions of arrays, tables, etc. Now, they initialize objects without memory allocation.

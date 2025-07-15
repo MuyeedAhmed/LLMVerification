@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it does the following: 
+bugfix: ensure resetting the skip pointer when shifting the data back to the beginning of the buffer in 
+fbuf_remove(fbuf_t *fbuf, unsigned int len). 

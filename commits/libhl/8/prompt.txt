@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+if the table is being grown let's acquire a lock on the bucket we are accessing before releasing the table lock in 
+int _ht_set_internal(hashtable_t *table, void *key, size_t klen, void *data, size_t dlen, void **prev_data, size_t *prev_len, int copy).

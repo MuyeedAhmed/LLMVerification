@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void state_items_report (FILE *out), such that it issue two '\n' at their end.. Provide only the functional implementation. Do not include any explaination or use case.

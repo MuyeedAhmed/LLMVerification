@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: int str_getline(const struct mystr* p_str, struct mystr* p_line_str, unsigned int* p_pos), such that it Add an integer overflow checks for curr_pos.. Provide only the functional implementation. Do not include any explaination or use case.

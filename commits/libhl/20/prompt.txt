@@ -1,0 +1,4 @@
+Modify the function in the provided old.c such that it does the following: 
+fixed a memory leak triggered by a fault path
+the node was overretained in 
+int queue_push_right(queue_t *q, void *value).

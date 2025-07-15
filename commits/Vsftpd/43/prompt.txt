@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: enum EVSFPrivopLoginResult vsf_privop_do_login(struct vsf_session* p_sess, const struct mystr* p_pass_str), such that it Do the login fail delay in the parent process for cases where we checked a username / password.. Provide only the functional implementation. Do not include any explaination or use case.

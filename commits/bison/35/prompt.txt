@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void symbol_user_token_number_set (symbol *sym, int user_token_number, location loc), such that it Don’t allow user_token_number == INT_MAX because too much other code adds 1 to the user token number. Provide only the functional implementation. Do not include any explaination or use case.

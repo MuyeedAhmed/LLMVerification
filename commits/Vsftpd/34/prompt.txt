@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void handle_sigchld(void* duff), such that it Child died, so we'll do the same! Report it as an error unless the child exited normally with zero exit code. Provide only the functional implementation. Do not include any explaination or use case.

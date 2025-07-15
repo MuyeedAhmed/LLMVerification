@@ -1,0 +1,4 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+fixed a race condition introduced after switching to the atomic builtins to handle the table size in 
+void *ht_set(hashtable_t *table, char *key, void *data)
+uint32_t ht_count(hashtable_t *table)

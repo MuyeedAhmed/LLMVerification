@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void control_getline(struct mystr* p_str, struct vsf_session* p_sess), such that it Boot the session if an overly long line is encountered.. Provide only the functional implementation. Do not include any explaination or use case.

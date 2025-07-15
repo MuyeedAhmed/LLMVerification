@@ -1,0 +1,9 @@
+Modify the function in the provided old.c such that it does the following: 
+store/return the length of the value when inserting/pulling into/from a priority queue in 
+typedef struct {
+    void *value;
+    int32_t prio;
+} pqueue_item_t;
+pqueue_insert(pqueue_t *pq, int32_t prio, void *value)
+pqueue_pull_highest(pqueue_t *pq, void **value, int32_t *prio)
+pqueue_pull_lowest(pqueue_t *pq, void **value, int32_t *prio).

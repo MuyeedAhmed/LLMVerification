@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: int vsf_ftpdataio_post_mark_connect(struct vsf_session* p_sess), such that it Kill the FTP session if we see session re-use failure.. Provide only the functional implementation. Do not include any explaination or use case.

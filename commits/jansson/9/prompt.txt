@@ -1,0 +1,4 @@
+Modify the function in the provided old.c 
+such that it 
+Uses ``int32_t`` internally for representing Unicode code points
+    (int is not enough on all platforms) in static int32_t decode_unicode_escape(const char *str)

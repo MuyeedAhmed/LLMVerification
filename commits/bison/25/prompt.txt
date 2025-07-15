@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void lssi_print (lssi *l), such that it Restore missing end-of-lines in the output.. Provide only the functional implementation. Do not include any explaination or use case.

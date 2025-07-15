@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: static char *xescape_trigraphs (const char *src), such that it Same as xstrdup, except that trigraphs are escaped.. Provide only the functional implementation. Do not include any explaination or use case.

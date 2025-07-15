@@ -1,0 +1,3 @@
+Modify the function in the provided old.c 
+such that it 
+fixes a theoretical integer overflow in `jsonp_strdup()`.

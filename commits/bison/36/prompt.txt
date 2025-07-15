@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static void symbols_token_translations_init (void), such that it Complain on integer overflow instead of indulging in undefined behavior. If user_token_number == SER_NUMBER_UNDEFINED, complain it is too large and set it to max. Provide only the functional implementation. Do not include any explaination or use case.

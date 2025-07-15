@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+This function does not remove the element that was last returned by deque_iter_next. It removes the next item in 
+enum cc_stat cc_deque_iter_remove(CC_DequeIter *iter, void **out)

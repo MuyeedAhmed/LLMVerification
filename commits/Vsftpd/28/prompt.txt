@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: static int ssl_alpn_callback(SSL* p_ssl, const unsigned char** p_out, unsigned char* outlen, const unsigned char* p_in, unsigned int inlen, void* p_arg), such that it Reject any TLS ALPN advertisement that's not 'ftp'.. Provide only the functional implementation. Do not include any explaination or use case.

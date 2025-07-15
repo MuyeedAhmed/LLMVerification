@@ -1,0 +1,8 @@
+Implement a function in old.c: int ht_exists(hashtable_t *table, void *key, size_t klen)
+such that it 
+allow checking (atomically) for the existence of a key in the hashtable
+without actually retrieving the key
+@param table : A valid pointer to an hashtable_t structure
+@param key   : The key to use
+@param klen  : The length of the key
+@return 1 If the key exists, 0 if it doesn't exist and -1 in case of error"

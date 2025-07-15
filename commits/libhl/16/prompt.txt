@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it does the following: 
+fixed a potential race condition in 
+static inline list_entry_t *pick_entry(linked_list_t *list, uint32_t pos).

@@ -1,0 +1,7 @@
+Implement a function: void *json_object_iter_at(json_t *json, const char *key)
+such that it 
+returns an iterator to the
+   key-value pair in *json* whose key is equal to *key*, or NULL if
+   *key* is not found in *json*. Iterating forward to the end of
+   *json* only yields all key-value pairs of the object if *key*
+   happens to be the first key in the underlying hash table.

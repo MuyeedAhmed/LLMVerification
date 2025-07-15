@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+ensure updating the position of the cursor if removing an item preceding it in 
+static inline list_entry_t *shift_entry(linked_list_t *list)

@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void ritem_print (FILE *out), such that it remove useless reference to 'int' in integral types. Provide only the functional implementation. Do not include any explaination or use case.

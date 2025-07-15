@@ -1,0 +1,2 @@
+Actual prompt:
+Implement a function in the provided old.c: static void start_symbols_output (FILE *out), such that it Define the list of start symbols *if* there are several. Define them by pairs: [START-SYMBOL-NUM, SWITCHING-TOKEN-SYMBOL-NUM].. Provide only the functional implementation. Do not include any explaination or use case.

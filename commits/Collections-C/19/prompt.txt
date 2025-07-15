@@ -1,0 +1,6 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+the functions tree_min and tree_max try to go through the treetable from the given node until finding a sentinel. 
+However, when the function receives a sentinel, It will try to go to its children, which have been allocated with calloc to 0. 
+As the children do not correspond to the sentinel, they will try to be dereferenced, causing a segfault. in 
+static INLINE RBNode *tree_min(CC_TreeTable const * const table, RBNode *n)
+static INLINE RBNode *tree_max(CC_TreeTable const * const table, RBNode *n)

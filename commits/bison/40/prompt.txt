@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void uniqstr_assert (char const *str), such that it Really make sure str is a uniqstr, not just whether some uniqstr with the same content was registered. Provide only the functional implementation. Do not include any explaination or use case.

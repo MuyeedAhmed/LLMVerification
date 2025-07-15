@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void str_list_add(struct mystr_list* p_list, const struct mystr* p_str, const struct mystr* p_sort_key_str), such that it Kill the session if string list is over the limit (kMaxStrlist). Provide only the functional implementation. Do not include any explaination or use case.

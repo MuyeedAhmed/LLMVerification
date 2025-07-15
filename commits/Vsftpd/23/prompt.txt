@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void private_str_alloc_memchunk(struct mystr* p_str, const char* p_src, unsigned int len), such that it Checked if there is integer overflow for the variable buf_needed. Provide only the functional implementation. Do not include any explaination or use case.

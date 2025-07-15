@@ -1,0 +1,5 @@
+Modify the function in the provided old.c such that it fixes the following issue: 
+The deque_remove_at function was returning an incorrect
+element in certain situations. The correct element is the
+one at index `p` in 
+enum cc_stat cc_deque_remove_at(CC_Deque *deque, size_t index, void **out)

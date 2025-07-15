@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void grammar_rules_useless_report (const char *message), such that it Don't complain about useless rules whose lhs is useless.. Provide only the functional implementation. Do not include any explaination or use case.

@@ -1,0 +1,7 @@
+new.c:58:21: warning: Array access (via field 'p_buf') results in a null pointer dereference [core.NullDereference]
+   58 |   p_str->p_buf[len] = '\0';
+      |          ~~~~~      ^
+new.c:83:34: warning: Array access (via field 'p_buf') results in a null pointer dereference [core.NullDereference]
+   83 |   p_str->p_buf[p_str->len + len] = '\0';
+      |          ~~~~~                   ^
+2 warnings generated.

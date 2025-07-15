@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: static char *define_directive (char const *assignment, muscle_kind kind, char const *value), such that it Use the proper value passing syntax, based on the muscle kind.. Provide only the functional implementation. Do not include any explaination or use case.

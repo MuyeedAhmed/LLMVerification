@@ -1,0 +1,31 @@
+21/human.c 153 lines of C code
+22/human.c 153 lines of C code
+23/human.c 17 lines of C code
+24/human.c 52 lines of C code
+25/human.c 14 lines of C code
+26/human.c 62 lines of C code
+27/human.c 16 lines of C code
+28/human.c 106 lines of C code
+29/human.c 36 lines of C code
+30/human.c 22 lines of C code
+31/human.c 36 lines of C code
+32/human.c 8 lines of C code
+33/human.c 12 lines of C code
+34/human.c 59 lines of C code
+35/human.c 26 lines of C code
+36/human.c 42 lines of C code
+37/human.c 23 lines of C code
+38/human.c 20 lines of C code
+39/human.c 73 lines of C code
+40/human.c 11 lines of C code
+41/human.c 41 lines of C code
+42/human.c 5 lines of C code
+43/human.c 9 lines of C code
+44/human.c 12 lines of C code
+
+--- Statistics ---
+Total files: 24
+Min: 5
+Max: 153
+Mean: 42.00
+Median: 24.5

@@ -1,0 +1,5 @@
+Implement a function: int json_equal(json_t *json1, json_t *json2)
+such that it 
+Returns 1 if *json1* and *json2* are equal, as defined above.
+   Returns 0 if they are unequal or one or both of the pointers are
+   *NULL*.

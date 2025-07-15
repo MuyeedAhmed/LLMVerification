@@ -1,0 +1,1 @@
+Modify the function in the provided old.c such that it fixes the following issue: Check for integer and real overflows and underflows in static void lex_scan_number(lex_t *lex, char c, json_error_t *error)

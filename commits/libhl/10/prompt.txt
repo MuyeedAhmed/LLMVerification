@@ -1,0 +1,3 @@
+Modify the function in the provided old.c such that it does the following: 
+ensure incrementing the growing counter earlier, before unsetting the list at the same index in 
+void ht_grow_table(hashtable_t *table)

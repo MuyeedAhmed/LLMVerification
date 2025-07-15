@@ -1,0 +1,2 @@
+Actual prompt:
+Modify the function in the provided old.c: void symbol_make_alias (symbol *sym, symbol *str, location loc), such that it Don't accept to alias non-terminals.. Provide only the functional implementation. Do not include any explaination or use case.
