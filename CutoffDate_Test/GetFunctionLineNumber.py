@@ -50,6 +50,7 @@ def find_function_range(lines, target_name):
 
 def process_entry(base_dir, commit_hash, function_name):
     commit_dir = os.path.join(base_dir, commit_hash)
+    file_line = 0
     if not os.path.isdir(commit_dir):
         print(f"Missing directory: {commit_dir}")
         return None
@@ -65,9 +66,10 @@ def process_entry(base_dir, commit_hash, function_name):
             with open(full_path, "r", encoding="utf-8", errors="ignore") as f:
                 lines = f.readlines()
             orig_start, orig_end = find_function_range(lines, function_name)
+            file_line = len(lines)
 
     if llm_start and llm_end and orig_start and orig_end:
-        return (llm_start, llm_end, orig_start, orig_end)
+        return (llm_start, llm_end, orig_start, orig_end, file_line)
 
     print(f"Function {function_name} not found in {commit_hash}")
     return None
@@ -92,13 +94,14 @@ def main():
         res = process_entry(base_dir, commit, func)
         # print(commit, res)
         if res:
-            llm_start, llm_end, orig_start, orig_end = res
+            llm_start, llm_end, orig_start, orig_end, file_line = res
             results.append({
                 "Commit Hash": commit,
                 "llm_start": llm_start,
                 "llm_end": llm_end,
                 "orig_start": orig_start,
-                "orig_end": orig_end
+                "orig_end": orig_end,
+                "file_line": file_line
             })
 
     result_df = pd.DataFrame(results)

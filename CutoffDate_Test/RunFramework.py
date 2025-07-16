@@ -3,8 +3,9 @@ from openpyxl import Workbook
 import os
 import pandas as pd
 
+# from RunClang import RunClang
 
-def GetCommitInfo(gitInfo, commit):
+def GetCommitInfo(gitInfo, commit, FileStorePath, filtered_commits):
     message = gitInfo.GetCommitMessages(commit)
     if message is None:
         return
@@ -12,10 +13,34 @@ def GetCommitInfo(gitInfo, commit):
     changed_files = gitInfo.GetChangedFiles(commit)
     diff, changed_functions = gitInfo.GetChangedFunctions(commit)
     changed_function = ",".join(changed_functions)
+    prompt = f"Modify the function in the provided C file such that it fixes the following issue: {message} in {changed_function}\nGive me the edited function."
     line_changes = gitInfo.GetTotalLineChanges(commit)
 
+    if line_changes > 15:
+        # print(f"Commit {commit} has {line_changes} line changes, skipping commit.")
+        return
+    if len(changed_functions) != 1:
+        # print(f"Commit {commit} has {len(changed_functions)} changed functions.")
+        return
+    if len(message.split(" ")) < 10:
+        # print(f"Commit message for {commit} is too short, skipping commit.")
+        return
+
+    if len(changed_files) != 1:
+        # print(f"Multiple changed files detected for commit {commit}: {changed_files}")
+        return
+    if ".c" not in changed_files[0]:
+        # print(f"Changed file {changed_files[0]} is not a C file, skipping commit {commit}.")
+        return
+    
+    filtered_commits.append((commit, commit_date, message, prompt, changed_files[0], changed_function, line_changes))
+    
+    # dest_dir = os.path.join(FileStorePath, commit)
+    # os.makedirs(dest_dir, exist_ok=True)
+    # gitInfo.CopyChangedFilesFromCommit(commit, dest_dir)
+    # gitInfo.CopyChangedFilesFromParent(commit, dest_dir)
+
     # gitInfo.gitCheckoutMaster()
-    return message, commit_date, changed_files, changed_function, line_changes
 
 def GetGitInfo(github_link, project, start_date=None, end_date=None, commit_hash = None, commit_count=1):
     projects_dir = "Projects"
@@ -58,22 +83,15 @@ def GetGitInfo(github_link, project, start_date=None, end_date=None, commit_hash
 if __name__ == "__main__":
     github_link = "https://github.com/FFmpeg/FFmpeg.git"
     project = "FFmpeg"
-    repo_path = os.path.join("Projects", project)
-    gitInfo = ExtractGitInfo(github_link, repo_path)
 
-    AllCommits = pd.read_excel(f"ExcelFiles/{project}_Select.xlsx", sheet_name=project)
-    AllCommits["Line Changes"] = 0
-    AllCommits["Message Len"] = 0
-    for commit_hash in AllCommits["Commit Hash"].values:
-        row_idx = AllCommits["Commit Hash"] == commit_hash
+    GetGitInfo(github_link, project, start_date="2025-01-01", end_date="2025-06-01", commit_count=5000)
 
-        message = AllCommits.loc[row_idx, "Commit Description"].values[0]
-        AllCommits.loc[row_idx, "Message Len"] = len(message.split(" "))
+    # AllCommits = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
 
-        message, commit_date, changed_files, changed_function, line_changes = GetCommitInfo(gitInfo, commit_hash)
-        AllCommits.loc[row_idx, "Line Changes"] = line_changes
-        AllCommits.loc[row_idx, "Functions Changed"] = changed_function
-
-    AllCommits.to_excel(f"ExcelFiles/{project}_Select.xlsx", index=False, sheet_name="Commits")
-
+    # for commit_hash in AllCommits["Commit Hash"].values:
+    #     commit_df = AllCommits[AllCommits["Commit Hash"] == commit_hash]
+    #     message = commit_df["Commit Message"].values[0]
+    #     change_file_dir = commit_df["Changed File"].values[0]
+    #     changed_function = commit_df["Changed Functions"].values[0]
         
+    #     RunClang(project, commit_hash, change_file_dir)
