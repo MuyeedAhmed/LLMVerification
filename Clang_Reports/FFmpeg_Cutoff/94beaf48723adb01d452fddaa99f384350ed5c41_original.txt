@@ -1,0 +1,21 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/videotoolboxenc.o
+clang output:
+libavcodec/videotoolboxenc.c:1262:24: warning: Potential leak of an object stored into 'bit_rate_num' [osx.cocoa.RetainCount]
+ 1262 |         bit_rate_num = CFNumberCreate(kCFAllocatorDefault,
+      |                        ^
+libavcodec/videotoolboxenc.c:2502:19: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2502 |         *cv_img = (CVPixelBufferRef)frame->data[3];
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/videotoolboxenc.c:2557:32: warning: Null passed to a callee that requires a non-null 1st parameter [nullability.NullPassedToNonnull]
+ 2557 |                 pix_buf_pool = VTCompressionSessionGetPixelBufferPool(vtctx->session);
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3 warnings generated.

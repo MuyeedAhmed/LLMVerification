@@ -1,0 +1,33 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/ffmpeg_filter.o
+clang output:
+fftools/ffmpeg_filter.c:265:25: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  265 |     FilterCommand *fc = (FilterCommand*)data;
+      |                         ^~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_filter.c:1985:53: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1985 |         avfilter_graph_set_auto_convert(fgt->graph, AVFILTER_AUTO_CONVERT_NONE);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_filter.c:2676:35: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 2676 |     while (fgp->nb_outputs_done < fg->nb_outputs) {
+      |                                   ^~~~~~~~~~~~~~
+fftools/ffmpeg_filter.c:2779:38: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2779 |     sub2video_update(ifp, INT64_MIN, (const AVSubtitle*)frame->buf[0]->data);
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_filter.c:3095:9: warning: Value stored to 'o' is never read [deadcode.DeadStores]
+ 3095 |         o = (intptr_t)fgt.frame->opaque;
+      |         ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_filter.c:3105:18: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 3105 |             fc = (FilterCommand*)fgt.frame->buf[0]->data;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fftools/ffmpeg_filter.c:3199:24: warning: Using a fixed address is not portable because that address will probably not be valid in all environments or platforms [alpha.core.FixedAddr]
+ 3199 |     fgp->frame->opaque = (void*)(intptr_t)FRAME_OPAQUE_SEND_COMMAND;
+      |                        ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+7 warnings generated.

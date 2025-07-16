@@ -1,0 +1,59 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/hevc/hevcdec.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavcodec/hevc/hevcdec.c:43:
+./libavcodec/cabac_functions.h:217:5: warning: Returned pointer value points outside the original object (potential buffer overflow) [alpha.security.ReturnPtrRange]
+  217 |     return ptr;
+      |     ^~~~~~~~~~
+In file included from libavcodec/hevc/hevcdec.c:49:
+In file included from libavcodec/hevc/hevcdec.h:34:
+In file included from ./libavcodec/dovi_rpu.h:27:
+./libavutil/dovi_meta.h:357:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  357 |     return (AVDOVIRpuDataHeader *)((uint8_t *) data + data->header_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:363:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  363 |     return (AVDOVIDataMapping *)((uint8_t *) data + data->mapping_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:369:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  369 |     return (AVDOVIColorMetadata *)((uint8_t *) data + data->color_offset);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./libavutil/dovi_meta.h:375:12: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  375 |     return (AVDOVIDmData *)((uint8_t *) data + data->ext_block_offset +
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  376 |                             data->ext_block_size * index);
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:180:30: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  180 |     luma_log2_weight_denom = get_ue_golomb_long(gb);
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:322:30: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  322 |             prev_delta_msb = delta;
+      |                              ^~~~~
+libavcodec/hevc/hevcdec.c:1118:39: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1118 |         sh->num_entry_point_offsets = num_entry_point_offsets;
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:2346:17: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 2346 |                 luma_intra_pred_mode(lc, l, sps,
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2347 |                                      x0 + pb_size * j, y0 + pb_size * i, pb_size,
+      |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2348 |                                      prev_intra_luma_pred_flag[2 * i + j]);
+      |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:3865:28: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 3865 |         s->dovi_ctx.cfg = *(AVDOVIDecoderConfigurationRecord *) sd;
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/hevc/hevcdec.c:4132:32: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 4132 |             s->dovi_ctx.cfg = *(AVDOVIDecoderConfigurationRecord *) sd->data;
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11 warnings generated.

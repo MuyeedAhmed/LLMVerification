@@ -1,0 +1,24 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libswscale/swscale_unscaled.o
+libswscale/swscale_unscaled.c:692:80: error: extraneous ')' before ';'
+  692 |                     dst[0][x] = av_bswap16(av_bswap16((*src_line++)) ) >> shift);
+      |                                                                                ^
+libswscale/swscale_unscaled.c:693:80: error: extraneous ')' before ';'
+  693 |                     dst[1][x] = av_bswap16(av_bswap16((*src_line++)) ) >> shift);
+      |                                                                                ^
+libswscale/swscale_unscaled.c:694:80: error: extraneous ')' before ';'
+  694 |                     dst[2][x] = av_bswap16(av_bswap16((*src_line++)) ) >> shift);
+      |                                                                                ^
+libswscale/swscale_unscaled.c:695:80: error: extraneous ')' before ';'
+  695 |                     dst[3][x] = av_bswap16(av_bswap16((*src_line++)) ) >> shift);
+      |                                                                                ^
+4 errors generated.
+make: *** [libswscale/swscale_unscaled.o] Error 1

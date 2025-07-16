@@ -1,0 +1,23 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libswscale/swscale_unscaled.o
+clang output:
+libswscale/swscale_unscaled.c:670:9: warning: Called function pointer is null (null dereference) [core.CallAndMessage]
+  670 |         conv(srcPtr, dstPtr[0], dstPtr[1], dstPtr[2], dstPtr[3], c->opts.src_w,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  671 |             (uint8_t *) c->pal_rgb);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~
+libswscale/swscale_unscaled.c:2026:74: warning: Pointer arithmetic on non-array variables relies on memory layout, which is dangerous [alpha.core.PointerArithm]
+ 2026 |                         ((uint16_t*)c->formatConvBuffer)[j] = av_bswap16(((uint16_t*)srcPtr)[j]);
+      |                                                                          ^~~~~~~~~~~~~~~~~~~~~~
+libswscale/swscale_unscaled.c:2026:74: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+ 2026 |                         ((uint16_t*)c->formatConvBuffer)[j] = av_bswap16(((uint16_t*)srcPtr)[j]);
+      |                                                                          ^~~~~~~~~~~~~~~~~~~~~~
+3 warnings generated.
