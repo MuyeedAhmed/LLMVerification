@@ -5,20 +5,16 @@ import csv
 
 FUNC_DEF_RE = re.compile(
     r"""
-    (?:[A-Za-z_][\w\s\*\(\),]*?\s+)?  # return type
-    (?P<name>[A-Za-z_]\w*)\s*         # function name
-    \([^)]*\)\s*                      # arguments
-    \{                                # opening brace
+    (?:[A-Za-z_][\w\s\*\(\),]*?\s+)?
+    (?P<name>[A-Za-z_]\w*)\s*
+    \([^)]*\)\s*
+    \{
     """,
     re.VERBOSE | re.DOTALL,
 )
 
 
 def find_function_range(lines, target_name):
-    """
-    Searches for the target function in the file and returns (start_line, end_line).
-    Handles multi-line function headers.
-    """
     n = len(lines)
     buffer = ""
     start_idx = 0
@@ -28,24 +24,21 @@ def find_function_range(lines, target_name):
         line = lines[i]
         stripped = line.strip()
 
-        # Skip empty or preprocessor lines
         if not stripped or stripped.startswith("#"):
             continue
 
         buffer += line
         if "{" in line:
-            # Try to match function signature + body
             match = FUNC_DEF_RE.search(buffer)
             if match and match.group("name") == target_name:
                 start_line = start_idx + 1
-                # Now track braces
                 brace_depth = 0
                 for j in range(i, n):
                     brace_depth += lines[j].count("{") - lines[j].count("}")
                     if brace_depth == 0:
                         end_line = j + 1
                         return start_line, end_line
-                break  # malformed?
+                break
             buffer = ""
             start_idx = i + 1
         elif not inside_candidate:
@@ -61,6 +54,8 @@ def process_entry(base_dir, commit_hash, function_name):
         print(f"Missing directory: {commit_dir}")
         return None
 
+    llm_start, llm_end, orig_start, orig_end = None, None, None, None
+
     for fname in os.listdir(commit_dir):
         if fname.endswith("_llm.c"):
             full_path = os.path.join(commit_dir, fname)
@@ -73,18 +68,17 @@ def process_entry(base_dir, commit_hash, function_name):
                 lines = f.readlines()
             orig_start, orig_end = find_function_range(lines, function_name)
 
-    if llm_start and llm_end and orig_start and orig_end:
+    if orig_start and orig_end:
         return (llm_start, llm_end, orig_start, orig_end)
 
     print(f"Function {function_name} not found in {commit_hash}")
     return None
 
 def main():
-    excel_path = "ExcelFiles/FFmpeg.xlsx"
-    excel_pathOut = "ExcelFiles/FFmpeg_fl.xlsx"
-    
-    base_dir = "FileHistory/FFmpeg"
-    output_csv = "function_ranges.csv"
+    excel_path = "ExcelFiles/wolfssl.xlsx"
+    excel_pathOut = "ExcelFiles/wolfssl_fl.xlsx"
+
+    base_dir = "FileHistory/wolfssl"
 
     df = pd.read_excel(excel_path)
     results = []

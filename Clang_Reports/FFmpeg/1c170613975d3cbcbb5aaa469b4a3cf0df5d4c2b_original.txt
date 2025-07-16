@@ -1,0 +1,45 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/decode.o
+clang output:
+libavcodec/decode.c:991:13: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+  991 |             (AVHWDeviceContext*)avctx->hw_device_ctx->data;
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1013:32: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+ 1013 |     desc = av_pix_fmt_desc_get(fmt[n - 1]);
+      |                                ^~~~~~~~~~
+libavcodec/decode.c:1061:18: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1061 |     device_ctx = (AVHWDeviceContext *)avctx->hw_device_ctx->data;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1076:18: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1076 |     frames_ctx = (AVHWFramesContext*)avctx->hw_frames_ctx->data;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1133:41: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1133 |         AVHWFramesContext *frames_ctx = (AVHWFramesContext*)frames_ref->data;
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1283:17: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1283 |                 (AVHWFramesContext*)avctx->hw_frames_ctx->data;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1294:17: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1294 |                 (AVHWDeviceContext*)avctx->hw_device_ctx->data;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1370:11: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1370 |     dst = (      AVStereo3D*)sd_frame->data;
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1371:11: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 1371 |     src = (const AVStereo3D*)sd_pkt->data;
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:1621:14: warning: Although the value stored to 'ret' is used in the enclosing expression, the value is never actually read from 'ret' [deadcode.DeadStores]
+ 1621 |             (ret = av_image_check_size2(FFALIGN(avctx->width, STRIDE_ALIGN), avctx->height, avctx->max_pixels, AV_PIX_FMT_NONE, 0, avctx)) < 0 || avctx->pix_fmt<0) {
+      |              ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/decode.c:2175:22: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [alpha.core.CastToStruct]
+ 2175 |         frames_ctx = (AVHWFramesContext *) avctx->hw_frames_ctx->data;
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11 warnings generated.

@@ -23,20 +23,19 @@ from collections import defaultdict
 # }
 
 CATEGORY_KEYWORDS = {
-    "Syntax": ["expected", "extraneous", "invalid syntax", "parse error"],
-    "Null Dereference": ["null pointer dereference", "dereference of a null pointer"],
+    "Null Dereference": ["null pointer dereference", "dereference of a null pointer", "dereference of null pointer", "null dereference"],
     "Undeclared identifier": ["undeclared identifier", "implicit function declaration", "call to undeclared"],
     "Unsafe Cast": ["implicit conversion", "incompatible type", "conversion loses", "loses precision", "conversion from", "conversion to", 
-        "casting a non-structure type to a structure type", "no member named", "incompatible struct", "implicit conversion", "incompatible type", "loss of", "cast"
+        "casting a non-structure type to a structure type", "no member named", "incompatible struct", "implicit conversion", "incompatible type", "loss of", "cast", "incompatible integer to pointer conversion assigning "
         ],
     "Free release memory": ["double free", "freeing", "already freed"],
     "Use after free": ["use-after-free", "access after free", "dangling pointer"],
     "Buffer overflow": ["out-of-bound", "out of bounds", "buffer overflow","access outside array bounds", "alpha.security.arraybound"],
     "Semantic error": ["'break' statement not in loop", "'continue' statement not in loop", "control reaches end of non-void function", "return with a value in void function", "incompatible return type",
-        "unreachable code", "case label not within a switch statement", "jump to case label crosses initialization", "too few arguments", "too many arguments",
-        "expects", "but", "were provided", "non-void function must return", "void function should not return", "return type mismatch", "function does not return a value", "missing return"
+        "unreachable code", "case label not within a switch statement", "jump to case label crosses initialization", "too few arguments", "too many arguments", "invalid argument type", "indirection requires pointer operand",
+        "expects", "but", "were provided", "non-void function must return", "void function should not return", "return type mismatch", "function does not return a value", "missing return", "statement not in switch statement"
         ], 
-    "Syntax Error": ["expected", "extraneous", "invalid syntax", "parse error"],
+    "Syntax Error": ["expected", "extraneous", "invalid syntax", "parse error", "function definition is not allowed here"],
 }
 
 UNCATEGORIZED_KEYWORDS = {  
@@ -132,4 +131,4 @@ def generate_summary(excelFile, folder_path, output_file="ExcelFiles/FFmpeg_Clan
     merged_df.to_excel(output_file, index=False)
 
 
-generate_summary("ExcelFiles/FFmpeg_fl.xlsx", "Clang_Reports/FFmpeg")
+generate_summary("ExcelFiles/FFmpeg.xlsx", "Clang_Reports/FFmpeg")
