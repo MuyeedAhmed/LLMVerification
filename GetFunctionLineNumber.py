@@ -54,6 +54,8 @@ def process_entry(base_dir, commit_hash, function_name):
         print(f"Missing directory: {commit_dir}")
         return None
 
+    llm_start, llm_end, orig_start, orig_end = None, None, None, None
+
     for fname in os.listdir(commit_dir):
         if fname.endswith("_llm.c"):
             full_path = os.path.join(commit_dir, fname)
@@ -66,17 +68,17 @@ def process_entry(base_dir, commit_hash, function_name):
                 lines = f.readlines()
             orig_start, orig_end = find_function_range(lines, function_name)
 
-    if llm_start and llm_end and orig_start and orig_end:
+    if orig_start and orig_end:
         return (llm_start, llm_end, orig_start, orig_end)
 
     print(f"Function {function_name} not found in {commit_hash}")
     return None
 
 def main():
-    excel_path = "ExcelFiles/FFmpeg.xlsx"
-    excel_pathOut = "ExcelFiles/FFmpeg_fl.xlsx"
-    
-    base_dir = "FileHistory/FFmpeg"
+    excel_path = "ExcelFiles/wolfssl.xlsx"
+    excel_pathOut = "ExcelFiles/wolfssl_fl.xlsx"
+
+    base_dir = "FileHistory/wolfssl"
 
     df = pd.read_excel(excel_path)
     results = []
