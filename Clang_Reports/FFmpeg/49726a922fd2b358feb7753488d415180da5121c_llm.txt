@@ -1,0 +1,24 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavfilter/vf_scale.o
+clang output:
+libavfilter/vf_scale.c:610:5: warning: Value stored to 'eval_w' is never read [deadcode.DeadStores]
+  610 |     eval_w = scale->var_values[VAR_OUT_W] = scale->var_values[VAR_OW] = (int) res == 0 ? inlink->w : (int) res;
+      |     ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavfilter/vf_scale.c:991:9: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  991 |     if (out)
+      |         ^~~
+libavfilter/vf_scale.c:1072:15: warning: Using a fixed address is not portable because that address will probably not be valid in all environments or platforms [alpha.core.FixedAddr]
+ 1072 |         *iter = (void*)(uintptr_t) 1;
+      |               ^ ~~~~~~~~~~~~~~~~~~~~
+libavfilter/vf_scale.c:1075:15: warning: Using a fixed address is not portable because that address will probably not be valid in all environments or platforms [alpha.core.FixedAddr]
+ 1075 |         *iter = (void*)(uintptr_t) 2;
+      |               ^ ~~~~~~~~~~~~~~~~~~~~
+4 warnings generated.
