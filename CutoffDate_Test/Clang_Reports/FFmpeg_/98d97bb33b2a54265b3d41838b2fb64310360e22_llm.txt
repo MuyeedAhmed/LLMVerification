@@ -1,0 +1,32 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/rtmpproto.o
+clang output:
+libavformat/rtmpproto.c:1317:13: warning: Value stored to 'type' is never read [deadcode.DeadStores]
+ 1317 |             type = 1;
+      |             ^      ~
+libavformat/rtmpproto.c:1787:9: warning: Arguments must not be overlapping buffers [alpha.unix.cstring.BufferOverlap]
+ 1787 |         snprintf(rt->auth_params, sizeof(rt->auth_params),
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1788 |                  "?authmod=%s&user=%s", authmod, rt->username);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/secure/_stdio.h:60:3: note: expanded from macro 'snprintf'
+   60 |   __builtin___snprintf_chk (str, len, 0, __darwin_obsz(str), __VA_ARGS__)
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/rtmpproto.c:2951:13: warning: Value stored to 'buf' is never read [deadcode.DeadStores]
+ 2951 |             buf  += data_left;
+      |             ^       ~~~~~~~~~
+libavformat/rtmpproto.c:2952:13: warning: Value stored to 'size' is never read [deadcode.DeadStores]
+ 2952 |             size -= data_left;
+      |             ^       ~~~~~~~~~
+libavformat/rtmpproto.c:3060:70: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 3060 |         bytestream_get_buffer(&buf_temp, rt->flv_data + rt->flv_off, copy);
+      |                                                                      ^~~~
+5 warnings generated.

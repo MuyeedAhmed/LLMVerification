@@ -1,0 +1,25 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/ffv1dec.o
+clang output:
+libavcodec/ffv1dec.c:312:13: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  312 |         int current_mul = 1;
+      |             ^
+1 warning generated.
+libavcodec/ffv1dec.c:115:23: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+  115 |         sample[1][-1] = sample[0][0];
+      |         ~~~~~~~~~~~~~ ^
+libavcodec/ffv1dec.c:503:24: warning: Access out-of-bound array element (buffer overflow) [alpha.security.ArrayBound]
+  503 |             int size = AV_RB24(p-trailer);
+      |                        ^~~~~~~~~~~~~~~~~~
+./libavutil/intreadwrite.h:443:7: note: expanded from macro 'AV_RB24'
+  443 |       ((const uint8_t*)(x))[2])
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.

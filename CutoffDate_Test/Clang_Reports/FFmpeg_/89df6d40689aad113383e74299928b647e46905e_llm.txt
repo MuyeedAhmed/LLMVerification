@@ -1,0 +1,97 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/ffv1enc.o
+clang output:
+libavcodec/ffv1enc.c:1443:39: warning: using floating point absolute value function 'fabs' when argument is of integer type [-Wabsolute-value]
+ 1443 |                             score *= (fabs(delta - cost*mul)+1);
+      |                                       ^
+libavcodec/ffv1enc.c:1443:39: note: use function 'llabs' instead
+ 1443 |                             score *= (fabs(delta - cost*mul)+1);
+      |                                       ^~~~
+      |                                       llabs
+libavcodec/ffv1enc.c:1441:31: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+ 1441 |                         float score = 1;
+      |                               ^
+2 warnings generated.
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+libavcodec/ffv1enc.c:212:47: warning: Right shift overflows the capacity of 'unsigned int' [core.BitwiseShift]
+  212 |                 put_rac(c, state + 22 + i, (a >> i) & 1);  // 22..31
+      |                                             ~~^~~~
+libavcodec/ffv1enc.c:199:23: note: expanded from macro 'put_rac'
+  199 |         put_rac(C, S, B);                       \
+      |                       ^
+In file included from libavcodec/ffv1enc.c:266:
+libavcodec/ffv1enc_template.c:69:79: warning: The left operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+   69 |                                       sample[0] + x, sample[1] + x, sample[2] + x);
+      |                                                                     ~~~~~~~~~ ^
+libavcodec/ffv1enc_template.c:145:36: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+  145 |             int b, g, r, av_uninit(a);
+      |                                    ^
+./libavutil/attributes.h:154:26: note: expanded from macro 'av_uninit'
+  154 | #    define av_uninit(x) x=x
+      |                          ^ ~
+In file included from libavcodec/ffv1enc.c:272:
+libavcodec/ffv1enc_template.c:145:36: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+  145 |             int b, g, r, av_uninit(a);
+      |                                    ^
+./libavutil/attributes.h:154:26: note: expanded from macro 'av_uninit'
+  154 | #    define av_uninit(x) x=x
+      |                          ^ ~
+libavcodec/ffv1enc.c:295:32: warning: Array access (from variable 'src') results in a null pointer dereference [core.NullDereference]
+  295 |                 sample[0][x] = src[x * pixel_stride + stride * y];
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:305:36: warning: Array access results in a null pointer dereference [core.NullDereference]
+  305 |                     sample[0][x] = ((uint16_t*)(src + stride*y))[x * pixel_stride];
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:309:36: warning: Array access results in a null pointer dereference [core.NullDereference]
+  309 |                     sample[0][x] = ((uint16_t*)(src + stride*y))[x * pixel_stride] >> (16 - f->bits_per_raw_sample);
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:334:42: warning: Array access (from variable 'src') results in a null pointer dereference [core.NullDereference]
+  334 |                 sc->fltmap[remap_index][ src[x * pixel_stride + stride * y] ] = 1;
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:338:46: warning: Array access results in a null pointer dereference [core.NullDereference]
+  338 |                     sc->fltmap[remap_index][ ((uint16_t*)(src + stride*y))[x * pixel_stride] ] = 1;
+      |                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:341:46: warning: Array access results in a null pointer dereference [core.NullDereference]
+  341 |                     sc->fltmap[remap_index][ ((uint16_t*)(src + stride*y))[x * pixel_stride] >> (16 - f->bits_per_raw_sample) ] = 1;
+      |                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:1146:21: warning: Dereference of null pointer [core.NullDereference]
+ 1146 |                 r = *((const uint16_t *)(src[2] + x*2 + stride[2]*y));
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:1150:21: warning: Dereference of null pointer [core.NullDereference]
+ 1150 |                 r = *((const uint16_t*)(src[2] + x*2 + stride[2]*y));
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:1234:36: warning: Assigned value is garbage or undefined [core.uninitialized.Assign]
+ 1234 |             int b, g, r, av_uninit(a);
+      |                                    ^
+./libavutil/attributes.h:154:26: note: expanded from macro 'av_uninit'
+  154 | #    define av_uninit(x) x=x
+      |                          ^ ~
+libavcodec/ffv1enc.c:1294:5: warning: The first element of the 2nd argument is undefined [alpha.unix.cstring.UninitializedRead]
+ 1294 |     memcpy(mul, mul_tab, sizeof(*mul_tab)*(mul_count+1));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/secure/_string.h:63:3: note: expanded from macro 'memcpy'
+   63 |                 __builtin___memcpy_chk (dest, __VA_ARGS__, __darwin_obsz0 (dest))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:1294:5: note: Other elements might also be undefined
+ 1294 |     memcpy(mul, mul_tab, sizeof(*mul_tab)*(mul_count+1));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include/secure/_string.h:63:3: note: expanded from macro 'memcpy'
+   63 |                 __builtin___memcpy_chk (dest, __VA_ARGS__, __darwin_obsz0 (dest))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/ffv1enc.c:1357:54: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+ 1357 |                 put_symbol_inline(&rc, state[lu][0], step - 1, 0, NULL, NULL);
+      |                                                      ^~~~~~~~
+libavcodec/ffv1enc.c:1422:40: warning: Out of bound access to memory preceding 'score_tab_all' [alpha.security.ArrayBoundV2]
+ 1422 |                     float *score_tab = score_tab_all[(last_val + 1LL)*mul_count >> 32];
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+16 warnings generated.
