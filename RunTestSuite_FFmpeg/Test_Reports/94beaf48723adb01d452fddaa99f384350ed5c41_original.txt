@@ -1,0 +1,192 @@
+libavfilter/vf_coreimage.m:507:9: warning: 'NSOpenGLPFAAccelerated' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  507 |         NSOpenGLPFAAccelerated,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:80:5: note: 'NSOpenGLPFAAccelerated' has been explicitly marked deprecated here
+   80 |     NSOpenGLPFAAccelerated           NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =  73,     /* choose a hardware accelerated renderer       */
+      |     ^
+libavfilter/vf_coreimage.m:508:9: warning: 'NSOpenGLPFANoRecovery' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  508 |         NSOpenGLPFANoRecovery,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:79:5: note: 'NSOpenGLPFANoRecovery' has been explicitly marked deprecated here
+   79 |     NSOpenGLPFANoRecovery            NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =  72,     /* disable all failure recovery systems         */
+      |     ^
+libavfilter/vf_coreimage.m:509:9: warning: 'NSOpenGLPFAColorSize' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  509 |         NSOpenGLPFAColorSize, 32,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:64:5: note: 'NSOpenGLPFAColorSize' has been explicitly marked deprecated here
+   64 |     NSOpenGLPFAColorSize             NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =   8,     /* number of color buffer bits                  */
+      |     ^
+libavfilter/vf_coreimage.m:506:11: warning: 'NSOpenGLPixelFormatAttribute' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  506 |     const NSOpenGLPixelFormatAttribute attr[] = {
+      |           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:101:18: note: 'NSOpenGLPixelFormatAttribute' has been explicitly marked deprecated here
+  101 | typedef uint32_t NSOpenGLPixelFormatAttribute NS_OPENGL_DEPRECATED(10.0, 10.14);
+      |                  ^
+libavfilter/vf_coreimage.m:513:5: warning: 'NSOpenGLPixelFormat' is deprecated: first deprecated in macOS 10.14 - Please use Metal or MetalKit. [-Wdeprecated-declarations]
+  513 |     NSOpenGLPixelFormat *pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:(void *)&attr];
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:115:12: note: 'NSOpenGLPixelFormat' has been explicitly marked deprecated here
+  115 | @interface NSOpenGLPixelFormat : NSObject <NSCoding>
+      |            ^
+libavfilter/vf_coreimage.m:513:63: warning: 'NSOpenGLPixelFormat' is deprecated: first deprecated in macOS 10.14 - Please use Metal or MetalKit. [-Wdeprecated-declarations]
+  513 |     NSOpenGLPixelFormat *pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:(void *)&attr];
+      |                                                               ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:115:12: note: 'NSOpenGLPixelFormat' has been explicitly marked deprecated here
+  115 | @interface NSOpenGLPixelFormat : NSObject <NSCoding>
+      |            ^
+libavfilter/vf_coreimage.m:515:69: warning: 'contextWithCGLContext:pixelFormat:colorSpace:options:' is deprecated: first deprecated in macOS 10.14 - Core Image OpenGL API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings) [-Wdeprecated-declarations]
+  515 |     ctx->glctx                        = CFBridgingRetain([CIContext contextWithCGLContext:CGLGetCurrentContext()
+      |                                                                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIContext.h:102:1: note: 'contextWithCGLContext:pixelFormat:colorSpace:options:' has been explicitly marked deprecated here
+  102 | + (CIContext *)contextWithCGLContext:(CGLContextObj)cglctx
+      | ^
+7 warnings generated.
+libavformat/tls_securetransport.c:183:5: warning: 'SSLSetCertificate' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  183 |     SSLSetCertificate(c->ssl_context, outArray);
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:637:1: note: 'SSLSetCertificate' has been explicitly marked deprecated here
+  637 | SSLSetCertificate                       (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:250:9: warning: 'SSLClose' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  250 |         SSLClose(c->ssl_context);
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1731:1: note: 'SSLClose' has been explicitly marked deprecated here
+ 1731 | SSLClose                                        (SSLContextRef          context)
+      | ^
+libavformat/tls_securetransport.c:277:22: warning: 'SSLCreateContext' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:316:1: note: 'SSLCreateContext' has been explicitly marked deprecated here
+  316 | SSLCreateContext(CFAllocatorRef __nullable alloc, SSLProtocolSide protocolSide, SSLConnectionType connectionType)
+      | ^
+libavformat/tls_securetransport.c:277:57: warning: 'kSSLServerSide' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                                                         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:217:5: note: 'kSSLServerSide' has been explicitly marked deprecated here
+  217 |     kSSLServerSide CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0),
+      |     ^
+libavformat/tls_securetransport.c:277:74: warning: 'kSSLClientSide' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                                                                          ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:218:5: note: 'kSSLClientSide' has been explicitly marked deprecated here
+  218 |     kSSLClientSide CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0)
+      |     ^
+libavformat/tls_securetransport.c:277:90: warning: 'kSSLStreamType' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                                                                                          ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:223:5: note: 'kSSLStreamType' has been explicitly marked deprecated here
+  223 |     kSSLStreamType CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0),
+      |     ^
+libavformat/tls_securetransport.c:288:21: warning: 'SSLSetSessionOption' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  288 |         CHECK_ERROR(SSLSetSessionOption, c->ssl_context, kSSLSessionOptionBreakOnServerAuth, true);
+      |                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:384:1: note: 'SSLSetSessionOption' has been explicitly marked deprecated here
+  384 | SSLSetSessionOption                     (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:288:58: warning: 'kSSLSessionOptionBreakOnServerAuth' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  288 |         CHECK_ERROR(SSLSetSessionOption, c->ssl_context, kSSLSessionOptionBreakOnServerAuth, true);
+      |                                                          ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:99:2: note: 'kSSLSessionOptionBreakOnServerAuth' has been explicitly marked deprecated here
+   99 |         kSSLSessionOptionBreakOnServerAuth CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0) = 0,
+      |         ^
+libavformat/tls_securetransport.c:292:17: warning: 'SSLSetPeerDomainName' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  292 |     CHECK_ERROR(SSLSetPeerDomainName, c->ssl_context, s->host, strlen(s->host));
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:686:1: note: 'SSLSetPeerDomainName' has been explicitly marked deprecated here
+  686 | SSLSetPeerDomainName            (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:293:17: warning: 'SSLSetIOFuncs' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  293 |     CHECK_ERROR(SSLSetIOFuncs, c->ssl_context, tls_read_cb, tls_write_cb);
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:418:1: note: 'SSLSetIOFuncs' has been explicitly marked deprecated here
+  418 | SSLSetIOFuncs                           (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:294:17: warning: 'SSLSetConnection' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  294 |     CHECK_ERROR(SSLSetConnection, c->ssl_context, h);
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:657:1: note: 'SSLSetConnection' has been explicitly marked deprecated here
+  657 | SSLSetConnection                        (SSLContextRef                  context,
+      | ^
+libavformat/tls_securetransport.c:296:27: warning: 'SSLHandshake' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  296 |         OSStatus status = SSLHandshake(c->ssl_context);
+      |                           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1641:1: note: 'SSLHandshake' has been explicitly marked deprecated here
+ 1641 | SSLHandshake                            (SSLContextRef          context)
+      | ^
+libavformat/tls_securetransport.c:303:17: warning: 'SSLCopyPeerTrust' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  303 |             if (SSLCopyPeerTrust(c->ssl_context, &peerTrust) != noErr) {
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1261:1: note: 'SSLCopyPeerTrust' has been explicitly marked deprecated here
+ 1261 | SSLCopyPeerTrust                        (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:313:17: warning: 'SecTrustEvaluate' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  313 |             if (SecTrustEvaluate(peerTrust, &trustResult) != noErr) {
+      |                 ^~~~~~~~~~~~~~~~
+      |                 SecTrustEvaluateWithError
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecTrust.h:377:10: note: 'SecTrustEvaluate' has been explicitly marked deprecated here
+  377 | OSStatus SecTrustEvaluate(SecTrustRef trust, SecTrustResultType *result)
+      |          ^
+libavformat/tls_securetransport.c:369:5: warning: 'SSLGetBufferedReadSize' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  369 |     SSLGetBufferedReadSize(c->ssl_context, &available);
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1705:1: note: 'SSLGetBufferedReadSize' has been explicitly marked deprecated here
+ 1705 | SSLGetBufferedReadSize          (SSLContextRef context,
+      | ^
+libavformat/tls_securetransport.c:372:11: warning: 'SSLRead' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  372 |     ret = SSLRead(c->ssl_context, buf, size, &processed);
+      |           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1689:1: note: 'SSLRead' has been explicitly marked deprecated here
+ 1689 | SSLRead                                         (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:385:15: warning: 'SSLWrite' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  385 |     int ret = SSLWrite(c->ssl_context, buf, size, &processed);
+      |               ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1670:1: note: 'SSLWrite' has been explicitly marked deprecated here
+ 1670 | SSLWrite                                        (SSLContextRef          context,
+      | ^
+17 warnings generated.
+libavcodec/pcm-dvdenc.c:60:5: warning: variable 'quant' is used uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
+   60 |     default:
+      |     ^~~~~~~
+libavcodec/pcm-dvdenc.c:64:41: note: uninitialized use occurs here
+   64 |     avctx->bits_per_coded_sample = 16 + quant * 4;
+      |                                         ^~~~~
+libavcodec/pcm-dvdenc.c:38:14: note: initialize the variable 'quant' to silence this warning
+   38 |     int quant, freq, frame_size;
+      |              ^
+      |               = 0
+1 warning generated.
+libavcodec/sonic.c:170:19: warning: unused function 'intlist_write' [-Wunused-function]
+  170 | static inline int intlist_write(RangeCoder *c, uint8_t *state, int *buf, int entries, int base_2_part)
+      |                   ^~~~~~~~~~~~~
+1 warning generated.
+libswscale/format.c:538:18: warning: result of comparison of unsigned enum expression >= 0 is always true [-Wtautological-unsigned-enum-zero-compare]
+  538 |     return range >= 0 && range < AVCOL_RANGE_NB;
+      |            ~~~~~ ^  ~
+libswscale/format.c:543:16: warning: result of comparison of unsigned enum expression >= 0 is always true [-Wtautological-unsigned-enum-zero-compare]
+  543 |     return loc >= 0 && loc < AVCHROMA_LOC_NB;
+      |            ~~~ ^  ~
+2 warnings generated.
+libswscale/lut3d.c:134:33: warning: unused function 'lookup_input8' [-Wunused-function]
+  134 | static av_always_inline v3u16_t lookup_input8(const SwsLut3D *lut3d, v3u8_t rgb)
+      |                                 ^~~~~~~~~~~~~
+1 warning generated.
+libavutil/csp.c:607:13: warning: result of comparison of unsigned enum expression < 0 is always false [-Wtautological-unsigned-enum-zero-compare]
+  607 |     if (trc < 0 || trc >= AVCOL_TRC_NB)
+      |         ~~~ ^ ~
+libavutil/csp.c:633:13: warning: result of comparison of unsigned enum expression < 0 is always false [-Wtautological-unsigned-enum-zero-compare]
+  633 |     if (trc < 0 || trc >= AVCOL_TRC_NB)
+      |         ~~~ ^ ~
+2 warnings generated.
+libavutil/hwcontext_videotoolbox.c:543:21: warning: unused variable 'dict' [-Wunused-variable]
+  543 |     CFDictionaryRef dict;
+      |                     ^~~~
+libavutil/hwcontext_videotoolbox.c:593:34: warning: comparison of different enumeration types ('enum AVColorPrimaries' and 'enum AVColorSpace') [-Wenum-compare]
+  593 |         if (src->color_primaries != AVCOL_SPC_UNSPECIFIED)
+      |             ~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+ar: @libavdevice/libavdevice.a.objs: No such file or directory
+make: *** [libavdevice/libavdevice.a] Error 1
+make: *** Waiting for unfinished jobs....
+ar: @libavfilter/libavfilter.a.objs: No such file or directory
+make: *** [libavfilter/libavfilter.a] Error 1

@@ -1,3 +1,5 @@
 __pycache__/
 Projects/
 .DS_Store
+RunTestSuite_FFmpeg/fate-suite/
+RunTestSuite_FFmpeg/fate-suite-*

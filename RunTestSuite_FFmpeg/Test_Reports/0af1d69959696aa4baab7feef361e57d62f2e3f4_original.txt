@@ -1,0 +1,699 @@
+GEN	tests/pixfmts.mak
+HOSTCC	tests/tiny_psnr.o
+HOSTCC	tests/tiny_ssim.o
+HOSTCC	tests/audiomatch.o
+HOSTCC	tests/base64.o
+CC	tests/checkasm/aacencdsp.o
+CC	tests/checkasm/aacpsdsp.o
+CC	tests/checkasm/ac3dsp.o
+CC	tests/checkasm/aes.o
+CC	tests/checkasm/apv_dsp.o
+CC	tests/checkasm/af_afir.o
+CC	tests/checkasm/alacdsp.o
+CC	tests/checkasm/av_tx.o
+CC	tests/checkasm/audiodsp.o
+CC	tests/checkasm/blockdsp.o
+CC	tests/checkasm/bswapdsp.o
+CC	tests/checkasm/diracdsp.o
+CC	tests/checkasm/exrdsp.o
+CC	tests/checkasm/checkasm.o
+CC	tests/checkasm/fdctdsp.o
+CC	tests/checkasm/fixed_dsp.o
+CC	tests/checkasm/flacdsp.o
+CC	tests/checkasm/float_dsp.o
+CC	tests/checkasm/fmtconvert.o
+CC	tests/checkasm/h263dsp.o
+CC	tests/checkasm/g722dsp.o
+CC	tests/checkasm/h264chroma.o
+CC	tests/checkasm/h264dsp.o
+CC	tests/checkasm/h264pred.o
+CC	tests/checkasm/h264qpel.o
+CC	tests/checkasm/hevc_add_res.o
+CC	tests/checkasm/hevc_deblock.o
+CC	tests/checkasm/hevc_idct.o
+CC	tests/checkasm/hevc_pel.o
+CC	tests/checkasm/hevc_sao.o
+CC	tests/checkasm/huffyuvdsp.o
+CC	tests/checkasm/idctdsp.o
+CC	tests/checkasm/jpeg2000dsp.o
+CC	tests/checkasm/llauddsp.o
+CC	tests/checkasm/lls.o
+CC	tests/checkasm/llviddsp.o
+CC	tests/checkasm/llviddspenc.o
+CC	tests/checkasm/lpc.o
+CC	tests/checkasm/motion.o
+CC	tests/checkasm/mpegvideoencdsp.o
+CC	tests/checkasm/opusdsp.o
+CC	tests/checkasm/pixblockdsp.o
+CC	tests/checkasm/rv34dsp.o
+CC	tests/checkasm/rv40dsp.o
+CC	tests/checkasm/sbrdsp.o
+CC	tests/checkasm/svq1enc.o
+CC	tests/checkasm/sw_gbrp.o
+CC	tests/checkasm/sw_range_convert.o
+CC	tests/checkasm/sw_rgb.o
+CC	tests/checkasm/sw_scale.o
+CC	tests/checkasm/sw_yuv2rgb.o
+CC	tests/checkasm/sw_yuv2yuv.o
+CC	tests/checkasm/synth_filter.o
+CC	tests/checkasm/takdsp.o
+CC	tests/checkasm/utvideodsp.o
+CC	tests/checkasm/v210dec.o
+CC	tests/checkasm/v210enc.o
+CC	tests/checkasm/vc1dsp.o
+CC	tests/checkasm/vf_blend.o
+CC	tests/checkasm/vf_bwdif.o
+CC	tests/checkasm/vf_colorspace.o
+CC	tests/checkasm/vf_convolution.o
+CC	tests/checkasm/vf_gblur.o
+CC	tests/checkasm/vf_hflip.o
+CC	tests/checkasm/vf_nlmeans.o
+CC	tests/checkasm/vf_threshold.o
+CC	tests/checkasm/videodsp.o
+CC	tests/checkasm/vorbisdsp.o
+CC	tests/checkasm/vp8dsp.o
+CC	tests/checkasm/vvc_alf.o
+CC	tests/checkasm/vp9dsp.o
+CC	tests/checkasm/vvc_mc.o
+CC	tests/api/api-threadmessage-test.o
+CC	tests/api/api-flac-test.o
+CC	tests/api/api-seek-test.o
+HOSTCC	tests/audiogen.o
+HOSTCC	tests/videogen.o
+CC	tests/api/api-band-test.o
+CC	tests/api/api-h264-test.o
+CC	tests/api/api-h264-slice-test.o
+CC	libavcodec/tests/avpacket.o
+CC	libavcodec/tests/bitstream_be.o
+CC	libavcodec/tests/bitstream_le.o
+CC	libavcodec/tests/cabac.o
+CC	libavcodec/tests/celp_math.o
+CC	libavcodec/tests/codec_desc.o
+CC	libavcodec/tests/golomb.o
+CC	libavcodec/tests/dct.o
+CC	libavcodec/dctref.o
+CC	libavcodec/tests/h264_levels.o
+CC	libavcodec/tests/h265_levels.o
+CC	libavcodec/tests/iirfilter.o
+CC	libavcodec/tests/mpeg12framerate.o
+CC	libavcodec/tests/rangecoder.o
+CC	libavcodec/tests/mathops.o
+CC	libavcodec/tests/jpeg2000dwt.o
+CC	libavcodec/tests/avcodec.o
+CC	libavcodec/tests/mjpegenc_huffman.o
+CC	libavcodec/tests/htmlsubtitles.o
+CC	libavformat/tests/seek_utils.o
+CC	libavformat/tests/noproxy.o
+CC	libavformat/tests/srtp.o
+CC	libavformat/tests/url.o
+CC	libavformat/tests/movenc.o
+CC	libavutil/tests/adler32.o
+CC	libavutil/tests/aes.o
+CC	libavutil/tests/aes_ctr.o
+CC	libavutil/tests/camellia.o
+CC	libavutil/tests/cast5.o
+CC	libavutil/tests/channel_layout.o
+CC	libavutil/tests/audio_fifo.o
+CC	libavutil/tests/base64.o
+CC	libavutil/tests/avstring.o
+CC	libavutil/tests/blowfish.o
+CC	libavutil/tests/bprint.o
+CC	libavutil/tests/cpu.o
+CC	libavutil/tests/crc.o
+CC	libavutil/tests/color_utils.o
+CC	libavutil/tests/des.o
+CC	libavutil/tests/dict.o
+CC	libavutil/tests/encryption_info.o
+CC	libavutil/tests/eval.o
+CC	libavutil/tests/fifo.o
+CC	libavutil/tests/hash.o
+CC	libavutil/tests/hmac.o
+CC	libavutil/tests/imgutils.o
+CC	libavutil/tests/integer.o
+CC	libavutil/tests/lfg.o
+CC	libavutil/tests/md5.o
+CC	libavutil/tests/murmur3.o
+CC	libavutil/tests/parseutils.o
+CC	libavutil/tests/pixfmt_best.o
+CC	libavutil/tests/display.o
+CC	libavutil/tests/random_seed.o
+CC	libavutil/tests/ripemd.o
+CC	libavutil/tests/sha.o
+CC	libavutil/tests/sha512.o
+CC	libavutil/tests/side_data_array.o
+CC	libavutil/tests/tree.o
+CC	libavutil/tests/twofish.o
+CC	libavutil/tests/xtea.o
+CC	libavutil/tests/tea.o
+CC	libavutil/tests/opt.o
+CC	libavutil/tests/uuid.o
+CC	libavutil/tests/cpu_init.o
+CC	libavutil/tests/pixelutils.o
+CC	libswscale/tests/pixdesc_query.o
+CC	libswscale/tests/floatimg_cmp.o
+CC	libavformat/tests/fifo_muxer.o
+COPY	tests/data/filtergraphs/anequalizer
+COPY	tests/data/filtergraphs/firequalizer
+COPY	tests/data/filtergraphs/compand
+GEN	tests/data/hls-list.m3u8
+GEN	tests/data/hls-list-append.m3u8
+COPY	tests/data/filtergraphs/channelmap_one_int
+COPY	tests/data/filtergraphs/channelmap_one_str
+COPY	tests/data/filtergraphs/crazychannels
+CC	libavfilter/tests/formats.o
+COPY	tests/data/filtergraphs/overlay
+COPY	tests/data/filtergraphs/overlay_rgb
+COPY	tests/data/filtergraphs/overlay_yuv420
+COPY	tests/data/filtergraphs/overlay_yuv420p10
+COPY	tests/data/filtergraphs/overlay_nv21
+COPY	tests/data/filtergraphs/overlay_nv12
+COPY	tests/data/filtergraphs/overlay_yuv422p10
+COPY	tests/data/filtergraphs/overlay_yuv422
+COPY	tests/data/filtergraphs/overlay_yuv444p10
+COPY	tests/data/filtergraphs/overlay_yuv444
+COPY	tests/data/filtergraphs/scale2ref_keep_aspect
+CC	libavfilter/tests/filtfmts.o
+COPY	tests/data/filtergraphs/mergeplanes
+COPY	tests/data/filtergraphs/hstack
+COPY	tests/data/filtergraphs/vstack
+COPY	tests/data/filtergraphs/select-alternate
+COPY	tests/data/filtergraphs/setpts
+COPY	tests/data/filtergraphs/alphamerge_alphaextract_rgb
+COPY	tests/data/filtergraphs/alphamerge_alphaextract_yuv
+COPY	tests/data/filtergraphs/scalenorm
+COPY	tests/data/filtergraphs/concat
+COPY	tests/data/filtergraphs/concat-vfr
+COPY	tests/data/filtergraphs/custom_rematrix
+COPY	tests/data/filtergraphs/mov-channel-description
+COPY	tests/data/filtergraphs/mov-mp4-pcm
+HOSTCC	tests/rotozoom.o
+CC	libavformat/tests/seek.o
+COPY	tests/test_copy.ffmeta
+COPY	tests/data/streamgroups/audio_element-stereo
+COPY	tests/data/streamgroups/mix_presentation-stereo
+COPY	tests/data/filtergraphs/iamf_5_1_4
+COPY	tests/data/streamgroups/audio_element-5_1_4
+COPY	tests/data/streamgroups/mix_presentation-5_1_4
+COPY	tests/data/filtergraphs/iamf_7_1_4
+COPY	tests/data/streamgroups/audio_element-7_1_4
+COPY	tests/data/streamgroups/mix_presentation-7_1_4
+COPY	tests/data/filtergraphs/iamf_9_1_6
+COPY	tests/data/streamgroups/audio_element-9_1_6
+COPY	tests/data/streamgroups/audio_element-9_1_6-stereo
+COPY	tests/data/filtergraphs/iamf_ambisonic_1
+COPY	tests/data/streamgroups/mix_presentation-9_1_6
+COPY	tests/data/streamgroups/audio_element-ambisonic_1
+COPY	tests/data/streamgroups/mix_presentation-ambisonic_1
+COPY	tests/data/streamgroups/audio_element-7_1_4-2
+CC	tests/api/api-dump-stream-meta-test.o
+CC	tools/scale_slice_test.o
+CC	tools/decode_simple.o
+CC	tools/venc_data_dump.o
+GEN	tests/data/hevc-mp4.mov
+GEN	tests/data/fits-multi.fits
+COPY	tests/data/filtergraphs/overlay-dvdsub-2397
+COPY	tests/data/filtergraphs/gradfun
+COPY	tests/data/maps/fsync-up
+COPY	tests/data/maps/fsync-down
+GEN	tests/data/live_no_endlist.m3u8
+GEN	tests/data/live_last_endlist.m3u8
+GEN	tests/data/live_endlist.m3u8
+GEN	tests/data/hls_segment_size.m3u8
+GEN	tests/data/hls_segment_single.m3u8
+GEN	tests/data/hls_init_time.m3u8
+GEN	tests/data/hls_list_size.m3u8
+GEN	tests/data/hls_fmp4.m3u8
+libavfilter/vf_coreimage.m:497:9: warning: 'NSOpenGLPFAAccelerated' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  497 |         NSOpenGLPFAAccelerated,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:80:5: note: 'NSOpenGLPFAAccelerated' has been explicitly marked deprecated here
+   80 |     NSOpenGLPFAAccelerated           NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =  73,     /* choose a hardware accelerated renderer       */
+      |     ^
+libavfilter/vf_coreimage.m:498:9: warning: 'NSOpenGLPFANoRecovery' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  498 |         NSOpenGLPFANoRecovery,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:79:5: note: 'NSOpenGLPFANoRecovery' has been explicitly marked deprecated here
+   79 |     NSOpenGLPFANoRecovery            NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =  72,     /* disable all failure recovery systems         */
+      |     ^
+libavfilter/vf_coreimage.m:499:9: warning: 'NSOpenGLPFAColorSize' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  499 |         NSOpenGLPFAColorSize, 32,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:64:5: note: 'NSOpenGLPFAColorSize' has been explicitly marked deprecated here
+   64 |     NSOpenGLPFAColorSize             NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =   8,     /* number of color buffer bits                  */
+      |     ^
+libavfilter/vf_coreimage.m:496:11: warning: 'NSOpenGLPixelFormatAttribute' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  496 |     const NSOpenGLPixelFormatAttribute attr[] = {
+      |           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:101:18: note: 'NSOpenGLPixelFormatAttribute' has been explicitly marked deprecated here
+  101 | typedef uint32_t NSOpenGLPixelFormatAttribute NS_OPENGL_DEPRECATED(10.0, 10.14);
+      |                  ^
+libavfilter/vf_coreimage.m:503:5: warning: 'NSOpenGLPixelFormat' is deprecated: first deprecated in macOS 10.14 - Please use Metal or MetalKit. [-Wdeprecated-declarations]
+  503 |     NSOpenGLPixelFormat *pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:(void *)&attr];
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:115:12: note: 'NSOpenGLPixelFormat' has been explicitly marked deprecated here
+  115 | @interface NSOpenGLPixelFormat : NSObject <NSCoding>
+      |            ^
+libavfilter/vf_coreimage.m:503:63: warning: 'NSOpenGLPixelFormat' is deprecated: first deprecated in macOS 10.14 - Please use Metal or MetalKit. [-Wdeprecated-declarations]
+  503 |     NSOpenGLPixelFormat *pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:(void *)&attr];
+      |                                                               ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:115:12: note: 'NSOpenGLPixelFormat' has been explicitly marked deprecated here
+  115 | @interface NSOpenGLPixelFormat : NSObject <NSCoding>
+      |            ^
+libavfilter/vf_coreimage.m:505:69: warning: 'contextWithCGLContext:pixelFormat:colorSpace:options:' is deprecated: first deprecated in macOS 10.14 - Core Image OpenGL API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings) [-Wdeprecated-declarations]
+  505 |     ctx->glctx                        = CFBridgingRetain([CIContext contextWithCGLContext:CGLGetCurrentContext()
+      |                                                                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIContext.h:102:1: note: 'contextWithCGLContext:pixelFormat:colorSpace:options:' has been explicitly marked deprecated here
+  102 | + (CIContext *)contextWithCGLContext:(CGLContextObj)cglctx
+      | ^
+7 warnings generated.
+libavformat/apvdec.c:56:13: warning: unused variable 'pbu_type' [-Wunused-variable]
+   56 |         int pbu_type;
+      |             ^~~~~~~~
+1 warning generated.
+libavformat/tls_securetransport.c:183:5: warning: 'SSLSetCertificate' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  183 |     SSLSetCertificate(c->ssl_context, outArray);
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:637:1: note: 'SSLSetCertificate' has been explicitly marked deprecated here
+  637 | SSLSetCertificate                       (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:250:9: warning: 'SSLClose' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  250 |         SSLClose(c->ssl_context);
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1731:1: note: 'SSLClose' has been explicitly marked deprecated here
+ 1731 | SSLClose                                        (SSLContextRef          context)
+      | ^
+libavformat/tls_securetransport.c:277:22: warning: 'SSLCreateContext' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:316:1: note: 'SSLCreateContext' has been explicitly marked deprecated here
+  316 | SSLCreateContext(CFAllocatorRef __nullable alloc, SSLProtocolSide protocolSide, SSLConnectionType connectionType)
+      | ^
+libavformat/tls_securetransport.c:277:57: warning: 'kSSLServerSide' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                                                         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:217:5: note: 'kSSLServerSide' has been explicitly marked deprecated here
+  217 |     kSSLServerSide CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0),
+      |     ^
+libavformat/tls_securetransport.c:277:74: warning: 'kSSLClientSide' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                                                                          ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:218:5: note: 'kSSLClientSide' has been explicitly marked deprecated here
+  218 |     kSSLClientSide CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0)
+      |     ^
+libavformat/tls_securetransport.c:277:90: warning: 'kSSLStreamType' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  277 |     c->ssl_context = SSLCreateContext(NULL, s->listen ? kSSLServerSide : kSSLClientSide, kSSLStreamType);
+      |                                                                                          ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:223:5: note: 'kSSLStreamType' has been explicitly marked deprecated here
+  223 |     kSSLStreamType CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0),
+      |     ^
+libavformat/tls_securetransport.c:288:21: warning: 'SSLSetSessionOption' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  288 |         CHECK_ERROR(SSLSetSessionOption, c->ssl_context, kSSLSessionOptionBreakOnServerAuth, true);
+      |                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:384:1: note: 'SSLSetSessionOption' has been explicitly marked deprecated here
+  384 | SSLSetSessionOption                     (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:288:58: warning: 'kSSLSessionOptionBreakOnServerAuth' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  288 |         CHECK_ERROR(SSLSetSessionOption, c->ssl_context, kSSLSessionOptionBreakOnServerAuth, true);
+      |                                                          ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:99:2: note: 'kSSLSessionOptionBreakOnServerAuth' has been explicitly marked deprecated here
+   99 |         kSSLSessionOptionBreakOnServerAuth CF_ENUM_DEPRECATED(10_2, 10_15, 2_0, 13_0) = 0,
+      |         ^
+libavformat/tls_securetransport.c:292:17: warning: 'SSLSetPeerDomainName' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  292 |     CHECK_ERROR(SSLSetPeerDomainName, c->ssl_context, s->host, strlen(s->host));
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:686:1: note: 'SSLSetPeerDomainName' has been explicitly marked deprecated here
+  686 | SSLSetPeerDomainName            (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:293:17: warning: 'SSLSetIOFuncs' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  293 |     CHECK_ERROR(SSLSetIOFuncs, c->ssl_context, tls_read_cb, tls_write_cb);
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:418:1: note: 'SSLSetIOFuncs' has been explicitly marked deprecated here
+  418 | SSLSetIOFuncs                           (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:294:17: warning: 'SSLSetConnection' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  294 |     CHECK_ERROR(SSLSetConnection, c->ssl_context, h);
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:657:1: note: 'SSLSetConnection' has been explicitly marked deprecated here
+  657 | SSLSetConnection                        (SSLContextRef                  context,
+      | ^
+libavformat/tls_securetransport.c:296:27: warning: 'SSLHandshake' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  296 |         OSStatus status = SSLHandshake(c->ssl_context);
+      |                           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1641:1: note: 'SSLHandshake' has been explicitly marked deprecated here
+ 1641 | SSLHandshake                            (SSLContextRef          context)
+      | ^
+libavformat/tls_securetransport.c:303:17: warning: 'SSLCopyPeerTrust' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  303 |             if (SSLCopyPeerTrust(c->ssl_context, &peerTrust) != noErr) {
+      |                 ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1261:1: note: 'SSLCopyPeerTrust' has been explicitly marked deprecated here
+ 1261 | SSLCopyPeerTrust                        (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:313:17: warning: 'SecTrustEvaluate' is deprecated: first deprecated in macOS 10.15 [-Wdeprecated-declarations]
+  313 |             if (SecTrustEvaluate(peerTrust, &trustResult) != noErr) {
+      |                 ^~~~~~~~~~~~~~~~
+      |                 SecTrustEvaluateWithError
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecTrust.h:377:10: note: 'SecTrustEvaluate' has been explicitly marked deprecated here
+  377 | OSStatus SecTrustEvaluate(SecTrustRef trust, SecTrustResultType *result)
+      |          ^
+libavformat/tls_securetransport.c:369:5: warning: 'SSLGetBufferedReadSize' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  369 |     SSLGetBufferedReadSize(c->ssl_context, &available);
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1705:1: note: 'SSLGetBufferedReadSize' has been explicitly marked deprecated here
+ 1705 | SSLGetBufferedReadSize          (SSLContextRef context,
+      | ^
+libavformat/tls_securetransport.c:372:11: warning: 'SSLRead' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  372 |     ret = SSLRead(c->ssl_context, buf, size, &processed);
+      |           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1689:1: note: 'SSLRead' has been explicitly marked deprecated here
+ 1689 | SSLRead                                         (SSLContextRef          context,
+      | ^
+libavformat/tls_securetransport.c:385:15: warning: 'SSLWrite' is deprecated: first deprecated in macOS 10.15 - No longer supported. Use Network.framework. [-Wdeprecated-declarations]
+  385 |     int ret = SSLWrite(c->ssl_context, buf, size, &processed);
+      |               ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecureTransport.h:1670:1: note: 'SSLWrite' has been explicitly marked deprecated here
+ 1670 | SSLWrite                                        (SSLContextRef          context,
+      | ^
+17 warnings generated.
+libavcodec/pcm-dvdenc.c:60:5: warning: variable 'quant' is used uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
+   60 |     default:
+      |     ^~~~~~~
+libavcodec/pcm-dvdenc.c:64:41: note: uninitialized use occurs here
+   64 |     avctx->bits_per_coded_sample = 16 + quant * 4;
+      |                                         ^~~~~
+libavcodec/pcm-dvdenc.c:38:14: note: initialize the variable 'quant' to silence this warning
+   38 |     int quant, freq, frame_size;
+      |              ^
+      |               = 0
+1 warning generated.
+libavcodec/sonic.c:170:19: warning: unused function 'intlist_write' [-Wunused-function]
+  170 | static inline int intlist_write(RangeCoder *c, uint8_t *state, int *buf, int entries, int base_2_part)
+      |                   ^~~~~~~~~~~~~
+1 warning generated.
+libswscale/lut3d.c:134:33: warning: unused function 'lookup_input8' [-Wunused-function]
+  134 | static av_always_inline v3u16_t lookup_input8(const SwsLut3D *lut3d, v3u8_t rgb)
+      |                                 ^~~~~~~~~~~~~
+1 warning generated.
+libavutil/hwcontext_videotoolbox.c:543:21: warning: unused variable 'dict' [-Wunused-variable]
+  543 |     CFDictionaryRef dict;
+      |                     ^~~~
+libavutil/hwcontext_videotoolbox.c:593:34: warning: comparison of different enumeration types ('enum AVColorPrimaries' and 'enum AVColorSpace') [-Wenum-compare]
+  593 |         if (src->color_primaries != AVCOL_SPC_UNSPECIFIED)
+      |             ~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+ffmpeg.texi:833: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:840: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:862: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:888: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:901: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:1622: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+resampler.texi:38: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+bitstream_filters.texi:725: warning: no htmlxref.cnf entry found for `ffmpeg-filters'
+protocols.texi:234: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+formats.texi:203: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+formats.texi:282: warning: no htmlxref.cnf entry found for `ffmpeg'
+demuxers.texi:1050: warning: no htmlxref.cnf entry found for `ffmpeg-formats'
+muxers.texi:930: warning: no htmlxref.cnf entry found for `ffmpeg-filters'
+muxers.texi:1443: warning: no htmlxref.cnf entry found for `ffmpeg-formats'
+muxers.texi:1919: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+muxers.texi:1929: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+muxers.texi:3664: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+codecs.texi:772: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:256: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:587: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1454: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1460: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1972: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:2804: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:2809: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:3020: warning: no htmlxref.cnf entry found for `ffmpeg-resampler'
+filters.texi:3808: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:5706: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:6021: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:6462: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7078: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7084: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7764: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7997: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:9788: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:11984: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12160: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12210: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12323: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12352: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12372: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12435: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:14458: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:16057: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:16295: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:18887: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20007: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20376: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20616: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20772: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20831: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20838: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20877: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:21739: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:21795: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:22834: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23211: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23787: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23793: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23913: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:24066: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:26292: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:27755: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:27979: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28518: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28558: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28619: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29160: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29187: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29297: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29377: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29392: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29520: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29542: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29626: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29661: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29711: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29800: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29829: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29883: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30041: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30168: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30172: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30187: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30357: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30381: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30390: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30518: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30573: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30619: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30702: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30787: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:31046: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32098: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32379: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32507: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32645: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32697: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32917: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33166: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33267: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33631: warning: no htmlxref.cnf entry found for `ffmpeg'
+codecs.texi:772: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+bitstream_filters.texi:725: warning: no htmlxref.cnf entry found for `ffmpeg-filters'
+formats.texi:203: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+formats.texi:282: warning: no htmlxref.cnf entry found for `ffmpeg'
+demuxers.texi:1050: warning: no htmlxref.cnf entry found for `ffmpeg-formats'
+protocols.texi:234: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+resampler.texi:38: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:256: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:587: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1454: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1460: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1972: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:2804: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:2809: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:3020: warning: no htmlxref.cnf entry found for `ffmpeg-resampler'
+filters.texi:3808: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:5706: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:6021: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:6462: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7078: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7084: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7764: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7997: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:9788: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:11984: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12160: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12210: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12323: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12352: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12372: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12435: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:14458: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:16057: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:16295: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:18887: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20007: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20376: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20616: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20772: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20831: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20838: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20877: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:21739: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:21795: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:22834: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23211: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23787: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23793: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23913: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:24066: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:26292: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:27755: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:27979: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28518: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28558: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28619: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29160: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29187: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29297: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29377: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29392: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29520: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29542: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29626: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29661: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29711: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29800: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29829: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29883: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30041: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30168: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30172: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30187: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30357: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30381: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30390: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30518: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30573: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30619: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30702: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30787: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:31046: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32098: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32379: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32507: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32645: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32697: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32917: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33166: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33267: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33631: warning: no htmlxref.cnf entry found for `ffmpeg'
+ffmpeg.texi:833: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:840: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:862: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:888: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:901: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+ffmpeg.texi:1622: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+codecs.texi:772: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+bitstream_filters.texi:725: warning: no htmlxref.cnf entry found for `ffmpeg-filters'
+formats.texi:203: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+formats.texi:282: warning: no htmlxref.cnf entry found for `ffmpeg'
+demuxers.texi:1050: warning: no htmlxref.cnf entry found for `ffmpeg-formats'
+muxers.texi:930: warning: no htmlxref.cnf entry found for `ffmpeg-filters'
+muxers.texi:1443: warning: no htmlxref.cnf entry found for `ffmpeg-formats'
+muxers.texi:1919: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+muxers.texi:1929: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+muxers.texi:3664: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+protocols.texi:234: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+resampler.texi:38: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:256: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:587: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1454: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1460: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:1972: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:2804: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:2809: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:3020: warning: no htmlxref.cnf entry found for `ffmpeg-resampler'
+filters.texi:3808: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:5706: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:6021: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:6462: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7078: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7084: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7764: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:7997: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:9788: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:11984: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12160: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12210: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12323: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12352: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12372: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:12435: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:14458: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:16057: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:16295: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:18887: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20007: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20376: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20616: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:20772: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20831: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20838: warning: no htmlxref.cnf entry found for `ffmpeg-scaler'
+filters.texi:20877: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:21739: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:21795: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:22834: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23211: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23787: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23793: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:23913: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:24066: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:26292: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:27755: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:27979: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28518: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28558: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:28619: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29160: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29187: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29297: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29377: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29392: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29520: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29542: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29626: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29661: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29711: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29800: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29829: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:29883: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30041: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30168: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30172: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30187: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30357: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30381: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30390: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30518: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30573: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30619: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30702: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:30787: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:31046: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32098: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32379: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32507: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32645: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32697: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:32917: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33166: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33267: warning: no htmlxref.cnf entry found for `ffmpeg-utils'
+filters.texi:33631: warning: no htmlxref.cnf entry found for `ffmpeg'
+make: *** No rule to make target `../fate-suite/mpegps/pcm_aud.mpg', needed by `fate-mpegps-remuxed-pcm-demux'.  Stop.
+make: *** Waiting for unfinished jobs....

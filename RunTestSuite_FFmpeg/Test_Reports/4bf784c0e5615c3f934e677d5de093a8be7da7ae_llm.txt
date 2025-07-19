@@ -1,0 +1,102 @@
+libavdevice/audiotoolbox.m:136:17: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  136 |     const char *stream_name = avctx->url;
+      |                 ^
+libavdevice/audiotoolbox.m:259:25: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  259 |     AudioQueueBufferRef buf = ctx->buffer[ctx->cur_buf];
+      |                         ^
+2 warnings generated.
+libavdevice/avfoundation.m:699:40: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  699 |     const AudioStreamBasicDescription *basic_desc = CMAudioFormatDescriptionGetStreamBasicDescription(format_desc);
+      |                                        ^
+libavdevice/avfoundation.m:811:38: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  811 |     AVCaptureDeviceDiscoverySession *captureDeviceDiscoverySession =
+      |                                      ^
+libavdevice/avfoundation.m:901:35: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  901 |             AVCaptureScreenInput* capture_screen_input = [[[AVCaptureScreenInput alloc] initWithDisplayID:screens[ctx->video_device_index - ctx->num_video_devices]] autorelease];
+      |                                   ^
+libavdevice/avfoundation.m:956:39: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  956 |                 AVCaptureScreenInput* capture_screen_input = [[[AVCaptureScreenInput alloc] initWithDisplayID:screens[idx]] autorelease];
+      |                                       ^
+libavdevice/avfoundation.m:1162:26: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+ 1162 |                 OSStatus ret = CMBlockBufferCopyDataBytes(block_buffer, 0, pkt->size, pkt->data);
+      |                          ^
+libavdevice/avfoundation.m:1147:25: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+ 1147 |             CMItemCount count;
+      |                         ^
+libavdevice/avfoundation.m:1193:25: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+ 1193 |             CMItemCount count;
+      |                         ^
+7 warnings generated.
+libavfilter/vf_coreimage.m:77:31: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+   77 |     const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(link->format);
+      |                               ^
+libavfilter/vf_coreimage.m:167:20: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  167 |             CGRect out_rect = [filter_input extent];
+      |                    ^
+libavfilter/vf_coreimage.m:158:15: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  158 |     CIFilter *filter       = NULL;
+      |               ^
+libavfilter/vf_coreimage.m:507:9: warning: 'NSOpenGLPFAAccelerated' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  507 |         NSOpenGLPFAAccelerated,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:80:5: note: 'NSOpenGLPFAAccelerated' has been explicitly marked deprecated here
+   80 |     NSOpenGLPFAAccelerated           NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =  73,     /* choose a hardware accelerated renderer       */
+      |     ^
+libavfilter/vf_coreimage.m:508:9: warning: 'NSOpenGLPFANoRecovery' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  508 |         NSOpenGLPFANoRecovery,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:79:5: note: 'NSOpenGLPFANoRecovery' has been explicitly marked deprecated here
+   79 |     NSOpenGLPFANoRecovery            NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =  72,     /* disable all failure recovery systems         */
+      |     ^
+libavfilter/vf_coreimage.m:509:9: warning: 'NSOpenGLPFAColorSize' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  509 |         NSOpenGLPFAColorSize, 32,
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:64:5: note: 'NSOpenGLPFAColorSize' has been explicitly marked deprecated here
+   64 |     NSOpenGLPFAColorSize             NS_OPENGL_ENUM_DEPRECATED(10.0, 10.14)  =   8,     /* number of color buffer bits                  */
+      |     ^
+libavfilter/vf_coreimage.m:506:11: warning: 'NSOpenGLPixelFormatAttribute' is deprecated: first deprecated in macOS 10.14 - OpenGL API deprecated; please use Metal and MetalKit.  (Define GL_SILENCE_DEPRECATION to silence these warnings.) [-Wdeprecated-declarations]
+  506 |     const NSOpenGLPixelFormatAttribute attr[] = {
+      |           ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:101:18: note: 'NSOpenGLPixelFormatAttribute' has been explicitly marked deprecated here
+  101 | typedef uint32_t NSOpenGLPixelFormatAttribute NS_OPENGL_DEPRECATED(10.0, 10.14);
+      |                  ^
+libavfilter/vf_coreimage.m:513:5: warning: 'NSOpenGLPixelFormat' is deprecated: first deprecated in macOS 10.14 - Please use Metal or MetalKit. [-Wdeprecated-declarations]
+  513 |     NSOpenGLPixelFormat *pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:(void *)&attr];
+      |     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:115:12: note: 'NSOpenGLPixelFormat' has been explicitly marked deprecated here
+  115 | @interface NSOpenGLPixelFormat : NSObject <NSCoding>
+      |            ^
+libavfilter/vf_coreimage.m:513:63: warning: 'NSOpenGLPixelFormat' is deprecated: first deprecated in macOS 10.14 - Please use Metal or MetalKit. [-Wdeprecated-declarations]
+  513 |     NSOpenGLPixelFormat *pixel_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:(void *)&attr];
+      |                                                               ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGL.h:115:12: note: 'NSOpenGLPixelFormat' has been explicitly marked deprecated here
+  115 | @interface NSOpenGLPixelFormat : NSObject <NSCoding>
+      |            ^
+libavfilter/vf_coreimage.m:515:69: warning: 'contextWithCGLContext:pixelFormat:colorSpace:options:' is deprecated: first deprecated in macOS 10.14 - Core Image OpenGL API deprecated. (Define CI_SILENCE_GL_DEPRECATION to silence these warnings) [-Wdeprecated-declarations]
+  515 |     ctx->glctx                        = CFBridgingRetain([CIContext contextWithCGLContext:CGLGetCurrentContext()
+      |                                                                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIContext.h:102:1: note: 'contextWithCGLContext:pixelFormat:colorSpace:options:' has been explicitly marked deprecated here
+  102 | + (CIContext *)contextWithCGLContext:(CGLContextObj)cglctx
+      | ^
+libavfilter/vf_coreimage.m:506:40: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  506 |     const NSOpenGLPixelFormatAttribute attr[] = {
+      |                                        ^
+11 warnings generated.
+libavformat/dump.c:799:5: error: 'case' statement not in switch statement
+  799 |     case AV_STREAM_GROUP_PARAMS_LCEVC: {
+      |     ^
+libavformat/dump.c:824:9: error: 'break' statement not in loop or switch statement
+  824 |         break;
+      |         ^
+libavformat/dump.c:827:9: error: 'break' statement not in loop or switch statement
+  827 |         break;
+      |         ^
+libavformat/dump.c:826:5: error: 'default' statement not in switch statement
+  826 |     default:
+      |     ^
+libavformat/dump.c:829:1: error: extraneous closing brace ('}')
+  829 | }
+      | ^
+5 errors generated.
+make: *** [libavformat/dump.o] Error 1
+make: *** Waiting for unfinished jobs....
