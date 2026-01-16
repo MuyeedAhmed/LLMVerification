@@ -1,0 +1,15 @@
+int json_string_set_nocheck(json_t *json, const char *value)
+{
+    if (!json || !json_is_string(json) || !value)
+        return -1;
+
+    char *dup = jsonp_strdup(value);
+    if (!dup)
+        return -1;
+
+    json_string_t *string = json_to_string(json);
+    jsonp_free(string->value);
+    string->value = dup;
+
+    return 0;
+}

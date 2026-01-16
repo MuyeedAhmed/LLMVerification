@@ -1,0 +1,25 @@
+json_t *json_load_file(const char *path, json_error_t *error)
+{
+    json_t *result;
+    FILE *fp;
+
+    fp = fopen(path, "r");
+    if(!fp)
+    {
+        error_set(error, NULL, "unable to open %s: %s",
+                  path, strerror(errno));
+        return NULL;
+    }
+
+    result = json_loadf(fp, error);
+
+    if (ferror(fp)) {
+        error_set(error, NULL, "error reading from %s: %s",
+                  path, strerror(errno));
+        fclose(fp);
+        return NULL;
+    }
+
+    fclose(fp);
+    return result;
+}
