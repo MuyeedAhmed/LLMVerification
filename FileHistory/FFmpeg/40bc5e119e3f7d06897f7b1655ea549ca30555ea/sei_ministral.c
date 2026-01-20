@@ -1,5 +1,3 @@
-No explanation or comments.
-```c
 #include "sei.h"
 #include "dec.h"
 #include "libavutil/refstruct.h"
@@ -136,4 +134,3 @@ void ff_vvc_sei_reset(VVCSEI *s)
     ff_h2645_sei_reset(&s->common);
     s->picture_hash.present = 0;
 }
-```

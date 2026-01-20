@@ -1,6 +1,3 @@
-Do not include any other text.
-
------ BEGIN modified.c -----
 /*
  * Microsoft RTP/ASF support.
  * Copyright (c) 2008 Ronald S. Bultje
@@ -277,11 +274,6 @@ static int asfrtp_parse_packet(AVFormatContext *s, PayloadContext *asf,
     return res == 1 ? -1 : res;
 }
 
-static void asfrtp_close_context(PayloadContext *asf)
-{
-    ffio_free_dyn_buf(&asf->pktbuf);
-    av_free(asf);
-}
 
 #define RTP_ASF_HANDLER(n, s, t) \
 RTPDynamicProtocolHandler ff_ms_rtp_ ## n ## _handler = { \
@@ -296,4 +288,3 @@ RTPDynamicProtocolHandler ff_ms_rtp_ ## n ## _handler = { \
 
 RTP_ASF_HANDLER(asf_pfv, "x-asf-pf",  AVMEDIA_TYPE_VIDEO);
 RTP_ASF_HANDLER(asf_pfa, "x-asf-pf",  AVMEDIA_TYPE_AUDIO);
------ END modified.c -----

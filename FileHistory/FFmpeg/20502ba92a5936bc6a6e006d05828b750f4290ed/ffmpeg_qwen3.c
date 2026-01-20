@@ -1,6 +1,3 @@
-Do not provide any explanation or any other text.
-
------ BEGIN modified.c -----
 /*
  * Copyright (c) 2000-2003 Fabrice Bellard
  *
@@ -310,60 +307,6 @@ static int decode_interrupt_cb(void *ctx)
 
 const AVIOInterruptCB int_cb = { decode_interrupt_cb, NULL };
 
-static void ffmpeg_cleanup(int ret)
-{
-    if (print_graphs || print_graphs_file)
-        if (nb_output_files > 0)
-            print_filtergraphs(filtergraphs, nb_filtergraphs, input_files, nb_input_files, output_files, nb_output_files);
-
-    if (do_benchmark) {
-        int64_t maxrss = getmaxrss() / 1024;
-        av_log(NULL, AV_LOG_INFO, "bench: maxrss=%"PRId64"KiB\n", maxrss);
-    }
-
-    for (int i = 0; i < nb_filtergraphs; i++)
-        fg_free(&filtergraphs[i]);
-    av_freep(&filtergraphs);
-
-    for (int i = 0; i < nb_output_files; i++)
-        of_free(&output_files[i]);
-
-    for (int i = 0; i < nb_input_files; i++)
-        ifile_close(&input_files[i]);
-
-    for (int i = 0; i < nb_decoders; i++)
-        dec_free(&decoders[i]);
-    av_freep(&decoders);
-
-    if (vstats_file) {
-        if (fclose(vstats_file))
-            av_log(NULL, AV_LOG_ERROR,
-                   "Error closing vstats file, loss of information possible: %s\n",
-                   av_err2str(AVERROR(errno)));
-    }
-    av_freep(&vstats_filename);
-    of_enc_stats_close();
-
-    hw_device_free_all();
-
-    av_freep(&filter_nbthreads);
-
-    av_freep(&input_files);
-    av_freep(&output_files);
-
-    uninit_opts();
-
-    avformat_network_deinit();
-
-    if (received_sigterm) {
-        av_log(NULL, AV_LOG_INFO, "Exiting normally, received signal %d.\n",
-               (int) received_sigterm);
-    } else if (ret && atomic_load(&transcode_init_done)) {
-        av_log(NULL, AV_LOG_INFO, "Conversion failed!\n");
-    }
-    term_exit();
-    ffmpeg_exited = 1;
-}
 
 OutputStream *ost_iter(OutputStream *prev)
 {
@@ -1008,4 +951,30 @@ int main(int argc, char **argv)
 
     current_time = ti = get_benchmark_time_stamps();
     ret = transcode(sch);
-    if (ret >= 0 && do
+    if (ret >= 0 && do_benchmark) {
+        int64_t utime, stime, rtime;
+        current_time = get_benchmark_time_stamps();
+        utime = current_time.user_usec - ti.user_usec;
+        stime = current_time.sys_usec  - ti.sys_usec;
+        rtime = current_time.real_usec - ti.real_usec;
+        av_log(NULL, AV_LOG_INFO,
+               "bench: utime=%0.3fs stime=%0.3fs rtime=%0.3fs\n",
+               utime / 1000000.0, stime / 1000000.0, rtime / 1000000.0);
+    }
+
+    ret = received_nb_signals                 ? 255 :
+          (ret == FFMPEG_ERROR_RATE_EXCEEDED) ?  69 : ret;
+
+finish:
+    if (ret == AVERROR_EXIT)
+        ret = 0;
+
+    ffmpeg_cleanup(ret);
+
+    sch_free(&sch);
+
+    av_log(NULL, AV_LOG_VERBOSE, "\n");
+    av_log(NULL, AV_LOG_VERBOSE, "Exiting with exit code %d\n", ret);
+
+    return ret;
+}

@@ -1,6 +1,3 @@
-Do not provide any extra explanation or any other text.
-
------ BEGIN modified.c -----
 /*
  * MPEG-DASH ISO BMFF segmenter
  * Copyright (c) 2014 Martin Storsjo
@@ -91,7 +88,7 @@ typedef struct DASHContext {
     int has_video, has_audio;
     int64_t last_duration;
     int64_t total_duration;
-    char availability_start_time[1024];
+    char availability_start_time[100];
     char dirname[1024];
     const char *single_file_name;
     const char *init_seg_name;
@@ -792,3 +789,170 @@ static int dash_flush(AVFormatContext *s, int final, int stream)
         range_length = avio_tell(os->ctx->pb) - start_pos;
         if (c->single_file) {
             find_index_range(s, full_path, start_pos, &index_length);
+        } else {
+            ffurl_close(os->out);
+            os->out = NULL;
+            ret = ff_rename(temp_path, full_path);
+            if (ret < 0)
+                break;
+        }
+        add_segment(os, filename, os->start_pts, os->max_pts - os->start_pts, start_pos, range_length, index_length);
+        av_log(s, AV_LOG_VERBOSE, "Representation %d media segment %d written to: %s\n", i, os->segment_index, full_path);
+    }
+
+    if (c->window_size || (final && c->remove_at_exit)) {
+        for (i = 0; i < s->nb_streams; i++) {
+            OutputStream *os = &c->streams[i];
+            int j;
+            int remove = os->nb_segments - c->window_size - c->extra_window_size;
+            if (final && c->remove_at_exit)
+                remove = os->nb_segments;
+            if (remove > 0) {
+                for (j = 0; j < remove; j++) {
+                    char filename[1024];
+                    snprintf(filename, sizeof(filename), "%s%s", c->dirname, os->segments[j]->file);
+                    unlink(filename);
+                    av_free(os->segments[j]);
+                }
+                os->nb_segments -= remove;
+                memmove(os->segments, os->segments + remove, os->nb_segments * sizeof(*os->segments));
+            }
+        }
+    }
+
+    if (ret >= 0)
+        ret = write_manifest(s, final);
+    return ret;
+}
+
+static int dash_write_packet(AVFormatContext *s, AVPacket *pkt)
+{
+    DASHContext *c = s->priv_data;
+    AVStream *st = s->streams[pkt->stream_index];
+    OutputStream *os = &c->streams[pkt->stream_index];
+    int64_t seg_end_duration = (os->segment_index) * (int64_t) c->min_seg_duration;
+    int ret;
+
+    // If forcing the stream to start at 0, the mp4 muxer will set the start
+    // timestamps to 0. Do the same here, to avoid mismatches in duration/timestamps.
+    if (os->first_pts == AV_NOPTS_VALUE &&
+        s->avoid_negative_ts == AVFMT_AVOID_NEG_TS_MAKE_ZERO) {
+        pkt->pts -= pkt->dts;
+        pkt->dts  = 0;
+    }
+
+    if (os->first_pts == AV_NOPTS_VALUE)
+        os->first_pts = pkt->pts;
+
+    if ((!c->has_video || st->codec->codec_type == AVMEDIA_TYPE_VIDEO) &&
+        pkt->flags & AV_PKT_FLAG_KEY && os->packets_written &&
+        av_compare_ts(pkt->pts - os->first_pts, st->time_base,
+                      seg_end_duration, AV_TIME_BASE_Q) >= 0) {
+        int64_t prev_duration = c->last_duration;
+
+        c->last_duration = av_rescale_q(pkt->pts - os->start_pts,
+                                        st->time_base,
+                                        AV_TIME_BASE_Q);
+        c->total_duration = av_rescale_q(pkt->pts - os->first_pts,
+                                         st->time_base,
+                                         AV_TIME_BASE_Q);
+
+        if ((!c->use_timeline || !c->use_template) && prev_duration) {
+            if (c->last_duration < prev_duration*9/10 ||
+                c->last_duration > prev_duration*11/10) {
+                av_log(s, AV_LOG_WARNING,
+                       "Segment durations differ too much, enable use_timeline "
+                       "and use_template, or keep a stricter keyframe interval\n");
+            }
+        }
+
+        if ((ret = dash_flush(s, 0, pkt->stream_index)) < 0)
+            return ret;
+    }
+
+    if (!os->packets_written) {
+        // If we wrote a previous segment, adjust the start time of the segment
+        // to the end of the previous one (which is the same as the mp4 muxer
+        // does). This avoids gaps in the timeline.
+        if (os->max_pts != AV_NOPTS_VALUE)
+            os->start_pts = os->max_pts;
+        else
+            os->start_pts = pkt->pts;
+    }
+    if (os->max_pts == AV_NOPTS_VALUE)
+        os->max_pts = pkt->pts + pkt->duration;
+    else
+        os->max_pts = FFMAX(os->max_pts, pkt->pts + pkt->duration);
+    os->packets_written++;
+    return ff_write_chained(os->ctx, 0, pkt, s);
+}
+
+static int dash_write_trailer(AVFormatContext *s)
+{
+    DASHContext *c = s->priv_data;
+
+    if (s->nb_streams > 0) {
+        OutputStream *os = &c->streams[0];
+        // If no segments have been written so far, try to do a crude
+        // guess of the segment duration
+        if (!c->last_duration)
+            c->last_duration = av_rescale_q(os->max_pts - os->start_pts,
+                                            s->streams[0]->time_base,
+                                            AV_TIME_BASE_Q);
+        c->total_duration = av_rescale_q(os->max_pts - os->first_pts,
+                                         s->streams[0]->time_base,
+                                         AV_TIME_BASE_Q);
+    }
+    dash_flush(s, 1, -1);
+
+    if (c->remove_at_exit) {
+        char filename[1024];
+        int i;
+        for (i = 0; i < s->nb_streams; i++) {
+            OutputStream *os = &c->streams[i];
+            snprintf(filename, sizeof(filename), "%s%s", c->dirname, os->initfile);
+            unlink(filename);
+        }
+        unlink(s->filename);
+    }
+
+    dash_free(s);
+    return 0;
+}
+
+#define OFFSET(x) offsetof(DASHContext, x)
+#define E AV_OPT_FLAG_ENCODING_PARAM
+static const AVOption options[] = {
+    { "window_size", "number of segments kept in the manifest", OFFSET(window_size), AV_OPT_TYPE_INT, { .i64 = 0 }, 0, INT_MAX, E },
+    { "extra_window_size", "number of segments kept outside of the manifest before removing from disk", OFFSET(extra_window_size), AV_OPT_TYPE_INT, { .i64 = 5 }, 0, INT_MAX, E },
+    { "min_seg_duration", "minimum segment duration (in microseconds)", OFFSET(min_seg_duration), AV_OPT_TYPE_INT64, { .i64 = 5000000 }, 0, INT_MAX, E },
+    { "remove_at_exit", "remove all segments when finished", OFFSET(remove_at_exit), AV_OPT_TYPE_INT, { .i64 = 0 }, 0, 1, E },
+    { "use_template", "Use SegmentTemplate instead of SegmentList", OFFSET(use_template), AV_OPT_TYPE_INT, { .i64 = 1 }, 0, 1, E },
+    { "use_timeline", "Use SegmentTimeline in SegmentTemplate", OFFSET(use_timeline), AV_OPT_TYPE_INT, { .i64 = 1 }, 0, 1, E },
+    { "single_file", "Store all segments in one file, accessed using byte ranges", OFFSET(single_file), AV_OPT_TYPE_INT, { .i64 = 0 }, 0, 1, E },
+    { "single_file_name", "DASH-templated name to be used for baseURL. Implies storing all segments in one file, accessed using byte ranges", OFFSET(single_file_name), AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0, E },
+    { "init_seg_name", "DASH-templated name to used for the initialization segment", OFFSET(init_seg_name), AV_OPT_TYPE_STRING, {.str = "init-stream$RepresentationID$.m4s"}, 0, 0, E },
+    { "media_seg_name", "DASH-templated name to used for the media segments", OFFSET(media_seg_name), AV_OPT_TYPE_STRING, {.str = "chunk-stream$RepresentationID$-$Number%05d$.m4s"}, 0, 0, E },
+    { NULL },
+};
+
+static const AVClass dash_class = {
+    .class_name = "dash muxer",
+    .item_name  = av_default_item_name,
+    .option     = options,
+    .version    = LIBAVUTIL_VERSION_INT,
+};
+
+AVOutputFormat ff_dash_muxer = {
+    .name           = "dash",
+    .long_name      = NULL_IF_CONFIG_SMALL("DASH Muxer"),
+    .priv_data_size = sizeof(DASHContext),
+    .audio_codec    = AV_CODEC_ID_AAC,
+    .video_codec    = AV_CODEC_ID_H264,
+    .flags          = AVFMT_GLOBALHEADER | AVFMT_NOFILE | AVFMT_TS_NEGATIVE,
+    .write_header   = dash_write_header,
+    .write_packet   = dash_write_packet,
+    .write_trailer  = dash_write_trailer,
+    .codec_tag      = (const AVCodecTag* const []){ ff_mp4_obj_type, 0 },
+    .priv_class     = &dash_class,
+};

@@ -1,6 +1,32 @@
-Do NOT output any extra information.
+/*
+ * RTP packetization for Xiph audio and video
+ * Copyright (c) 2010 Josh Allmann
+ *
+ * This file is part of Libav.
+ *
+ * Libav is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Libav is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Libav; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
 
-```c
+#include "avformat.h"
+#include "rtpenc.h"
+
+/**
+ * Packetize Xiph frames into RTP according to
+ * RFC 5215 (Vorbis) and the Theora RFC draft.
+ * (http://svn.xiph.org/trunk/theora/doc/draft-ietf-avt-rtp-theora-00.txt)
+ */
 /*
  * RTP packetization for Xiph audio and video
  * Copyright (c) 2010 Josh Allmann
@@ -128,4 +154,3 @@ void ff_rtp_send_xiph(AVFormatContext *s1, const uint8_t *buff, int size)
         frag = size <= max_pkt_size ? 3 : 2;
     }
 }
-```

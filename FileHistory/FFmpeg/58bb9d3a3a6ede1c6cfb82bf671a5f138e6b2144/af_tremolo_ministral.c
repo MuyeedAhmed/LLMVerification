@@ -1,6 +1,3 @@
-No explanation or comments.
-
-```c
 #include "libavutil/opt.h"
 #include "avfilter.h"
 #include "internal.h"
@@ -149,4 +146,3 @@ AVFilter ff_af_tremolo = {
     .inputs        = avfilter_af_tremolo_inputs,
     .outputs       = avfilter_af_tremolo_outputs,
 };
-```

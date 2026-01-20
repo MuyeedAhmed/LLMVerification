@@ -1,6 +1,3 @@
-Do NOT return any extra information.
-
------ BEGIN modified.c -----
 /*
  * Copyright (c) 2012 Fredrik Mellbin
  * Copyright (c) 2013 Clément Bœsch
@@ -615,4 +612,425 @@ static void copy_fields(const FieldMatchContext *fm, AVFrame *dst,
     int plane;
     for (plane = 0; plane < 4 && src->data[plane] && src->linesize[plane]; plane++) {
         const int plane_h = get_height(fm, src, plane);
-        const int nb_copy_fields = (plane_h >> 1
+        const int nb_copy_fields = (plane_h >> 1) + (field ? 0 : (plane_h & 1));
+        av_image_copy_plane(dst->data[plane] + field*dst->linesize[plane], dst->linesize[plane] << 1,
+                            src->data[plane] + field*src->linesize[plane], src->linesize[plane] << 1,
+                            get_width(fm, src, plane) * fm->bpc, nb_copy_fields);
+    }
+}
+
+static AVFrame *create_weave_frame(AVFilterContext *ctx, int match, int field,
+                                   const AVFrame *prv, AVFrame *src, const AVFrame *nxt)
+{
+    AVFrame *dst;
+    FieldMatchContext *fm = ctx->priv;
+
+    if (match == mC) {
+        dst = av_frame_clone(src);
+    } else {
+        AVFilterLink *outlink = ctx->outputs[0];
+
+        dst = ff_get_video_buffer(outlink, outlink->w, outlink->h);
+        if (!dst)
+            return NULL;
+        av_frame_copy_props(dst, src);
+
+        switch (match) {
+        case mP: copy_fields(fm, dst, src, 1-field); copy_fields(fm, dst, prv,   field); break;
+        case mN: copy_fields(fm, dst, src, 1-field); copy_fields(fm, dst, nxt,   field); break;
+        case mB: copy_fields(fm, dst, src,   field); copy_fields(fm, dst, prv, 1-field); break;
+        case mU: copy_fields(fm, dst, src,   field); copy_fields(fm, dst, nxt, 1-field); break;
+        default: av_assert0(0);
+        }
+    }
+    return dst;
+}
+
+static int checkmm(AVFilterContext *ctx, int *combs, int m1, int m2,
+                   AVFrame **gen_frames, int field)
+{
+    const FieldMatchContext *fm = ctx->priv;
+
+#define LOAD_COMB(mid) do {                                                     \
+    if (combs[mid] < 0) {                                                       \
+        if (!gen_frames[mid])                                                   \
+            gen_frames[mid] = create_weave_frame(ctx, mid, field,               \
+                                                 fm->prv, fm->src, fm->nxt);    \
+        combs[mid] = calc_combed_score(fm, gen_frames[mid]);                    \
+    }                                                                           \
+} while (0)
+
+    LOAD_COMB(m1);
+    LOAD_COMB(m2);
+
+    if ((combs[m2] * 3 < combs[m1] || (combs[m2] * 2 < combs[m1] && combs[m1] > fm->combpel)) &&
+        abs(combs[m2] - combs[m1]) >= 30 && combs[m2] < fm->combpel)
+        return m2;
+    else
+        return m1;
+}
+
+static const int fxo0m[] = { mP, mC, mN, mB, mU };
+static const int fxo1m[] = { mN, mC, mP, mU, mB };
+
+static int filter_frame(AVFilterLink *inlink, AVFrame *in)
+{
+    AVFilterContext *ctx  = inlink->dst;
+    AVFilterLink *outlink = ctx->outputs[0];
+    FieldMatchContext *fm = ctx->priv;
+    int combs[] = { -1, -1, -1, -1, -1 };
+    int order, field, i, match, sc = 0, ret = 0;
+    const int *fxo;
+    AVFrame *gen_frames[] = { NULL, NULL, NULL, NULL, NULL };
+    AVFrame *dst;
+
+    /* update frames queue(s) */
+#define SLIDING_FRAME_WINDOW(prv, src, nxt) do {                \
+        if (prv != src) /* 2nd loop exception (1st has prv==src and we don't want to loose src) */ \
+            av_frame_free(&prv);                                \
+        prv = src;                                              \
+        src = nxt;                                              \
+        if (in)                                                 \
+            nxt = in;                                           \
+        if (!prv)                                               \
+            prv = src;                                          \
+        if (!prv) /* received only one frame at that point */   \
+            return 0;                                           \
+        av_assert0(prv && src && nxt);                          \
+} while (0)
+    if (FF_INLINK_IDX(inlink) == INPUT_MAIN) {
+        av_assert0(fm->got_frame[INPUT_MAIN] == 0);
+        SLIDING_FRAME_WINDOW(fm->prv, fm->src, fm->nxt);
+        fm->got_frame[INPUT_MAIN] = 1;
+    } else {
+        av_assert0(fm->got_frame[INPUT_CLEANSRC] == 0);
+        SLIDING_FRAME_WINDOW(fm->prv2, fm->src2, fm->nxt2);
+        fm->got_frame[INPUT_CLEANSRC] = 1;
+    }
+    if (!fm->got_frame[INPUT_MAIN] || (fm->ppsrc && !fm->got_frame[INPUT_CLEANSRC]))
+        return 0;
+    fm->got_frame[INPUT_MAIN] = fm->got_frame[INPUT_CLEANSRC] = 0;
+    in = fm->src;
+
+    /* parity */
+    order = fm->order != FM_PARITY_AUTO ? fm->order : (in->interlaced_frame ? in->top_field_first : 1);
+    field = fm->field != FM_PARITY_AUTO ? fm->field : order;
+    av_assert0(order == 0 || order == 1 || field == 0 || field == 1);
+    fxo = field ^ order ? fxo1m : fxo0m;
+
+    /* debug mode: we generate all the fields combinations and their associated
+     * combed score. XXX: inject as frame metadata? */
+    if (fm->combdbg) {
+        for (i = 0; i < FF_ARRAY_ELEMS(combs); i++) {
+            if (i > mN && fm->combdbg == COMBDBG_PCN)
+                break;
+            gen_frames[i] = create_weave_frame(ctx, i, field, fm->prv, fm->src, fm->nxt);
+            if (!gen_frames[i]) {
+                ret = AVERROR(ENOMEM);
+                goto fail;
+            }
+            combs[i] = calc_combed_score(fm, gen_frames[i]);
+        }
+        av_log(ctx, AV_LOG_INFO, "COMBS: %3d %3d %3d %3d %3d\n",
+               combs[0], combs[1], combs[2], combs[3], combs[4]);
+    } else {
+        gen_frames[mC] = av_frame_clone(fm->src);
+        if (!gen_frames[mC]) {
+            ret = AVERROR(ENOMEM);
+            goto fail;
+        }
+    }
+
+    /* p/c selection and optional 3-way p/c/n matches */
+    match = compare_fields(fm, fxo[mC], fxo[mP], field);
+    if (fm->mode == MODE_PCN || fm->mode == MODE_PCN_UB)
+        match = compare_fields(fm, match, fxo[mN], field);
+
+    /* scene change check */
+    if (fm->combmatch == COMBMATCH_SC) {
+        if (fm->lastn == outlink->frame_count_in - 1) {
+            if (fm->lastscdiff > fm->scthresh)
+                sc = 1;
+        } else if (luma_abs_diff(fm->prv, fm->src) > fm->scthresh) {
+            sc = 1;
+        }
+
+        if (!sc) {
+            fm->lastn = outlink->frame_count_in;
+            fm->lastscdiff = luma_abs_diff(fm->src, fm->nxt);
+            sc = fm->lastscdiff > fm->scthresh;
+        }
+    }
+
+    if (fm->combmatch == COMBMATCH_FULL || (fm->combmatch == COMBMATCH_SC && sc)) {
+        switch (fm->mode) {
+        /* 2-way p/c matches */
+        case MODE_PC:
+            match = checkmm(ctx, combs, match, match == fxo[mP] ? fxo[mC] : fxo[mP], gen_frames, field);
+            break;
+        case MODE_PC_N:
+            match = checkmm(ctx, combs, match, fxo[mN], gen_frames, field);
+            break;
+        case MODE_PC_U:
+            match = checkmm(ctx, combs, match, fxo[mU], gen_frames, field);
+            break;
+        case MODE_PC_N_UB:
+            match = checkmm(ctx, combs, match, fxo[mN], gen_frames, field);
+            match = checkmm(ctx, combs, match, fxo[mU], gen_frames, field);
+            match = checkmm(ctx, combs, match, fxo[mB], gen_frames, field);
+            break;
+        /* 3-way p/c/n matches */
+        case MODE_PCN:
+            match = checkmm(ctx, combs, match, match == fxo[mP] ? fxo[mC] : fxo[mP], gen_frames, field);
+            break;
+        case MODE_PCN_UB:
+            match = checkmm(ctx, combs, match, fxo[mU], gen_frames, field);
+            match = checkmm(ctx, combs, match, fxo[mB], gen_frames, field);
+            break;
+        default:
+            av_assert0(0);
+        }
+    }
+
+    /* get output frame and drop the others */
+    if (fm->ppsrc) {
+        /* field matching was based on a filtered/post-processed input, we now
+         * pick the untouched fields from the clean source */
+        dst = create_weave_frame(ctx, match, field, fm->prv2, fm->src2, fm->nxt2);
+    } else {
+        if (!gen_frames[match]) { // XXX: is that possible?
+            dst = create_weave_frame(ctx, match, field, fm->prv, fm->src, fm->nxt);
+        } else {
+            dst = gen_frames[match];
+            gen_frames[match] = NULL;
+        }
+    }
+    if (!dst) {
+        ret = AVERROR(ENOMEM);
+        goto fail;
+    }
+
+    /* mark the frame we are unable to match properly as interlaced so a proper
+     * de-interlacer can take the relay */
+    dst->interlaced_frame = combs[match] >= fm->combpel;
+    if (dst->interlaced_frame) {
+        av_log(ctx, AV_LOG_WARNING, "Frame #%"PRId64" at %s is still interlaced\n",
+               outlink->frame_count_in, av_ts2timestr(in->pts, &inlink->time_base));
+        dst->top_field_first = field;
+    }
+
+    av_log(ctx, AV_LOG_DEBUG, "SC:%d | COMBS: %3d %3d %3d %3d %3d (combpel=%d)"
+           " match=%d combed=%s\n", sc, combs[0], combs[1], combs[2], combs[3], combs[4],
+           fm->combpel, match, dst->interlaced_frame ? "YES" : "NO");
+
+fail:
+    for (i = 0; i < FF_ARRAY_ELEMS(gen_frames); i++)
+        av_frame_free(&gen_frames[i]);
+
+    if (ret >= 0)
+        return ff_filter_frame(outlink, dst);
+    return ret;
+}
+
+static int activate(AVFilterContext *ctx)
+{
+    FieldMatchContext *fm = ctx->priv;
+    AVFrame *frame = NULL;
+    int ret = 0, status;
+    int64_t pts;
+
+    FF_FILTER_FORWARD_STATUS_BACK_ALL(ctx->outputs[0], ctx);
+
+    if ((fm->got_frame[INPUT_MAIN] == 0) &&
+        (ret = ff_inlink_consume_frame(ctx->inputs[INPUT_MAIN], &frame)) > 0) {
+        ret = filter_frame(ctx->inputs[INPUT_MAIN], frame);
+        if (ret < 0)
+            return ret;
+    }
+    if (ret < 0)
+        return ret;
+    if (fm->ppsrc &&
+        (fm->got_frame[INPUT_CLEANSRC] == 0) &&
+        (ret = ff_inlink_consume_frame(ctx->inputs[INPUT_CLEANSRC], &frame)) > 0) {
+        ret = filter_frame(ctx->inputs[INPUT_CLEANSRC], frame);
+        if (ret < 0)
+            return ret;
+    }
+    if (ret < 0) {
+        return ret;
+    } else if (ff_inlink_acknowledge_status(ctx->inputs[INPUT_MAIN], &status, &pts)) {
+        if (status == AVERROR_EOF) { // flushing
+            fm->eof |= 1 << INPUT_MAIN;
+            ret = filter_frame(ctx->inputs[INPUT_MAIN], NULL);
+        }
+        ff_outlink_set_status(ctx->outputs[0], status, pts);
+        return ret;
+    } else if (fm->ppsrc && ff_inlink_acknowledge_status(ctx->inputs[INPUT_CLEANSRC], &status, &pts)) {
+        if (status == AVERROR_EOF) { // flushing
+            fm->eof |= 1 << INPUT_CLEANSRC;
+            ret = filter_frame(ctx->inputs[INPUT_CLEANSRC], NULL);
+        }
+        ff_outlink_set_status(ctx->outputs[0], status, pts);
+        return ret;
+    } else {
+        if (ff_outlink_frame_wanted(ctx->outputs[0])) {
+            if (fm->got_frame[INPUT_MAIN] == 0)
+                ff_inlink_request_frame(ctx->inputs[INPUT_MAIN]);
+            if (fm->ppsrc && (fm->got_frame[INPUT_CLEANSRC] == 0))
+                ff_inlink_request_frame(ctx->inputs[INPUT_CLEANSRC]);
+        }
+        return 0;
+    }
+}
+
+static int query_formats(AVFilterContext *ctx)
+{
+    FieldMatchContext *fm = ctx->priv;
+
+    static const enum AVPixelFormat pix_fmts[] = {
+        AV_PIX_FMT_YUV444P,  AV_PIX_FMT_YUV422P,  AV_PIX_FMT_YUV420P,
+        AV_PIX_FMT_YUV411P,  AV_PIX_FMT_YUV410P,
+        AV_PIX_FMT_NONE
+    };
+    static const enum AVPixelFormat unproc_pix_fmts[] = {
+        AV_PIX_FMT_YUV410P, AV_PIX_FMT_YUV411P,
+        AV_PIX_FMT_YUV420P, AV_PIX_FMT_YUV422P,
+        AV_PIX_FMT_YUV440P, AV_PIX_FMT_YUV444P,
+        AV_PIX_FMT_YUVJ420P, AV_PIX_FMT_YUVJ422P,
+        AV_PIX_FMT_YUVJ440P, AV_PIX_FMT_YUVJ444P,
+        AV_PIX_FMT_YUVJ411P,
+        AV_PIX_FMT_YUV420P9, AV_PIX_FMT_YUV422P9, AV_PIX_FMT_YUV444P9,
+        AV_PIX_FMT_YUV420P10, AV_PIX_FMT_YUV422P10, AV_PIX_FMT_YUV444P10,
+        AV_PIX_FMT_YUV440P10,
+        AV_PIX_FMT_YUV444P12, AV_PIX_FMT_YUV422P12, AV_PIX_FMT_YUV420P12,
+        AV_PIX_FMT_YUV440P12,
+        AV_PIX_FMT_YUV444P14, AV_PIX_FMT_YUV422P14, AV_PIX_FMT_YUV420P14,
+        AV_PIX_FMT_YUV420P16, AV_PIX_FMT_YUV422P16, AV_PIX_FMT_YUV444P16,
+        AV_PIX_FMT_NONE
+    };
+    int ret;
+
+    AVFilterFormats *fmts_list = ff_make_format_list(pix_fmts);
+    if (!fmts_list)
+        return AVERROR(ENOMEM);
+    if (!fm->ppsrc) {
+        return ff_set_common_formats(ctx, fmts_list);
+    }
+
+    if ((ret = ff_formats_ref(fmts_list, &ctx->inputs[INPUT_MAIN]->out_formats)) < 0)
+        return ret;
+    fmts_list = ff_make_format_list(unproc_pix_fmts);
+    if (!fmts_list)
+        return AVERROR(ENOMEM);
+    if ((ret = ff_formats_ref(fmts_list, &ctx->outputs[0]->in_formats)) < 0)
+        return ret;
+    if ((ret = ff_formats_ref(fmts_list, &ctx->inputs[INPUT_CLEANSRC]->out_formats)) < 0)
+        return ret;
+    return 0;
+}
+
+
+static av_cold int fieldmatch_init(AVFilterContext *ctx)
+{
+    const FieldMatchContext *fm = ctx->priv;
+    AVFilterPad pad = {
+        .name         = av_strdup("main"),
+        .type         = AVMEDIA_TYPE_VIDEO,
+        .config_props = config_input,
+    };
+    int ret;
+
+    if (!pad.name)
+        return AVERROR(ENOMEM);
+    if ((ret = ff_insert_inpad(ctx, INPUT_MAIN, &pad)) < 0) {
+        av_freep(&pad.name);
+        return ret;
+    }
+
+    if (fm->ppsrc) {
+        pad.name = av_strdup("clean_src");
+        pad.config_props = NULL;
+        if (!pad.name)
+            return AVERROR(ENOMEM);
+        if ((ret = ff_insert_inpad(ctx, INPUT_CLEANSRC, &pad)) < 0) {
+            av_freep(&pad.name);
+            return ret;
+        }
+    }
+
+    if ((fm->blockx & (fm->blockx - 1)) ||
+        (fm->blocky & (fm->blocky - 1))) {
+        av_log(ctx, AV_LOG_ERROR, "blockx and blocky settings must be power of two\n");
+        return AVERROR(EINVAL);
+    }
+
+    if (fm->combpel > fm->blockx * fm->blocky) {
+        av_log(ctx, AV_LOG_ERROR, "Combed pixel should not be larger than blockx x blocky\n");
+        return AVERROR(EINVAL);
+    }
+
+    return 0;
+}
+
+static av_cold void fieldmatch_uninit(AVFilterContext *ctx)
+{
+    int i;
+    FieldMatchContext *fm = ctx->priv;
+
+    if (fm->prv != fm->src)
+        av_frame_free(&fm->prv);
+    if (fm->nxt != fm->src)
+        av_frame_free(&fm->nxt);
+    if (fm->prv2 != fm->src2)
+        av_frame_free(&fm->prv2);
+    if (fm->nxt2 != fm->src2)
+        av_frame_free(&fm->nxt2);
+    av_frame_free(&fm->src);
+    av_frame_free(&fm->src2);
+    av_freep(&fm->map_data[0]);
+    av_freep(&fm->cmask_data[0]);
+    av_freep(&fm->tbuffer);
+    av_freep(&fm->c_array);
+    for (i = 0; i < ctx->nb_inputs; i++)
+        av_freep(&ctx->input_pads[i].name);
+}
+
+static int config_output(AVFilterLink *outlink)
+{
+    AVFilterContext *ctx  = outlink->src;
+    FieldMatchContext *fm = ctx->priv;
+    const AVFilterLink *inlink =
+        ctx->inputs[fm->ppsrc ? INPUT_CLEANSRC : INPUT_MAIN];
+    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(inlink->format);
+
+    fm->bpc = (desc->comp[0].depth + 7) / 8;
+    outlink->time_base = inlink->time_base;
+    outlink->sample_aspect_ratio = inlink->sample_aspect_ratio;
+    outlink->frame_rate = inlink->frame_rate;
+    outlink->w = inlink->w;
+    outlink->h = inlink->h;
+    return 0;
+}
+
+static const AVFilterPad fieldmatch_outputs[] = {
+    {
+        .name          = "default",
+        .type          = AVMEDIA_TYPE_VIDEO,
+        .config_props  = config_output,
+    },
+    { NULL }
+};
+
+AVFilter ff_vf_fieldmatch = {
+    .name           = "fieldmatch",
+    .description    = NULL_IF_CONFIG_SMALL("Field matching for inverse telecine."),
+    .query_formats  = query_formats,
+    .priv_size      = sizeof(FieldMatchContext),
+    .init           = fieldmatch_init,
+    .activate       = activate,
+    .uninit         = fieldmatch_uninit,
+    .inputs         = NULL,
+    .outputs        = fieldmatch_outputs,
+    .priv_class     = &fieldmatch_class,
+    .flags          = AVFILTER_FLAG_DYNAMIC_INPUTS,
+};

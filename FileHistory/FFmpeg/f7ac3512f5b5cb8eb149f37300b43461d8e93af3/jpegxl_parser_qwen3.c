@@ -1,5 +1,3 @@
-Do not include any other text. Do not include any explanations. Do not include any comments. Do not include any markdown formatting. Do not include a header. Do not include a footer. Do not include the original code. Only return the modified C code.
-
 #define JXL_FLAG_NOISE 1
 #define JXL_FLAG_PATCHES 2
 #define JXL_FLAG_SPLINES 16

@@ -1,5 +1,32 @@
-No other text or explanation is needed.
-```c
+/*
+ * RTP packetization for AMR audio
+ * Copyright (c) 2007 Luca Abeni
+ * Copyright (c) 2009 Martin Storsjo
+ *
+ * This file is part of Libav.
+ *
+ * Libav is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Libav is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Libav; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+#include "avformat.h"
+#include "rtpenc.h"
+
+/**
+ * Packetize AMR frames into RTP packets according to RFC 3267,
+ * in octet-aligned mode.
+ */
 void ff_rtp_send_amr(AVFormatContext *s1, const uint8_t *buff, int size)
 {
     RTPMuxContext *s          = s1->priv_data;
@@ -36,4 +63,3 @@ void ff_rtp_send_amr(AVFormatContext *s1, const uint8_t *buff, int size)
     memcpy(s->buf_ptr, buff, size);
     s->buf_ptr += size;
 }
-```

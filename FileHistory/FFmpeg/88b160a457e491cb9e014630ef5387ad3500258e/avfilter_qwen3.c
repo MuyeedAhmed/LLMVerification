@@ -1,6 +1,3 @@
-Do not include anything else.
-```c
-c
 /*
  * filter layer
  * Copyright (c) 2007 Bobby Bingham
@@ -802,4 +799,3 @@ const AVClass *avfilter_get_class(void)
 {
     return &avfilter_class;
 }
-```
