@@ -66,7 +66,7 @@ def classify_issue(message):
         f.write(f"{C}:\t\t{message}\n")
     return "Uncategorized"
 
-def parse_clang_report_summary(file_path, commit_info):
+def parse_clang_report_summary(file_path, commit_info, llm_name):
     changed_filename = commit_info["Changed File"].values[0]
     change_function = commit_info["Changed Functions"].values[0]
     if change_function is None:
@@ -105,7 +105,7 @@ def parse_clang_report_summary(file_path, commit_info):
     result = {
         "Commit Hash" : file_name.split("_")[0],
         "Report": file_name,
-        "Suffix": "llm" if "llm" in file_name else "original",
+        "Suffix": llm_name,
     }
     result.update(summary)
     return result
@@ -117,12 +117,13 @@ def generate_summary(excelFile, folder_path, output_file="ExcelFiles/FFmpeg_Clan
         for file in files:
             if file.endswith(".txt"):
                 filename = file.split("_")[0]
+                llm_name = file.split("_")[1]
                 commit_info = Commit_DF.loc[Commit_DF["Commit Hash"] == filename]
                 if commit_info.empty:
                     print("No commit info found for:", filename)
                     # continue
                 file_path = os.path.join(root, file)
-                summary = parse_clang_report_summary(file_path, commit_info)
+                summary = parse_clang_report_summary(file_path, commit_info, llm_name)
                 all_summaries.append(summary)
 
     df = pd.DataFrame(all_summaries).fillna(0)

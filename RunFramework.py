@@ -110,5 +110,5 @@ if __name__ == "__main__":
         else:
             print(f"LLM output already exists for commit {commit_hash}, skipping LLM run.")
 
-    #     RunClang(project, commit_hash, change_file_dir)
+        RunClang(project, commit_hash, change_file_dir, llm="ministral")
 
