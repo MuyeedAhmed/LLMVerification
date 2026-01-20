@@ -34,6 +34,7 @@ def get_function_start_line_from_ctags(temp_path, function_name):
         for line in output.splitlines():
             parts = line.split()
             if len(parts) >= 4 and parts[0] == function_name:
+                print(f"CTags line parts: {parts}")
                 match = re.search(r'line:(\d+)', line)
                 if match:
                     return int(match.group(1))
@@ -99,12 +100,12 @@ def ReplaceFunctionAtOriginalLine_WithRE(content, function_name, changed_functio
 
 
 
-def MergeLLMOutput(project, commit, change_file_dir, changed_function):
+def MergeLLMOutput(project, commit, change_file_dir, changed_function, llm="llm"):
     change_file_name = change_file_dir.split("/")[-1].split(".")[0]
 
     source_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_original.c")
-    source_file_llm_function = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_llm_function.c")
-    destination_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_llm.c")
+    source_file_llm_function = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_{llm}_function.c")
+    destination_file = os.path.join(f"FileHistory/{project}", commit, f"{change_file_name}_{llm}.c")
 
     with open(source_file, 'r') as file:
         source_code = file.read()

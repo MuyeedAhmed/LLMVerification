@@ -31,7 +31,7 @@ def CopyAnalyzerScript(project):
     shutil.copy2(script_path, project_dir)
     run_command(f"chmod +x {script_path}", cwd=project_dir)
     
-def RunClang(project, commit_hash, change_file):
+def RunClang(project, commit_hash, change_file, llm="llm"):
     CopyAnalyzerScript(project)
     EXCEL_PATH = f"ExcelFiles/{project}_{commit_hash}.xlsx"
     BASE_DIR = f"FileHistory/{project}"
@@ -40,11 +40,11 @@ def RunClang(project, commit_hash, change_file):
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     change_file_name = change_file.split("/")[-1].split(".")[0]
-    llm_src_path = os.path.join(BASE_DIR, commit_hash, change_file_name + "_llm.c")
+    llm_src_path = os.path.join(BASE_DIR, commit_hash, change_file_name + f"_{llm}.c")
     original_file_dir = os.path.join(BASE_DIR, commit_hash, change_file_name + "_original.c")
 
     orig_out_path = os.path.join(OUTPUT_DIR, f"{commit_hash}_original.txt")
-    llm_out_path = os.path.join(OUTPUT_DIR, f"{commit_hash}_llm.txt")
+    llm_out_path = os.path.join(OUTPUT_DIR, f"{commit_hash}_{llm}.txt")
     if os.path.exists(orig_out_path) and os.path.exists(llm_out_path):
         print(f"Skipping {commit_hash}, output files already exist.")
         return
