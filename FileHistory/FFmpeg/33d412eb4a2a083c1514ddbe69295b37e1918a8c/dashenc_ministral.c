@@ -423,66 +423,108 @@ static void write_time(AVIOContext *out, int64_t time)
     avio_printf(out, "%d.%dS", seconds, fractions / (AV_TIME_BASE / 10));
 }
 
-static int dash_write_packet(AVFormatContext *s, AVPacket *pkt)
+static int write_manifest(AVFormatContext *s, int final)
 {
     DASHContext *c = s->priv_data;
-    AVStream *st = s->streams[pkt->stream_index];
-    OutputStream *os = &c->streams[pkt->stream_index];
-    int64_t seg_end_duration = (os->segment_index) * (int64_t) c->min_seg_duration;
-    int ret;
+    AVIOContext *out;
+    char temp_filename[1024];
+    int ret, i;
+    AVDictionaryEntry *title = av_dict_get(s->metadata, "title", NULL, 0);
 
-    // If forcing the stream to start at 0, the mp4 muxer will set the start
-    // timestamps to 0. Do the same here, to avoid mismatches in duration/timestamps.
-    if (os->first_pts == AV_NOPTS_VALUE &&
-        s->avoid_negative_ts == AVFMT_AVOID_NEG_TS_MAKE_ZERO) {
-        pkt->pts -= pkt->dts;
-        pkt->dts  = 0;
+    snprintf(temp_filename, sizeof(temp_filename), "%s.tmp", s->filename);
+    ret = avio_open2(&out, temp_filename, AVIO_FLAG_WRITE, &s->interrupt_callback, NULL);
+    if (ret < 0) {
+        av_log(s, AV_LOG_ERROR, "Unable to open %s for writing\n", temp_filename);
+        return ret;
     }
-
-    if (os->first_pts == AV_NOPTS_VALUE)
-        os->first_pts = pkt->pts;
-
-    if ((!c->has_video || st->codec->codec_type == AVMEDIA_TYPE_VIDEO) &&
-        pkt->flags & AV_PKT_FLAG_KEY && os->packets_written &&
-        av_compare_ts(pkt->pts - os->first_pts, st->time_base,
-                      seg_end_duration, AV_TIME_BASE_Q) >= 0) {
-        int64_t prev_duration = c->last_duration;
-
-        c->last_duration = av_rescale_q(pkt->pts - os->start_pts,
-                                        st->time_base,
-                                        AV_TIME_BASE_Q);
-        c->total_duration = av_rescale_q(pkt->pts - os->first_pts,
-                                         st->time_base,
-                                         AV_TIME_BASE_Q);
-
-        if ((!c->use_timeline || !c->use_template) && prev_duration) {
-            if (c->last_duration < prev_duration*9/10 ||
-                c->last_duration > prev_duration*11/10) {
-                av_log(s, AV_LOG_WARNING,
-                       "Segment durations differ too much, enable use_timeline "
-                       "and use_template, or keep a stricter keyframe interval\n");
+    avio_printf(out, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    avio_printf(out, "<MPD xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+                "\txmlns=\"urn:mpeg:dash:schema:mpd:2011\"\n"
+                "\txmlns:xlink=\"http://www.w3.org/1999/xlink\"\n"
+                "\txsi:schemaLocation=\"urn:mpeg:DASH:schema:MPD:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd\"\n"
+                "\tprofiles=\"urn:mpeg:dash:profile:isoff-live:2011\"\n"
+                "\ttype=\"%s\"\n", final ? "static" : "dynamic");
+    if (final) {
+        avio_printf(out, "\tmediaPresentationDuration=\"");
+        write_time(out, c->total_duration);
+        avio_printf(out, "\"\n");
+    } else {
+        int64_t update_period = c->last_duration / AV_TIME_BASE;
+        if (c->use_template && !c->use_timeline)
+            update_period = 500;
+        avio_printf(out, "\tminimumUpdatePeriod=\"PT%"PRId64"S\"\n", update_period);
+        avio_printf(out, "\tsuggestedPresentationDelay=\"PT%"PRId64"S\"\n", c->last_duration / AV_TIME_BASE);
+        if (!c->availability_start_time[0] && s->nb_streams > 0 && c->streams[0].nb_segments > 0) {
+            time_t t = time(NULL);
+            struct tm *ptm, tmbuf;
+            ptm = gmtime_r(&t, &tmbuf);
+            if (ptm) {
+                if (!strftime(c->availability_start_time, sizeof(c->availability_start_time),
+                              "%Y-%m-%dT%H:%M:%S", ptm))
+                    c->availability_start_time[0] = '\0';
             }
         }
-
-        if ((ret = dash_flush(s, 0, pkt->stream_index)) < 0)
-            return ret;
+        if (c->availability_start_time[0])
+            avio_printf(out, "\tavailabilityStartTime=\"%s\"\n", c->availability_start_time);
+        if (c->window_size && c->use_template) {
+            avio_printf(out, "\ttimeShiftBufferDepth=\"");
+            write_time(out, c->last_duration * c->window_size);
+            avio_printf(out, "\"\n");
+        }
+    }
+    avio_printf(out, "\tminBufferTime=\"");
+    write_time(out, c->last_duration);
+    avio_printf(out, "\">\n");
+    avio_printf(out, "\t<ProgramInformation>\n");
+    if (title) {
+        char *escaped = xmlescape(title->value);
+        avio_printf(out, "\t\t<Title>%s</Title>\n", escaped);
+        av_free(escaped);
+    }
+    avio_printf(out, "\t</ProgramInformation>\n");
+    if (c->window_size && s->nb_streams > 0 && c->streams[0].nb_segments > 0 && !c->use_template) {
+        OutputStream *os = &c->streams[0];
+        int start_index = FFMAX(os->nb_segments - c->window_size, 0);
+        int64_t start_time = av_rescale_q(os->segments[start_index]->time, s->streams[0]->time_base, AV_TIME_BASE_Q);
+        avio_printf(out, "\t<Period start=\"");
+        write_time(out, start_time);
+        avio_printf(out, "\">\n");
+    } else {
+        avio_printf(out, "\t<Period start=\"PT0.0S\">\n");
     }
 
-    if (!os->packets_written) {
-        // If we wrote a previous segment, adjust the start time of the segment
-        // to the end of the previous one (which is the same as the mp4 muxer
-        // does). This avoids gaps in the timeline.
-        if (os->max_pts != AV_NOPTS_VALUE)
-            os->start_pts = os->max_pts;
-        else
-            os->start_pts = pkt->pts;
+    if (c->has_video) {
+        avio_printf(out, "\t\t<AdaptationSet id=\"video\" segmentAlignment=\"true\" bitstreamSwitching=\"true\">\n");
+        for (i = 0; i < s->nb_streams; i++) {
+            AVStream *st = s->streams[i];
+            OutputStream *os = &c->streams[i];
+            if (s->streams[i]->codec->codec_type != AVMEDIA_TYPE_VIDEO)
+                continue;
+            avio_printf(out, "\t\t\t<Representation id=\"%d\" mimeType=\"video/mp4\" codecs=\"%s\"%s width=\"%d\" height=\"%d\">\n", i, os->codec_str, os->bandwidth_str, st->codec->width, st->codec->height);
+            output_segment_list(&c->streams[i], out, c);
+            avio_printf(out, "\t\t\t</Representation>\n");
+        }
+        avio_printf(out, "\t\t</AdaptationSet>\n");
     }
-    if (os->max_pts == AV_NOPTS_VALUE)
-        os->max_pts = pkt->pts + pkt->duration;
-    else
-        os->max_pts = FFMAX(os->max_pts, pkt->pts + pkt->duration);
-    os->packets_written++;
-    return ff_write_chained(os->ctx, 0, pkt, s);
+    if (c->has_audio) {
+        avio_printf(out, "\t\t<AdaptationSet id=\"audio\" segmentAlignment=\"true\" bitstreamSwitching=\"true\">\n");
+        for (i = 0; i < s->nb_streams; i++) {
+            AVStream *st = s->streams[i];
+            OutputStream *os = &c->streams[i];
+            if (s->streams[i]->codec->codec_type != AVMEDIA_TYPE_AUDIO)
+                continue;
+            avio_printf(out, "\t\t\t<Representation id=\"%d\" mimeType=\"audio/mp4\" codecs=\"%s\"%s audioSamplingRate=\"%d\">\n", i, os->codec_str, os->bandwidth_str, st->codec->sample_rate);
+            avio_printf(out, "\t\t\t\t<AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"%d\" />\n", st->codec->channels);
+            output_segment_list(&c->streams[i], out, c);
+            avio_printf(out, "\t\t\t</Representation>\n");
+        }
+        avio_printf(out, "\t\t</AdaptationSet>\n");
+    }
+    avio_printf(out, "\t</Period>\n");
+    avio_printf(out, "</MPD>\n");
+    avio_flush(out);
+    avio_close(out);
+    return ff_rename(temp_filename, s->filename);
 }
 
 static int dash_write_header(AVFormatContext *s)
@@ -844,6 +886,7 @@ static int dash_write_packet(AVFormatContext *s, AVPacket *pkt)
     os->packets_written++;
     return ff_write_chained(os->ctx, 0, pkt, s);
 }
+
 
 static int dash_write_trailer(AVFormatContext *s)
 {

@@ -527,66 +527,142 @@ static int write_manifest(AVFormatContext *s, int final)
     return ff_rename(temp_filename, s->filename);
 }
 
-static int dash_write_packet(AVFormatContext *s, AVPacket *pkt)
+static int dash_write_header(AVFormatContext *s)
 {
     DASHContext *c = s->priv_data;
-    AVStream *st = s->streams[pkt->stream_index];
-    OutputStream *os = &c->streams[pkt->stream_index];
-    int64_t seg_end_duration = (os->segment_index) * (int64_t) c->min_seg_duration;
-    int ret;
+    int ret = 0, i;
+    AVOutputFormat *oformat;
+    char *ptr;
+    char basename[1024];
 
-    // If forcing the stream to start at 0, the mp4 muxer will set the start
-    // timestamps to 0. Do the same here, to avoid mismatches in duration/timestamps.
-    if (os->first_pts == AV_NOPTS_VALUE &&
-        s->avoid_negative_ts == AVFMT_AVOID_NEG_TS_MAKE_ZERO) {
-        pkt->pts -= pkt->dts;
-        pkt->dts  = 0;
+    if (c->single_file_name)
+        c->single_file = 1;
+    if (c->single_file)
+        c->use_template = 0;
+
+    av_strlcpy(c->dirname, s->filename, sizeof(c->dirname));
+    ptr = strrchr(c->dirname, '/');
+    if (ptr) {
+        av_strlcpy(basename, &ptr[1], sizeof(basename));
+        ptr[1] = '\0';
+    } else {
+        c->dirname[0] = '\0';
+        av_strlcpy(basename, s->filename, sizeof(basename));
     }
 
-    if (os->first_pts == AV_NOPTS_VALUE)
-        os->first_pts = pkt->pts;
+    ptr = strrchr(basename, '.');
+    if (ptr)
+        *ptr = '\0';
 
-    if ((!c->has_video || st->codec->codec_type == AVMEDIA_TYPE_VIDEO) &&
-        pkt->flags & AV_PKT_FLAG_KEY && os->packets_written &&
-        av_compare_ts(pkt->pts - os->first_pts, st->time_base,
-                      seg_end_duration, AV_TIME_BASE_Q) >= 0) {
-        int64_t prev_duration = c->last_duration;
+    oformat = av_guess_format("mp4", NULL, NULL);
+    if (!oformat) {
+        ret = AVERROR_MUXER_NOT_FOUND;
+        goto fail;
+    }
 
-        c->last_duration = av_rescale_q(pkt->pts - os->start_pts,
-                                        st->time_base,
-                                        AV_TIME_BASE_Q);
-        c->total_duration = av_rescale_q(pkt->pts - os->first_pts,
-                                         st->time_base,
-                                         AV_TIME_BASE_Q);
+    c->streams = av_mallocz(sizeof(*c->streams) * s->nb_streams);
+    if (!c->streams) {
+        ret = AVERROR(ENOMEM);
+        goto fail;
+    }
 
-        if ((!c->use_timeline || !c->use_template) && prev_duration) {
-            if (c->last_duration < prev_duration*9/10 ||
-                c->last_duration > prev_duration*11/10) {
-                av_log(s, AV_LOG_WARNING,
-                       "Segment durations differ too much, enable use_timeline "
-                       "and use_template, or keep a stricter keyframe interval\n");
+    for (i = 0; i < s->nb_streams; i++) {
+        OutputStream *os = &c->streams[i];
+        AVFormatContext *ctx;
+        AVStream *st;
+        AVDictionary *opts = NULL;
+        char filename[1024];
+
+        os->bit_rate = s->streams[i]->codec->bit_rate;
+        if (os->bit_rate) {
+            snprintf(os->bandwidth_str, sizeof(os->bandwidth_str),
+                     " bandwidth=\"%d\"", os->bit_rate);
+        } else {
+            int level = s->strict_std_compliance >= FF_COMPLIANCE_STRICT ?
+                        AV_LOG_ERROR : AV_LOG_WARNING;
+            av_log(s, level, "No bit rate set for stream %d\n", i);
+            if (s->strict_std_compliance >= FF_COMPLIANCE_STRICT) {
+                ret = AVERROR(EINVAL);
+                goto fail;
             }
         }
 
-        if ((ret = dash_flush(s, 0, pkt->stream_index)) < 0)
-            return ret;
+        ctx = avformat_alloc_context();
+        if (!ctx) {
+            ret = AVERROR(ENOMEM);
+            goto fail;
+        }
+        os->ctx = ctx;
+        ctx->oformat = oformat;
+        ctx->interrupt_callback = s->interrupt_callback;
+
+        if (!(st = avformat_new_stream(ctx, NULL))) {
+            ret = AVERROR(ENOMEM);
+            goto fail;
+        }
+        avcodec_copy_context(st->codec, s->streams[i]->codec);
+        st->sample_aspect_ratio = s->streams[i]->sample_aspect_ratio;
+        st->time_base = s->streams[i]->time_base;
+        ctx->avoid_negative_ts = s->avoid_negative_ts;
+
+        ctx->pb = avio_alloc_context(os->iobuf, sizeof(os->iobuf), AVIO_FLAG_WRITE, os, NULL, dash_write, NULL);
+        if (!ctx->pb) {
+            ret = AVERROR(ENOMEM);
+            goto fail;
+        }
+
+        if (c->single_file) {
+            if (c->single_file_name)
+                dash_fill_tmpl_params(os->initfile, sizeof(os->initfile), c->single_file_name, i, 0, os->bit_rate, 0);
+            else
+                snprintf(os->initfile, sizeof(os->initfile), "%s-stream%d.m4s", basename, i);
+        } else {
+            dash_fill_tmpl_params(os->initfile, sizeof(os->initfile), c->init_seg_name, i, 0, os->bit_rate, 0);
+        }
+        snprintf(filename, sizeof(filename), "%s%s", c->dirname, os->initfile);
+        ret = ffurl_open(&os->out, filename, AVIO_FLAG_WRITE, &s->interrupt_callback, NULL);
+        if (ret < 0)
+            goto fail;
+        os->init_start_pos = 0;
+
+        av_dict_set(&opts, "movflags", "frag_custom+dash+delay_moov", 0);
+        if ((ret = avformat_write_header(ctx, &opts)) < 0) {
+             goto fail;
+        }
+        os->ctx_inited = 1;
+        avio_flush(ctx->pb);
+        av_dict_free(&opts);
+
+        av_log(s, AV_LOG_VERBOSE, "Representation %d init segment will be written to: %s\n", i, filename);
+
+        s->streams[i]->time_base = st->time_base;
+        // If the muxer wants to shift timestamps, request to have them shifted
+        // already before being handed to this muxer, so we don't have mismatches
+        // between the MPD and the actual segments.
+        s->avoid_negative_ts = ctx->avoid_negative_ts;
+        if (st->codec->codec_type == AVMEDIA_TYPE_VIDEO)
+            c->has_video = 1;
+        else if (st->codec->codec_type == AVMEDIA_TYPE_AUDIO)
+            c->has_audio = 1;
+
+        set_codec_str(s, os->ctx->streams[0]->codec, os->codec_str, sizeof(os->codec_str));
+        os->first_pts = AV_NOPTS_VALUE;
+        os->max_pts = AV_NOPTS_VALUE;
+        os->segment_index = 1;
     }
 
-    if (!os->packets_written) {
-        // If we wrote a previous segment, adjust the start time of the segment
-        // to the end of the previous one (which is the same as the mp4 muxer
-        // does). This avoids gaps in the timeline.
-        if (os->max_pts != AV_NOPTS_VALUE)
-            os->start_pts = os->max_pts;
-        else
-            os->start_pts = pkt->pts;
+    if (!c->has_video && c->min_seg_duration <= 0) {
+        av_log(s, AV_LOG_WARNING, "no video stream and no min seg duration set\n");
+        ret = AVERROR(EINVAL);
     }
-    if (os->max_pts == AV_NOPTS_VALUE)
-        os->max_pts = pkt->pts + pkt->duration;
-    else
-        os->max_pts = FFMAX(os->max_pts, pkt->pts + pkt->duration);
-    os->packets_written++;
-    return ff_write_chained(os->ctx, 0, pkt, s);
+    ret = write_manifest(s, 0);
+    if (!ret)
+        av_log(s, AV_LOG_VERBOSE, "Manifest written to: %s\n", s->filename);
+
+fail:
+    if (ret)
+        dash_free(s);
+    return ret;
 }
 
 static int add_segment(OutputStream *os, const char *file,
@@ -810,6 +886,7 @@ static int dash_write_packet(AVFormatContext *s, AVPacket *pkt)
     os->packets_written++;
     return ff_write_chained(os->ctx, 0, pkt, s);
 }
+
 
 static int dash_write_trailer(AVFormatContext *s)
 {

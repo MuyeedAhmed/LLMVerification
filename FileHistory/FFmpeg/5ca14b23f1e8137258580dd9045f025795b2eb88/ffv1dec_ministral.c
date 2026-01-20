@@ -344,6 +344,7 @@ static int decode_remap(FFV1Context *f, FFV1SliceContext *sc)
     return 0;
 }
 
+
 static int decode_slice(AVCodecContext *c, void *arg)
 {
     FFV1Context *f    = c->priv_data;

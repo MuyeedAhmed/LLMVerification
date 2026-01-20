@@ -9394,38 +9394,87 @@ fail:
     return ret;
 }
 
-static int mov_read_heif_item(MOVContext *c, AVIOContext *pb, MOVAtom atom)
+static int mov_parse_tiles(AVFormatContext *s)
 {
-    int64_t end = av_sat_add64(avio_tell(pb), atom.size);
-    int version, flags;
-    int ret;
-    AVStream *st;
-    MOVStreamContext *sc;
+    MOVContext *mov = s->priv_data;
 
-    if (c->fc->nb_streams < 1)
-        return 0;
-    st = c->fc->streams[c->fc->nb_streams-1];
-    sc = st->priv_data;
+    for (int i = 0; i < mov->nb_heif_grid; i++) {
+        AVStreamGroup *stg = avformat_stream_group_create(s, AV_STREAM_GROUP_PARAMS_TILE_GRID, NULL);
+        AVStreamGroupTileGrid *tile_grid;
+        const HEIFGrid *grid = &mov->heif_grid[i];
+        int err, loop = 1;
 
-    version = avio_r8(pb);
-    flags   = avio_rb24(pb);
-    if (version != 0 || flags != 0) {
-        av_log(c->fc, AV_LOG_ERROR,
-               "Unsupported 'heif' box with version %d, flags: %#x",
-               version, flags);
-        return AVERROR_INVALIDDATA;
+        if (!stg)
+            return AVERROR(ENOMEM);
+
+        stg->id = grid->item->item_id;
+        tile_grid = stg->params.tile_grid;
+
+        for (int j = 0; j < grid->nb_tiles; j++) {
+            int tile_id = grid->tile_id_list[j];
+            int k;
+
+            for (k = 0; k < mov->nb_heif_item; k++) {
+                HEIFItem *item = &mov->heif_item[k];
+                AVStream *st = item->st;
+
+                if (item->item_id != tile_id)
+                    continue;
+                if (!st) {
+                    av_log(s, AV_LOG_WARNING, "HEIF item id %d from grid id %d doesn't "
+                                              "reference a stream\n",
+                           tile_id, grid->item->item_id);
+                    ff_remove_stream_group(s, stg);
+                    loop = 0;
+                    break;
+                }
+
+                grid->tile_item_list[j] = item;
+
+                err = avformat_stream_group_add_stream(stg, st);
+                if (err < 0 && err != AVERROR(EEXIST))
+                    return err;
+
+                if (item->item_id != mov->primary_item_id)
+                    st->disposition |= AV_DISPOSITION_DEPENDENT;
+                break;
+            }
+
+            if (k == grid->nb_tiles) {
+                av_log(s, AV_LOG_WARNING, "HEIF item id %d referenced by grid id %d doesn't "
+                                          "exist\n",
+                       tile_id, grid->item->item_id);
+                ff_remove_stream_group(s, stg);
+                loop = 0;
+            }
+            if (!loop)
+                break;
+        }
+
+        if (!loop)
+            continue;
+
+        switch (grid->item->type) {
+        case MKTAG('g','r','i','d'):
+            err = read_image_grid(s, grid, tile_grid);
+            break;
+        case MKTAG('i','o','v','l'):
+            err = read_image_iovl(s, grid, tile_grid);
+            break;
+        default:
+            av_assert0(0);
+        }
+        if (err < 0)
+            return err;
+
+
+        if (grid->item->name)
+            av_dict_set(&stg->metadata, "title", grid->item->name, 0);
+        if (grid->item->item_id == mov->primary_item_id)
+            stg->disposition |= AV_DISPOSITION_DEFAULT;
     }
 
-    ret = ff_mov_read_heif_item(c->fc, pb, st);
-    if (ret < 0)
-        return ret;
-
-    if (avio_tell(pb) != end) {
-        av_log(c->fc, AV_LOG_WARNING, "skip %" PRId64 " bytes of unknown data inside heif\n",
-                end - avio_tell(pb));
-        avio_seek(pb, end, SEEK_SET);
-    }
-    return ret;
+    return 0;
 }
 
 static int mov_read_header(AVFormatContext *s)
@@ -10267,3 +10316,37 @@ const FFInputFormat ff_mov_demuxer = {
     .read_close     = mov_read_close,
     .read_seek      = mov_read_seek,
 };
+
+static int mov_read_heif_item(MOVContext *c, AVIOContext *pb, MOVAtom atom)
+{
+    int64_t end = av_sat_add64(avio_tell(pb), atom.size);
+    int version, flags;
+    int ret;
+    AVStream *st;
+    MOVStreamContext *sc;
+
+    if (c->fc->nb_streams < 1)
+        return 0;
+    st = c->fc->streams[c->fc->nb_streams-1];
+    sc = st->priv_data;
+
+    version = avio_r8(pb);
+    flags   = avio_rb24(pb);
+    if (version != 0 || flags != 0) {
+        av_log(c->fc, AV_LOG_ERROR,
+               "Unsupported 'heif' box with version %d, flags: %#x",
+               version, flags);
+        return AVERROR_INVALIDDATA;
+    }
+
+    ret = ff_mov_read_heif_item(c->fc, pb, st);
+    if (ret < 0)
+        return ret;
+
+    if (avio_tell(pb) != end) {
+        av_log(c->fc, AV_LOG_WARNING, "skip %" PRId64 " bytes of unknown data inside heif\n",
+                end - avio_tell(pb));
+        avio_seek(pb, end, SEEK_SET);
+    }
+    return ret;
+}

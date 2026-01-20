@@ -152,8 +152,7 @@ static int read_len_table(uint8_t *dst, GetByteContext *gb, int n)
                 goto error;
             repeat = bytestream2_get_byteu(gb);
         }
-        if (i + repeat > n)
-            goto error;
+        av_assert0(i + repeat <= n);
         while (repeat--)
             dst[i++] = val;
     }
@@ -283,29 +282,44 @@ static int read_huffman_tables(HYuvDecContext *s, const uint8_t *src, int length
     return bytestream2_tell(&gb);
 }
 
-static int read_len_table(uint8_t *dst, GetByteContext *gb, int n)
+static int read_old_huffman_tables(HYuvDecContext *s)
 {
-    int i, val, repeat;
+    GetByteContext gb;
+    int i, ret;
 
-    for (i = 0; i < n;) {
-        if (bytestream2_get_bytes_left(gb) <= 0)
-            goto error;
-        repeat = bytestream2_peek_byteu(gb) >> 5;
-        val    = bytestream2_get_byteu(gb) & 0x1F;
-        if (repeat == 0) {
-            if (bytestream2_get_bytes_left(gb) <= 0)
-                goto error;
-            repeat = bytestream2_get_byteu(gb);
-        }
-        av_assert0(i + repeat <= n);
-        while (repeat--)
-            dst[i++] = val;
+    bytestream2_init(&gb, classic_shift_luma,
+                     sizeof(classic_shift_luma));
+    if ((ret = read_len_table(s->len[0], &gb, 256)) < 0)
+        return ret;
+
+    bytestream2_init(&gb, classic_shift_chroma,
+                     sizeof(classic_shift_chroma));
+    if ((ret = read_len_table(s->len[1], &gb, 256)) < 0)
+        return ret;
+
+    for (i = 0; i < 256; i++)
+        s->bits[0][i] = classic_add_luma[i];
+    for (i = 0; i < 256; i++)
+        s->bits[1][i] = classic_add_chroma[i];
+
+    if (s->bitstream_bpp >= 24) {
+        memcpy(s->bits[1], s->bits[0], 256 * sizeof(uint32_t));
+        memcpy(s->len[1], s->len[0], 256 * sizeof(uint8_t));
     }
-    return 0;
+    memcpy(s->bits[2], s->bits[1], 256 * sizeof(uint32_t));
+    memcpy(s->len[2], s->len[1], 256 * sizeof(uint8_t));
 
-error:
-    av_log(NULL, AV_LOG_ERROR, "Error reading huffman table\n");
-    return AVERROR_INVALIDDATA;
+    for (i = 0; i < 4; i++) {
+        ff_vlc_free(&s->vlc[i]);
+        if ((ret = vlc_init(&s->vlc[i], VLC_BITS, 256, s->len[i], 1, 1,
+                            s->bits[i], 4, 4, 0)) < 0)
+            return ret;
+    }
+
+    if ((ret = generate_joint_tables(s)) < 0)
+        return ret;
+
+    return 0;
 }
 
 static av_cold int decode_end(AVCodecContext *avctx)

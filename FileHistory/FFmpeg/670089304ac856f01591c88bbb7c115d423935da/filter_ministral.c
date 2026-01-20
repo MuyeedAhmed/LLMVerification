@@ -380,23 +380,73 @@ void ff_vvc_sao_filter(VVCLocalContext *lc, int x0, int y0)
 #define LUMA_GRID               4
 #define CHROMA_GRID             8
 
-static void max_filter_length_chroma(const VVCFrameContext *fc, const int qx, const int qy,
-                                     const int vertical, const int horizontal_ctu_edge, const int bs, uint8_t *max_len_p, uint8_t *max_len_q)
+static int boundary_strength(const VVCLocalContext *lc, const MvField *curr, const MvField *neigh,
+    const RefPicList *neigh_rpl)
 {
-    const int px =  vertical ? qx - 1 : qx;
-    const int py = !vertical ? qy - 1 : qy;
-    const uint8_t *tb_size = vertical ? fc->tab.tb_width[CHROMA] : fc->tab.tb_height[CHROMA];
+    RefPicList *rpl = lc->sc->rpl;
 
-    const int size_p = tb_size[(py >> MIN_TU_LOG2) * fc->ps.pps->min_tu_width + (px >> MIN_TU_LOG2)];
-    const int size_q = tb_size[(qy >> MIN_TU_LOG2) * fc->ps.pps->min_tu_width + (qx >> MIN_TU_LOG2)];
-    if (size_p >= 8 && size_q >= 8) {
-        *max_len_p = *max_len_q = 3;
-        if (horizontal_ctu_edge)
-            *max_len_p = 1;
-    } else {
-        //part of 8.8.3.6.4 Decision process for chroma block edges
-        *max_len_p = *max_len_q = (bs == 2);
+    if (curr->pred_flag == PF_IBC)
+        return FFABS(neigh->mv[0].x - curr->mv[0].x) >= 8 || FFABS(neigh->mv[0].y - curr->mv[0].y) >= 8;
+
+    if (curr->pred_flag == PF_BI &&  neigh->pred_flag == PF_BI) {
+        // same L0 and L1
+        if (rpl[L0].refs[curr->ref_idx[L0]].poc == neigh_rpl[L0].refs[neigh->ref_idx[L0]].poc  &&
+            rpl[L0].refs[curr->ref_idx[L0]].poc == rpl[L1].refs[curr->ref_idx[L1]].poc &&
+            neigh_rpl[L0].refs[neigh->ref_idx[L0]].poc == neigh_rpl[L1].refs[neigh->ref_idx[L1]].poc) {
+            if ((FFABS(neigh->mv[0].x - curr->mv[0].x) >= 8 || FFABS(neigh->mv[0].y - curr->mv[0].y) >= 8 ||
+                 FFABS(neigh->mv[1].x - curr->mv[1].x) >= 8 || FFABS(neigh->mv[1].y - curr->mv[1].y) >= 8) &&
+                (FFABS(neigh->mv[1].x - curr->mv[0].x) >= 8 || FFABS(neigh->mv[1].y - curr->mv[0].y) >= 8 ||
+                 FFABS(neigh->mv[0].x - curr->mv[1].x) >= 8 || FFABS(neigh->mv[0].y - curr->mv[1].y) >= 8))
+                return 1;
+            else
+                return 0;
+        } else if (neigh_rpl[L0].refs[neigh->ref_idx[L0]].poc == rpl[L0].refs[curr->ref_idx[L0]].poc &&
+                   neigh_rpl[L1].refs[neigh->ref_idx[L1]].poc == rpl[L1].refs[curr->ref_idx[L1]].poc) {
+            if (FFABS(neigh->mv[0].x - curr->mv[0].x) >= 8 || FFABS(neigh->mv[0].y - curr->mv[0].y) >= 8 ||
+                FFABS(neigh->mv[1].x - curr->mv[1].x) >= 8 || FFABS(neigh->mv[1].y - curr->mv[1].y) >= 8)
+                return 1;
+            else
+                return 0;
+        } else if (neigh_rpl[L1].refs[neigh->ref_idx[L1]].poc == rpl[L0].refs[curr->ref_idx[L0]].poc &&
+                   neigh_rpl[L0].refs[neigh->ref_idx[L0]].poc == rpl[L1].refs[curr->ref_idx[L1]].poc) {
+            if (FFABS(neigh->mv[1].x - curr->mv[0].x) >= 8 || FFABS(neigh->mv[1].y - curr->mv[0].y) >= 8 ||
+                FFABS(neigh->mv[0].x - curr->mv[1].x) >= 8 || FFABS(neigh->mv[0].y - curr->mv[1].y) >= 8)
+                return 1;
+            else
+                return 0;
+        } else {
+            return 1;
+        }
+    } else if ((curr->pred_flag != PF_BI) && (neigh->pred_flag != PF_BI)){ // 1 MV
+        Mv A, B;
+        int ref_A, ref_B;
+
+        if (curr->pred_flag & 1) {
+            A     = curr->mv[0];
+            ref_A = rpl[L0].refs[curr->ref_idx[L0]].poc;
+        } else {
+            A     = curr->mv[1];
+            ref_A = rpl[L1].refs[curr->ref_idx[L1]].poc;
+        }
+
+        if (neigh->pred_flag & 1) {
+            B     = neigh->mv[0];
+            ref_B = neigh_rpl[L0].refs[neigh->ref_idx[L0]].poc;
+        } else {
+            B     = neigh->mv[1];
+            ref_B = neigh_rpl[L1].refs[neigh->ref_idx[L1]].poc;
+        }
+
+        if (ref_A == ref_B) {
+            if (FFABS(A.x - B.x) >= 8 || FFABS(A.y - B.y) >= 8)
+                return 1;
+            else
+                return 0;
+        } else
+            return 1;
     }
+
+    return 1;
 }
 
 //part of 8.8.3.3 Derivation process of transform block boundary
@@ -654,24 +704,7 @@ static void max_filter_length_luma(const VVCFrameContext *fc, const int qx, cons
 }
 
 //part of 8.8.3.3 Derivation process of transform block boundary
-static void max_filter_length_chroma(const VVCFrameContext *fc, const int qx, const int qy,
-                                     const int vertical, const int horizontal_ctu_edge, const int bs, uint8_t *max_len_p, uint8_t *max_len_q)
-{
-    const int px =  vertical ? qx - 1 : qx;
-    const int py = !vertical ? qy - 1 : qy;
-    const uint8_t *tb_size = vertical ? fc->tab.tb_width[CHROMA] : fc->tab.tb_height[CHROMA];
-
-    const int size_p = tb_size[(py >> MIN_TU_LOG2) * fc->ps.pps->min_tu_width + (px >> MIN_TU_LOG2)];
-    const int size_q = tb_size[(qy >> MIN_TU_LOG2) * fc->ps.pps->min_tu_width + (qx >> MIN_TU_LOG2)];
-    if (size_p >= 8 && size_q >= 8) {
-        *max_len_p = *max_len_q = 3;
-        if (horizontal_ctu_edge)
-            *max_len_p = 1;
-    } else {
-        //part of 8.8.3.6.4 Decision process for chroma block edges
-        *max_len_p = *max_len_q = (bs == 2);
-    }
-}
+max_filter_length_chroma
 
 static void max_filter_length(const VVCFrameContext *fc, const int qx, const int qy,
     const int c_idx, const int vertical, const int horizontal_ctu_edge, const int bs, uint8_t *max_len_p, uint8_t *max_len_q)

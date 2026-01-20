@@ -312,23 +312,19 @@ static void copy_default_source_addrs(struct RTSPSource **addrs, int count,
     }
 }
 
-static void rtsp_parse_range_npt(const char *p, int64_t *start, int64_t *end)
+static void parse_fmtp(AVFormatContext *s, RTSPState *rt,
+                       int payload_type, const char *line)
 {
-    char buf[256];
+    int i;
 
-    p += strspn(p, SPACE_CHARS);
-    if (!av_stristart(p, "npt=", &p))
-        return;
-
-    *start = AV_NOPTS_VALUE;
-    *end = AV_NOPTS_VALUE;
-
-    get_word_sep(buf, sizeof(buf), "-", &p);
-    av_parse_time(start, buf, 1);
-    if (*p == '-') {
-        p++;
-        get_word_sep(buf, sizeof(buf), "-", &p);
-        av_parse_time(end, buf, 1);
+    for (i = 0; i < rt->nb_rtsp_streams; i++) {
+        RTSPStream *rtsp_st = rt->rtsp_streams[i];
+        if (rtsp_st->sdp_payload_type == payload_type &&
+            rtsp_st->dynamic_handler &&
+            rtsp_st->dynamic_handler->parse_sdp_a_line) {
+            rtsp_st->dynamic_handler->parse_sdp_a_line(s, i,
+            rtsp_st->dynamic_protocol_context, line);
+        }
     }
 }
 

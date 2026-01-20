@@ -1808,12 +1808,22 @@ static int configure_input_video_filter(FilterGraph *fg, AVFilterGraph *graph,
 
     if ((ret = avfilter_link(last_filter, 0, in->filter_ctx, in->pad_idx)) < 0)
         return ret;
+
+    // Remove display matrix side data from buffered frames
+    if (ifp->displaymatrix_present) {
+        AVFrameSideData *sd = av_frame_get_side_data(ifp->filter->inputs[0]->frame, AV_FRAME_DATA_DISPLAYMATRIX);
+        if (sd) {
+            av_frame_remove_side_data(ifp->filter->inputs[0]->frame, AV_FRAME_DATA_DISPLAYMATRIX);
+        }
+    }
+
     return 0;
 fail:
     av_freep(&par);
 
     return ret;
 }
+
 
 static int configure_input_audio_filter(FilterGraph *fg, AVFilterGraph *graph,
                                         InputFilter *ifilter, AVFilterInOut *in)
@@ -1911,130 +1921,165 @@ static int graph_is_meta(AVFilterGraph *graph)
 
 static int sub2video_frame(InputFilter *ifilter, AVFrame *frame, int buffer);
 
-static int configure_input_video_filter(FilterGraph *fg, AVFilterGraph *graph,
-                                        InputFilter *ifilter, AVFilterInOut *in)
+static int configure_filtergraph(FilterGraph *fg, FilterGraphThread *fgt)
 {
-    InputFilterPriv *ifp = ifp_from_ifilter(ifilter);
+    FilterGraphPriv *fgp = fgp_from_fg(fg);
+    AVBufferRef *hw_device;
+    AVFilterInOut *inputs, *outputs, *cur;
+    int ret = AVERROR_BUG, i, simple = filtergraph_is_simple(fg);
+    int have_input_eof = 0;
+    const char *graph_desc = fgp->graph_desc;
 
-    AVFilterContext *last_filter;
-    const AVFilter *buffer_filt = avfilter_get_by_name("buffer");
-    const AVPixFmtDescriptor *desc;
-    char name[255];
-    int ret, pad_idx = 0;
-    AVBufferSrcParameters *par = av_buffersrc_parameters_alloc();
-    if (!par)
+    cleanup_filtergraph(fg, fgt);
+    fgt->graph = avfilter_graph_alloc();
+    if (!fgt->graph)
         return AVERROR(ENOMEM);
 
-    if (ifp->type_src == AVMEDIA_TYPE_SUBTITLE)
-        sub2video_prepare(ifp);
+    if (simple) {
+        OutputFilterPriv *ofp = ofp_from_ofilter(fg->outputs[0]);
 
-    snprintf(name, sizeof(name), "graph %d input from stream %s", fg->index,
-             ifp->opts.name);
-
-    ifp->filter = avfilter_graph_alloc_filter(graph, buffer_filt, name);
-    if (!ifp->filter) {
-        ret = AVERROR(ENOMEM);
-        goto fail;
-    }
-
-    par->format              = ifp->format;
-    par->time_base           = ifp->time_base;
-    par->frame_rate          = ifp->opts.framerate;
-    par->width               = ifp->width;
-    par->height              = ifp->height;
-    par->sample_aspect_ratio = ifp->sample_aspect_ratio.den > 0 ?
-                               ifp->sample_aspect_ratio : (AVRational){ 0, 1 };
-    par->color_space         = ifp->color_space;
-    par->color_range         = ifp->color_range;
-    par->hw_frames_ctx       = ifp->hw_frames_ctx;
-    par->side_data           = ifp->side_data;
-    par->nb_side_data        = ifp->nb_side_data;
-
-    ret = av_buffersrc_parameters_set(ifp->filter, par);
-    if (ret < 0)
-        goto fail;
-    av_freep(&par);
-
-    ret = avfilter_init_dict(ifp->filter, NULL);
-    if (ret < 0)
-        goto fail;
-
-    last_filter = ifp->filter;
-
-    desc = av_pix_fmt_desc_get(ifp->format);
-    av_assert0(desc);
-
-    if ((ifp->opts.flags & IFILTER_FLAG_CROP)) {
-        char crop_buf[64];
-        snprintf(crop_buf, sizeof(crop_buf), "w=iw-%u-%u:h=ih-%u-%u:x=%u:y=%u",
-                 ifp->opts.crop_left, ifp->opts.crop_right,
-                 ifp->opts.crop_top, ifp->opts.crop_bottom,
-                 ifp->opts.crop_left, ifp->opts.crop_top);
-        ret = insert_filter(&last_filter, &pad_idx, "crop", crop_buf);
-        if (ret < 0)
-            return ret;
-    }
-
-    // TODO: insert hwaccel enabled filters like transpose_vaapi into the graph
-    ifp->displaymatrix_applied = 0;
-    if ((ifp->opts.flags & IFILTER_FLAG_AUTOROTATE) &&
-        !(desc->flags & AV_PIX_FMT_FLAG_HWACCEL)) {
-        int32_t *displaymatrix = ifp->displaymatrix;
-        double theta;
-
-        theta = get_rotation(displaymatrix);
-
-        if (fabs(theta - 90) < 1.0) {
-            ret = insert_filter(&last_filter, &pad_idx, "transpose",
-                                displaymatrix[3] > 0 ? "cclock_flip" : "clock");
-        } else if (fabs(theta - 180) < 1.0) {
-            if (displaymatrix[0] < 0) {
-                ret = insert_filter(&last_filter, &pad_idx, "hflip", NULL);
-                if (ret < 0)
-                    return ret;
-            }
-            if (displaymatrix[4] < 0) {
-                ret = insert_filter(&last_filter, &pad_idx, "vflip", NULL);
-            }
-        } else if (fabs(theta - 270) < 1.0) {
-            ret = insert_filter(&last_filter, &pad_idx, "transpose",
-                                displaymatrix[3] < 0 ? "clock_flip" : "cclock");
-        } else if (fabs(theta) > 1.0) {
-            char rotate_buf[64];
-            snprintf(rotate_buf, sizeof(rotate_buf), "%f*PI/180", theta);
-            ret = insert_filter(&last_filter, &pad_idx, "rotate", rotate_buf);
-        } else if (fabs(theta) < 1.0) {
-            if (displaymatrix && displaymatrix[4] < 0) {
-                ret = insert_filter(&last_filter, &pad_idx, "vflip", NULL);
-            }
+        if (filter_nbthreads) {
+            ret = av_opt_set(fgt->graph, "threads", filter_nbthreads, 0);
+            if (ret < 0)
+                goto fail;
+        } else if (fgp->nb_threads >= 0) {
+            ret = av_opt_set_int(fgt->graph, "threads", fgp->nb_threads, 0);
+            if (ret < 0)
+                return ret;
         }
-        if (ret < 0)
-            return ret;
 
-        ifp->displaymatrix_applied = 1;
+        if (av_dict_count(ofp->sws_opts)) {
+            ret = av_dict_get_string(ofp->sws_opts,
+                                     &fgt->graph->scale_sws_opts,
+                                     '=', ':');
+            if (ret < 0)
+                goto fail;
+        }
+
+        if (av_dict_count(ofp->swr_opts)) {
+            char *args;
+            ret = av_dict_get_string(ofp->swr_opts, &args, '=', ':');
+            if (ret < 0)
+                goto fail;
+            av_opt_set(fgt->graph, "aresample_swr_opts", args, 0);
+            av_free(args);
+        }
+    } else {
+        fgt->graph->nb_threads = filter_complex_nbthreads;
     }
 
-    snprintf(name, sizeof(name), "trim_in_%s", ifp->opts.name);
-    ret = insert_trim(fg, ifp->opts.trim_start_us, ifp->opts.trim_end_us,
-                      &last_filter, &pad_idx, name);
+    hw_device = hw_device_for_filter();
+
+    ret = graph_parse(fg, fgt->graph, graph_desc, &inputs, &outputs, hw_device);
     if (ret < 0)
-        return ret;
+        goto fail;
 
-    if ((ret = avfilter_link(last_filter, 0, in->filter_ctx, in->pad_idx)) < 0)
-        return ret;
-
-    // Remove display matrix side data from buffered frames
-    if (ifp->displaymatrix_present) {
-        AVFrameSideData *sd = av_frame_get_side_data(ifp->filter->inputs[0]->frame, AV_FRAME_DATA_DISPLAYMATRIX);
-        if (sd) {
-            av_frame_remove_side_data(ifp->filter->inputs[0]->frame, AV_FRAME_DATA_DISPLAYMATRIX);
+    for (cur = inputs, i = 0; cur; cur = cur->next, i++)
+        if ((ret = configure_input_filter(fg, fgt->graph, fg->inputs[i], cur)) < 0) {
+            avfilter_inout_free(&inputs);
+            avfilter_inout_free(&outputs);
+            goto fail;
         }
+    avfilter_inout_free(&inputs);
+
+    for (cur = outputs, i = 0; cur; cur = cur->next, i++) {
+        ret = configure_output_filter(fgp, fgt->graph, fg->outputs[i], cur);
+        if (ret < 0) {
+            avfilter_inout_free(&outputs);
+            goto fail;
+        }
+    }
+    avfilter_inout_free(&outputs);
+
+    if (fgp->disable_conversions)
+        avfilter_graph_set_auto_convert(fgt->graph, AVFILTER_AUTO_CONVERT_NONE);
+    if ((ret = avfilter_graph_config(fgt->graph, NULL)) < 0)
+        goto fail;
+
+    fgp->is_meta = graph_is_meta(fgt->graph);
+
+    /* limit the lists of allowed formats to the ones selected, to
+     * make sure they stay the same if the filtergraph is reconfigured later */
+    for (int i = 0; i < fg->nb_outputs; i++) {
+        const AVFrameSideData *const *sd;
+        int nb_sd;
+        OutputFilter *ofilter = fg->outputs[i];
+        OutputFilterPriv *ofp = ofp_from_ofilter(ofilter);
+        AVFilterContext *sink = ofp->filter;
+
+        ofp->format = av_buffersink_get_format(sink);
+
+        ofp->width  = av_buffersink_get_w(sink);
+        ofp->height = av_buffersink_get_h(sink);
+        ofp->color_space = av_buffersink_get_colorspace(sink);
+        ofp->color_range = av_buffersink_get_color_range(sink);
+
+        // If the timing parameters are not locked yet, get the tentative values
+        // here but don't lock them. They will only be used if no output frames
+        // are ever produced.
+        if (!ofp->tb_out_locked) {
+            AVRational fr = av_buffersink_get_frame_rate(sink);
+            if (ofp->fps.framerate.num <= 0 && ofp->fps.framerate.den <= 0 &&
+                fr.num > 0 && fr.den > 0)
+                ofp->fps.framerate = fr;
+            ofp->tb_out = av_buffersink_get_time_base(sink);
+        }
+        ofp->sample_aspect_ratio = av_buffersink_get_sample_aspect_ratio(sink);
+
+        ofp->sample_rate    = av_buffersink_get_sample_rate(sink);
+        av_channel_layout_uninit(&ofp->ch_layout);
+        ret = av_buffersink_get_ch_layout(sink, &ofp->ch_layout);
+        if (ret < 0)
+            goto fail;
+        av_frame_side_data_free(&ofp->side_data, &ofp->nb_side_data);
+        sd = av_buffersink_get_side_data(sink, &nb_sd);
+        if (nb_sd)
+            for (int j = 0; j < nb_sd; j++) {
+                ret = av_frame_side_data_clone(&ofp->side_data, &ofp->nb_side_data,
+                                               sd[j], 0);
+                if (ret < 0) {
+                    av_frame_side_data_free(&ofp->side_data, &ofp->nb_side_data);
+                    goto fail;
+                }
+            }
+    }
+
+    for (int i = 0; i < fg->nb_inputs; i++) {
+        InputFilterPriv *ifp = ifp_from_ifilter(fg->inputs[i]);
+        AVFrame *tmp;
+        while (av_fifo_read(ifp->frame_queue, &tmp, 1) >= 0) {
+            if (ifp->type_src == AVMEDIA_TYPE_SUBTITLE) {
+                sub2video_frame(&ifp->ifilter, tmp, !fgt->graph);
+            } else {
+                ret = av_buffersrc_add_frame(ifp->filter, tmp);
+            }
+            av_frame_free(&tmp);
+            if (ret < 0)
+                goto fail;
+        }
+    }
+
+    /* send the EOFs for the finished inputs */
+    for (int i = 0; i < fg->nb_inputs; i++) {
+        InputFilterPriv *ifp = ifp_from_ifilter(fg->inputs[i]);
+        if (fgt->eof_in[i]) {
+            ret = av_buffersrc_add_frame(ifp->filter, NULL);
+            if (ret < 0)
+                goto fail;
+            have_input_eof = 1;
+        }
+    }
+
+    if (have_input_eof) {
+        // make sure the EOF propagates to the end of the graph
+        ret = avfilter_graph_request_oldest(fgt->graph);
+        if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF)
+            goto fail;
     }
 
     return 0;
 fail:
-    av_freep(&par);
-
+    cleanup_filtergraph(fg, fgt);
     return ret;
 }
 

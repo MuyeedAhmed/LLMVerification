@@ -9379,59 +9379,76 @@ fail:
     return ret;
 }
 
-static int mov_read_sbgp(MOVContext *c, AVIOContext *pb, MOVAtom atom)
+static int mov_parse_tiles(AVFormatContext *s)
 {
-    AVStream *st;
-    MOVStreamContext *sc;
-    unsigned int i, entries;
-    uint8_t version;
-    uint32_t grouping_type;
-    MOVSbgp *table, **tablep;
-    int *table_count;
+    MOVContext *mov = s->priv_data;
 
-    if (c->fc->nb_streams < 1)
-        return 0;
-    st = c->fc->streams[c->fc->nb_streams-1];
-    sc = st->priv_data;
+    for (int i = 0; i < mov->nb_heif_grid; i++) {
+        AVStreamGroup *stg = avformat_stream_group_create(s, AV_STREAM_GROUP_PARAMS_TILE_GRID, NULL);
+        AVStreamGroupTileGrid *tile_grid;
+        const HEIFGrid *grid = &mov->heif_grid[i];
+        int err, loop = 1;
 
-    version = avio_r8(pb); /* version */
-    avio_rb24(pb); /* flags */
-    grouping_type = avio_rl32(pb);
+        if (!stg)
+            return AVERROR(ENOMEM);
 
-    if (grouping_type == MKTAG('r','a','p',' ')) {
-        tablep = &sc->rap_group;
-        table_count = &sc->rap_group_count;
-    } else if (grouping_type == MKTAG('s','y','n','c')) {
-        tablep = &sc->sync_group;
-        table_count = &sc->sync_group_count;
-    } else {
-        return 0;
-    }
+        stg->id = grid->item->item_id;
+        tile_grid = stg->params.tile_grid;
 
-    if (version == 1)
-        avio_rb32(pb); /* grouping_type_parameter */
+        for (int j = 0; j < grid->nb_tiles; j++) {
+            int tile_id = grid->tile_id_list[j];
 
-    entries = avio_rb32(pb);
-    if (!entries)
-        return 0;
-    if (*tablep)
-        av_log(c->fc, AV_LOG_WARNING, "Duplicated SBGP %s atom\n", av_fourcc2str(grouping_type));
-    av_freep(tablep);
-    table = av_malloc_array(entries, sizeof(*table));
-    if (!table)
-        return AVERROR(ENOMEM);
-    *tablep = table;
+            for (int k = 0; k < mov->nb_heif_item; k++) {
+                HEIFItem *item = &mov->heif_item[k];
+                AVStream *st = item->st;
 
-    for (i = 0; i < entries && !pb->eof_reached; i++) {
-        table[i].count = avio_rb32(pb); /* sample_count */
-        table[i].index = avio_rb32(pb); /* group_description_index */
-    }
+                if (item->item_id != tile_id)
+                    continue;
+                if (!st) {
+                    av_log(s, AV_LOG_WARNING, "HEIF item id %d from grid id %d doesn't "
+                                              "reference a stream\n",
+                           tile_id, grid->item->item_id);
+                    ff_remove_stream_group(s, stg);
+                    loop = 0;
+                    break;
+                }
 
-    *table_count = i;
+                grid->tile_item_list[j] = item;
 
-    if (pb->eof_reached) {
-        av_log(c->fc, AV_LOG_WARNING, "reached eof, corrupted SBGP atom\n");
-        return AVERROR_EOF;
+                err = avformat_stream_group_add_stream(stg, st);
+                if (err < 0 && err != AVERROR(EEXIST))
+                    return err;
+
+                if (item->item_id != mov->primary_item_id)
+                    st->disposition |= AV_DISPOSITION_DEPENDENT;
+                break;
+            }
+
+            if (!loop)
+                break;
+        }
+
+        if (!loop)
+            continue;
+
+        switch (grid->item->type) {
+        case MKTAG('g','r','i','d'):
+            err = read_image_grid(s, grid, tile_grid);
+            break;
+        case MKTAG('i','o','v','l'):
+            err = read_image_iovl(s, grid, tile_grid);
+            break;
+        default:
+            av_assert0(0);
+        }
+        if (err < 0)
+            return err;
+
+
+        if (grid->item->name)
+            av_dict_set(&stg->metadata, "title", grid->item->name, 0);
+        if (grid->item->item_id == mov->primary_item_id)
+            stg->disposition |= AV_DISPOSITION_DEFAULT;
     }
 
     return 0;

@@ -176,6 +176,46 @@ static int extract_packet_props(AVCodecInternal *avci, const AVPacket *pkt)
     return ret;
 }
 
+static int decode_bsfs_init(AVCodecContext *avctx)
+{
+    AVCodecInternal *avci = avctx->internal;
+    const FFCodec *const codec = ffcodec(avctx->codec);
+    int ret;
+
+    if (avci->bsf)
+        return 0;
+
+    ret = av_bsf_list_parse_str(codec->bsfs, &avci->bsf);
+    if (ret < 0) {
+        av_log(avctx, AV_LOG_ERROR, "Error parsing decoder bitstream filters '%s': %s\n", codec->bsfs, av_err2str(ret));
+        if (ret != AVERROR(ENOMEM))
+            ret = AVERROR_BUG;
+        goto fail;
+    }
+
+    /* We do not currently have an API for passing the input timebase into decoders,
+     * but no filters used here should actually need it.
+     * So we make up some plausible-looking number (the MPEG 90kHz timebase) */
+    avci->bsf->time_base_in = (AVRational){ 1, 90000 };
+    ret = avcodec_parameters_from_context(avci->bsf->par_in, avctx);
+    if (ret < 0)
+        goto fail;
+
+    ret = av_bsf_init(avci->bsf);
+    if (ret < 0)
+        goto fail;
+
+    return 0;
+fail:
+    av_bsf_free(&avci->bsf);
+    return ret;
+}
+
+#if !HAVE_THREADS
+#define ff_thread_get_packet(avctx, pkt) (AVERROR_BUG)
+#define ff_thread_receive_frame(avctx, frame) (AVERROR_BUG)
+#endif
+
 static int decode_get_packet(AVCodecContext *avctx, AVPacket *pkt)
 {
     AVCodecInternal *avci = avctx->internal;
@@ -207,35 +247,6 @@ finish:
     return ret;
 }
 
-#if !HAVE_THREADS
-#define ff_thread_get_packet(avctx, pkt) (AVERROR_BUG)
-#define ff_thread_receive_frame(avctx, frame) (AVERROR_BUG)
-#endif
-
-static int decode_get_packet(AVCodecContext *avctx, AVPacket *pkt)
-{
-    AVCodecInternal *avci = avctx->internal;
-    int ret;
-
-    ret = av_bsf_receive_packet(avci->bsf, pkt);
-    if (ret < 0)
-        return ret;
-
-    if (!(ffcodec(avctx->codec)->caps_internal & FF_CODEC_CAP_SETS_FRAME_PROPS)) {
-        ret = extract_packet_props(avctx->internal, pkt);
-        if (ret < 0)
-            goto finish;
-    }
-
-    ret = apply_param_change(avctx, pkt);
-    if (ret < 0)
-        goto finish;
-
-    return 0;
-finish:
-    av_packet_unref(pkt);
-    return ret;
-}
 
 int ff_decode_get_packet(AVCodecContext *avctx, AVPacket *pkt)
 {

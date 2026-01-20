@@ -794,39 +794,171 @@ av_cold int ff_ffv1_encode_init(AVCodecContext *avctx)
     return 0;
 }
 
-static void encode_histogram_remap(FFV1Context *f, FFV1SliceContext *sc)
+av_cold int ff_ffv1_encode_setup_plane_info(AVCodecContext *avctx,
+                                            enum AVPixelFormat pix_fmt)
 {
-    int len = 1 << f->bits_per_raw_sample;
-    int flip = sc->remap == 2 ? 0x7FFF : 0;
+    FFV1Context *s = avctx->priv_data;
+    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(pix_fmt);
 
-    for (int p= 0; p < 1 + 2*f->chroma_planes + f->transparency; p++) {
-        int j = 0;
-        int lu = 0;
-        uint8_t state[2][32];
-        int run = 0;
-
-        memset(state, 128, sizeof(state));
-        put_symbol(&sc->c, state[0], 0, 0);
-        memset(state, 128, sizeof(state));
-        for (int i= 0; i<len; i++) {
-            int ri = i ^ ((i&0x8000) ? 0 : flip);
-            int u = sc->fltmap[p][ri];
-            sc->fltmap[p][ri] = j;
-            j+= u;
-
-            if (lu == u) {
-                run ++;
-            } else {
-                put_symbol_inline(&sc->c, state[lu], run, 0, NULL, NULL);
-                if (run == 0)
-                    lu = u;
-                run = 0;
-            }
+    s->plane_count = 3;
+    switch(pix_fmt) {
+    case AV_PIX_FMT_GRAY9:
+    case AV_PIX_FMT_YUV444P9:
+    case AV_PIX_FMT_YUV422P9:
+    case AV_PIX_FMT_YUV420P9:
+    case AV_PIX_FMT_YUVA444P9:
+    case AV_PIX_FMT_YUVA422P9:
+    case AV_PIX_FMT_YUVA420P9:
+        if (!avctx->bits_per_raw_sample)
+            s->bits_per_raw_sample = 9;
+    case AV_PIX_FMT_GRAY10:
+    case AV_PIX_FMT_YUV444P10:
+    case AV_PIX_FMT_YUV440P10:
+    case AV_PIX_FMT_YUV420P10:
+    case AV_PIX_FMT_YUV422P10:
+    case AV_PIX_FMT_YUVA444P10:
+    case AV_PIX_FMT_YUVA422P10:
+    case AV_PIX_FMT_YUVA420P10:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 10;
+    case AV_PIX_FMT_GRAY12:
+    case AV_PIX_FMT_YUV444P12:
+    case AV_PIX_FMT_YUV440P12:
+    case AV_PIX_FMT_YUV420P12:
+    case AV_PIX_FMT_YUV422P12:
+    case AV_PIX_FMT_YUVA444P12:
+    case AV_PIX_FMT_YUVA422P12:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 12;
+    case AV_PIX_FMT_GRAY14:
+    case AV_PIX_FMT_YUV444P14:
+    case AV_PIX_FMT_YUV420P14:
+    case AV_PIX_FMT_YUV422P14:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 14;
+        s->packed_at_lsb = 1;
+    case AV_PIX_FMT_GRAY16:
+    case AV_PIX_FMT_YUV444P16:
+    case AV_PIX_FMT_YUV422P16:
+    case AV_PIX_FMT_YUV420P16:
+    case AV_PIX_FMT_YUVA444P16:
+    case AV_PIX_FMT_YUVA422P16:
+    case AV_PIX_FMT_YUVA420P16:
+    case AV_PIX_FMT_GRAYF16:
+    case AV_PIX_FMT_YAF16:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample) {
+            s->bits_per_raw_sample = 16;
+        } else if (!s->bits_per_raw_sample) {
+            s->bits_per_raw_sample = avctx->bits_per_raw_sample;
         }
-        if (run)
-            put_symbol(&sc->c, state[lu], run, 0);
-        sc->remap_count[p] = j;
+        if (s->bits_per_raw_sample <= 8) {
+            av_log(avctx, AV_LOG_ERROR, "bits_per_raw_sample invalid\n");
+            return AVERROR_INVALIDDATA;
+        }
+        s->version = FFMAX(s->version, 1);
+    case AV_PIX_FMT_GRAY8:
+    case AV_PIX_FMT_YA8:
+    case AV_PIX_FMT_YUV444P:
+    case AV_PIX_FMT_YUV440P:
+    case AV_PIX_FMT_YUV422P:
+    case AV_PIX_FMT_YUV420P:
+    case AV_PIX_FMT_YUV411P:
+    case AV_PIX_FMT_YUV410P:
+    case AV_PIX_FMT_YUVA444P:
+    case AV_PIX_FMT_YUVA422P:
+    case AV_PIX_FMT_YUVA420P:
+        s->chroma_planes = desc->nb_components < 3 ? 0 : 1;
+        s->colorspace = 0;
+        s->transparency = !!(desc->flags & AV_PIX_FMT_FLAG_ALPHA);
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 8;
+        else if (!s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 8;
+        break;
+    case AV_PIX_FMT_RGB32:
+        s->colorspace = 1;
+        s->transparency = 1;
+        s->chroma_planes = 1;
+        s->bits_per_raw_sample = 8;
+        break;
+    case AV_PIX_FMT_RGBA64:
+        s->colorspace = 1;
+        s->transparency = 1;
+        s->chroma_planes = 1;
+        s->bits_per_raw_sample = 16;
+        s->use32bit = 1;
+        s->version = FFMAX(s->version, 1);
+        break;
+    case AV_PIX_FMT_RGB48:
+        s->colorspace = 1;
+        s->chroma_planes = 1;
+        s->bits_per_raw_sample = 16;
+        s->use32bit = 1;
+        s->version = FFMAX(s->version, 1);
+        break;
+    case AV_PIX_FMT_0RGB32:
+        s->colorspace = 1;
+        s->chroma_planes = 1;
+        s->bits_per_raw_sample = 8;
+        break;
+    case AV_PIX_FMT_GBRP9:
+        if (!avctx->bits_per_raw_sample)
+            s->bits_per_raw_sample = 9;
+    case AV_PIX_FMT_GBRP10:
+    case AV_PIX_FMT_GBRAP10:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 10;
+    case AV_PIX_FMT_GBRP12:
+    case AV_PIX_FMT_GBRAP12:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 12;
+    case AV_PIX_FMT_GBRP14:
+    case AV_PIX_FMT_GBRAP14:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 14;
+    case AV_PIX_FMT_GBRP16:
+    case AV_PIX_FMT_GBRAP16:
+    case AV_PIX_FMT_GBRPF16:
+    case AV_PIX_FMT_GBRAPF16:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 16;
+    case AV_PIX_FMT_GBRPF32:
+    case AV_PIX_FMT_GBRAPF32:
+        if (!avctx->bits_per_raw_sample && !s->bits_per_raw_sample)
+            s->bits_per_raw_sample = 32;
+        else if (!s->bits_per_raw_sample)
+            s->bits_per_raw_sample = avctx->bits_per_raw_sample;
+        s->transparency = !!(desc->flags & AV_PIX_FMT_FLAG_ALPHA);
+        s->colorspace = 1;
+        s->chroma_planes = 1;
+        if (s->bits_per_raw_sample >= 16) {
+            s->use32bit = 1;
+        }
+        s->version = FFMAX(s->version, 1);
+        break;
+    default:
+        av_log(avctx, AV_LOG_ERROR, "format %s not supported\n",
+               av_get_pix_fmt_name(pix_fmt));
+        return AVERROR(ENOSYS);
     }
+    s->flt = !!(desc->flags & AV_PIX_FMT_FLAG_FLOAT);
+    if (s->flt)
+        s->version = FFMAX(s->version, 4);
+    av_assert0(s->bits_per_raw_sample >= 8);
+
+    if (s->remap_mode < 0)
+        s->remap_mode = s->flt ? 2 : 0;
+    if (s->remap_mode == 0 && s->bits_per_raw_sample == 32) {
+        av_log(avctx, AV_LOG_ERROR, "32bit requires remap\n");
+        return AVERROR(EINVAL);
+    }
+    if (s->remap_mode == 2 &&
+        !((s->bits_per_raw_sample == 16 || s->bits_per_raw_sample == 32 || s->bits_per_raw_sample == 64) && s->flt)) {
+        av_log(avctx, AV_LOG_ERROR, "remap 2 is for float16/32/64 only\n");
+        return AVERROR(EINVAL);
+    }
+
+    return av_pix_fmt_get_chroma_sub_sample(pix_fmt, &s->chroma_h_shift, &s->chroma_v_shift);
 }
 
 static av_cold int encode_init_internal(AVCodecContext *avctx)
@@ -1053,6 +1185,7 @@ static void choose_rct_params(const FFV1Context *f, FFV1SliceContext *sc,
     sc->slice_rct_by_coef = rct_y_coeff[best][1];
     sc->slice_rct_ry_coef = rct_y_coeff[best][0];
 }
+
 
 static void encode_histogram_remap(FFV1Context *f, FFV1SliceContext *sc)
 {

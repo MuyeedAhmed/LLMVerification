@@ -217,29 +217,34 @@ static int dv_extract_audio_info(DVDemuxContext* c, uint8_t* frame)
 
     /* Dynamic handling of the audio streams in DV */
     for (i = 0; i < ach; i++) {
-       if (!c->ast[i]) {
-           c->ast[i] = avformat_new_stream(c->fctx, NULL);
-           if (!c->ast[i])
-               break;
-           avpriv_set_pts_info(c->ast[i], 64, 1, 30000);
-           c->ast[i]->codec->codec_type = AVMEDIA_TYPE_AUDIO;
-           c->ast[i]->codec->codec_id   = CODEC_ID_PCM_S16LE;
+        if (!c->ast[i]) {
+            c->ast[i] = avformat_new_stream(c->fctx, NULL);
+            if (!c->ast[i])
+                break;
+            avpriv_set_pts_info(c->ast[i], 64, 1, 30000);
+            c->ast[i]->codec->codec_type = AVMEDIA_TYPE_AUDIO;
+            c->ast[i]->codec->codec_id   = CODEC_ID_PCM_S16LE;
 
-           av_init_packet(&c->audio_pkt[i]);
-           c->audio_pkt[i].size         = 0;
-           c->audio_pkt[i].data         = c->audio_buf[i];
-           c->audio_pkt[i].stream_index = c->ast[i]->index;
-           c->audio_pkt[i].flags       |= AV_PKT_FLAG_KEY;
-       }
-       c->ast[i]->codec->sample_rate = dv_audio_frequency[freq];
-       c->ast[i]->codec->channels    = 2;
-       c->ast[i]->codec->bit_rate    = 2 * dv_audio_frequency[freq] * 16;
-       c->ast[i]->start_time         = 0;
+            av_init_packet(&c->audio_pkt[i]);
+            c->audio_pkt[i].size         = 0;
+            c->audio_pkt[i].data         = c->audio_buf[i];
+            c->audio_pkt[i].stream_index = c->ast[i]->index;
+            c->audio_pkt[i].flags       |= AV_PKT_FLAG_KEY;
+        }
+        if (!c->ast[i]) {
+            c->ach = i;
+            return 0;
+        }
+        c->ast[i]->codec->sample_rate = dv_audio_frequency[freq];
+        c->ast[i]->codec->channels    = 2;
+        c->ast[i]->codec->bit_rate    = 2 * dv_audio_frequency[freq] * 16;
+        c->ast[i]->start_time         = 0;
     }
     c->ach = i;
 
-    return (c->sys->audio_min_samples[freq] + smpls) * 4; /* 2ch, 2bytes */;
+    return (c->sys->audio_min_samples[freq] + smpls) * 4; /* 2ch, 2bytes */
 }
+
 
 static int dv_extract_video_info(DVDemuxContext *c, uint8_t* frame)
 {
@@ -323,61 +328,53 @@ int avpriv_dv_get_packet(DVDemuxContext *c, AVPacket *pkt)
     return size;
 }
 
-static int dv_extract_audio_info(DVDemuxContext* c, uint8_t* frame)
+int avpriv_dv_produce_packet(DVDemuxContext *c, AVPacket *pkt,
+                      uint8_t* buf, int buf_size)
 {
-    const uint8_t* as_pack;
-    int freq, stype, smpls, quant, i, ach;
+    int size, i;
+    uint8_t *ppcm[4] = {0};
 
-    as_pack = dv_extract_pack(frame, dv_audio_source);
-    if (!as_pack || !c->sys) {    /* No audio ? */
-        c->ach = 0;
-        return 0;
+    if (buf_size < DV_PROFILE_BYTES ||
+        !(c->sys = avpriv_dv_frame_profile(c->sys, buf, buf_size)) ||
+        buf_size < c->sys->frame_size) {
+          return -1;   /* Broken frame, or not enough data */
     }
 
-    smpls =  as_pack[1] & 0x3f;       /* samples in this frame - min. samples */
-    freq  = (as_pack[4] >> 3) & 0x07; /* 0 - 48kHz, 1 - 44,1kHz, 2 - 32kHz */
-    stype = (as_pack[3] & 0x1f);      /* 0 - 2CH, 2 - 4CH, 3 - 8CH */
-    quant =  as_pack[4] & 0x07;       /* 0 - 16bit linear, 1 - 12bit nonlinear */
-
-    if (stype > 3) {
-        av_log(c->fctx, AV_LOG_ERROR, "stype %d is invalid\n", stype);
-        c->ach = 0;
-        return 0;
+    /* Queueing audio packet */
+    /* FIXME: in case of no audio/bad audio we have to do something */
+    size = dv_extract_audio_info(c, buf);
+    for (i = 0; i < c->ach; i++) {
+       c->audio_pkt[i].size = size;
+       c->audio_pkt[i].pts  = c->abytes * 30000*8 / c->ast[i]->codec->bit_rate;
+       ppcm[i] = c->audio_buf[i];
     }
+    dv_extract_audio(buf, ppcm, c->sys);
 
-    /* note: ach counts PAIRS of channels (i.e. stereo channels) */
-    ach = ((int[4]){  1,  0,  2,  4})[stype];
-    if (ach == 1 && quant && freq == 2)
-        ach = 2;
-
-    /* Dynamic handling of the audio streams in DV */
-    for (i = 0; i < ach; i++) {
-        if (!c->ast[i]) {
-            c->ast[i] = avformat_new_stream(c->fctx, NULL);
-            if (!c->ast[i])
-                break;
-            avpriv_set_pts_info(c->ast[i], 64, 1, 30000);
-            c->ast[i]->codec->codec_type = AVMEDIA_TYPE_AUDIO;
-            c->ast[i]->codec->codec_id   = CODEC_ID_PCM_S16LE;
-
-            av_init_packet(&c->audio_pkt[i]);
-            c->audio_pkt[i].size         = 0;
-            c->audio_pkt[i].data         = c->audio_buf[i];
-            c->audio_pkt[i].stream_index = c->ast[i]->index;
-            c->audio_pkt[i].flags       |= AV_PKT_FLAG_KEY;
+    /* We work with 720p frames split in half, thus even frames have
+     * channels 0,1 and odd 2,3. */
+    if (c->sys->height == 720) {
+        if (buf[1] & 0x0C) {
+            c->audio_pkt[2].size = c->audio_pkt[3].size = 0;
+        } else {
+            c->audio_pkt[0].size = c->audio_pkt[1].size = 0;
+            c->abytes += size;
         }
-        if (!c->ast[i]) {
-            c->ach = i;
-            return 0;
-        }
-        c->ast[i]->codec->sample_rate = dv_audio_frequency[freq];
-        c->ast[i]->codec->channels    = 2;
-        c->ast[i]->codec->bit_rate    = 2 * dv_audio_frequency[freq] * 16;
-        c->ast[i]->start_time         = 0;
+    } else {
+        c->abytes += size;
     }
-    c->ach = i;
 
-    return (c->sys->audio_min_samples[freq] + smpls) * 4; /* 2ch, 2bytes */
+    /* Now it's time to return video packet */
+    size = dv_extract_video_info(c, buf);
+    av_init_packet(pkt);
+    pkt->data         = buf;
+    pkt->size         = size;
+    pkt->flags       |= AV_PKT_FLAG_KEY;
+    pkt->stream_index = c->vst->id;
+    pkt->pts          = c->frames;
+
+    c->frames++;
+
+    return size;
 }
 
 static int64_t dv_frame_offset(AVFormatContext *s, DVDemuxContext *c,

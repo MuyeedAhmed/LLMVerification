@@ -1173,16 +1173,462 @@ static int set_encoder_int_property_or_log(AVCodecContext* avctx,
     return 0;
 }
 
-static const enum AVPixelFormat hevc_pix_fmts[] = {
-    AV_PIX_FMT_VIDEOTOOLBOX,
-    AV_PIX_FMT_NV12,
-    AV_PIX_FMT_YUV420P,
-    AV_PIX_FMT_BGRA,
-    AV_PIX_FMT_AYUV64,
-    AV_PIX_FMT_P010LE,
-    AV_PIX_FMT_P210,
-    AV_PIX_FMT_NONE
-};
+static int vtenc_create_encoder(AVCodecContext   *avctx,
+                                CMVideoCodecType codec_type,
+                                CFStringRef      profile_level,
+                                CFNumberRef      gamma_level,
+                                CFDictionaryRef  enc_info,
+                                CFDictionaryRef  pixel_buffer_info,
+                                bool constant_bit_rate,
+                                VTCompressionSessionRef *session)
+{
+    VTEncContext *vtctx = avctx->priv_data;
+    SInt32       bit_rate = avctx->bit_rate;
+    SInt32       max_rate = avctx->rc_max_rate;
+    Float32      quality = avctx->global_quality / FF_QP2LAMBDA;
+    CFNumberRef  bit_rate_num;
+    CFNumberRef  quality_num;
+    CFNumberRef  bytes_per_second;
+    CFNumberRef  one_second;
+    CFArrayRef   data_rate_limits;
+    int64_t      bytes_per_second_value = 0;
+    int64_t      one_second_value = 0;
+    void         *nums[2];
+
+    int status = VTCompressionSessionCreate(kCFAllocatorDefault,
+                                            avctx->width,
+                                            avctx->height,
+                                            codec_type,
+                                            enc_info,
+                                            pixel_buffer_info,
+                                            kCFAllocatorDefault,
+                                            vtenc_output_callback,
+                                            avctx,
+                                            session);
+
+    if (status || !vtctx->session) {
+        av_log(avctx, AV_LOG_ERROR, "Error: cannot create compression session: %d\n", status);
+
+#if !TARGET_OS_IPHONE
+        if (!vtctx->allow_sw) {
+            av_log(avctx, AV_LOG_ERROR, "Try -allow_sw 1. The hardware encoder may be busy, or not supported.\n");
+        }
+#endif
+
+        return AVERROR_EXTERNAL;
+    }
+
+#if defined (MAC_OS_X_VERSION_10_13) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_13)
+    if (__builtin_available(macOS 10.13, *)) {
+        if (vtctx->supported_props) {
+            CFRelease(vtctx->supported_props);
+            vtctx->supported_props = NULL;
+        }
+        status = VTCopySupportedPropertyDictionaryForEncoder(avctx->width,
+                                                             avctx->height,
+                                                             codec_type,
+                                                             enc_info,
+                                                             NULL,
+                                                             &vtctx->supported_props);
+
+        if (status != noErr) {
+            av_log(avctx, AV_LOG_ERROR,"Error retrieving the supported property dictionary err=%"PRId64"\n", (int64_t)status);
+            return AVERROR_EXTERNAL;
+        }
+    }
+#endif
+
+    status = vt_dump_encoder(avctx);
+    if (status < 0)
+        return status;
+
+    if (avctx->flags & AV_CODEC_FLAG_QSCALE && !vtenc_qscale_enabled()) {
+        av_log(avctx, AV_LOG_ERROR, "Error: -q:v qscale not available for encoder. Use -b:v bitrate instead.\n");
+        return AVERROR_EXTERNAL;
+    }
+
+    if (avctx->flags & AV_CODEC_FLAG_QSCALE) {
+        quality = quality >= 100 ? 1.0 : quality / 100;
+        quality_num = CFNumberCreate(kCFAllocatorDefault,
+                                     kCFNumberFloat32Type,
+                                     &quality);
+        if (!quality_num) return AVERROR(ENOMEM);
+
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_Quality,
+                                      quality_num);
+        CFRelease(quality_num);
+    } else if (avctx->codec_id != AV_CODEC_ID_PRORES) {
+        bit_rate_num = CFNumberCreate(kCFAllocatorDefault,
+                                      kCFNumberSInt32Type,
+                                      &bit_rate);
+        if (!bit_rate_num) return AVERROR(ENOMEM);
+
+        if (constant_bit_rate) {
+            status = VTSessionSetProperty(vtctx->session,
+                                          compat_keys.kVTCompressionPropertyKey_ConstantBitRate,
+                                          bit_rate_num);
+            if (status == kVTPropertyNotSupportedErr) {
+                av_log(avctx, AV_LOG_ERROR, "Error: -constant_bit_rate true is not supported by the encoder.\n");
+                return AVERROR_EXTERNAL;
+            }
+        } else {
+            status = VTSessionSetProperty(vtctx->session,
+                                          kVTCompressionPropertyKey_AverageBitRate,
+                                          bit_rate_num);
+        }
+
+        CFRelease(bit_rate_num);
+    }
+
+    if (status) {
+        av_log(avctx, AV_LOG_ERROR, "Error setting bitrate property: %d\n", status);
+        return AVERROR_EXTERNAL;
+    }
+
+    if (vtctx->prio_speed >= 0) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      compat_keys.kVTCompressionPropertyKey_PrioritizeEncodingSpeedOverQuality,
+                                      vtctx->prio_speed ? kCFBooleanTrue : kCFBooleanFalse);
+        if (status) {
+            av_log(avctx, AV_LOG_WARNING, "PrioritizeEncodingSpeedOverQuality property is not supported on this device. Ignoring.\n");
+        }
+    }
+
+    if ((vtctx->codec_id == AV_CODEC_ID_H264 || vtctx->codec_id == AV_CODEC_ID_HEVC)
+            && max_rate > 0) {
+        bytes_per_second_value = max_rate >> 3;
+        bytes_per_second = CFNumberCreate(kCFAllocatorDefault,
+                                          kCFNumberSInt64Type,
+                                          &bytes_per_second_value);
+        if (!bytes_per_second) {
+            return AVERROR(ENOMEM);
+        }
+        one_second_value = 1;
+        one_second = CFNumberCreate(kCFAllocatorDefault,
+                                    kCFNumberSInt64Type,
+                                    &one_second_value);
+        if (!one_second) {
+            CFRelease(bytes_per_second);
+            return AVERROR(ENOMEM);
+        }
+        nums[0] = (void *)bytes_per_second;
+        nums[1] = (void *)one_second;
+        data_rate_limits = CFArrayCreate(kCFAllocatorDefault,
+                                         (const void **)nums,
+                                         2,
+                                         &kCFTypeArrayCallBacks);
+
+        if (!data_rate_limits) {
+            CFRelease(bytes_per_second);
+            CFRelease(one_second);
+            return AVERROR(ENOMEM);
+        }
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_DataRateLimits,
+                                      data_rate_limits);
+
+        CFRelease(bytes_per_second);
+        CFRelease(one_second);
+        CFRelease(data_rate_limits);
+
+        if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting max bitrate property: %d\n", status);
+            // kVTCompressionPropertyKey_DataRateLimits is available for HEVC
+            // now but not on old release. There is no document about since
+            // when. So ignore the error if it failed for hevc.
+            if (vtctx->codec_id != AV_CODEC_ID_HEVC)
+                return AVERROR_EXTERNAL;
+        }
+    }
+
+    if (vtctx->codec_id == AV_CODEC_ID_HEVC) {
+        if (avctx->pix_fmt == AV_PIX_FMT_BGRA && vtctx->alpha_quality > 0.0) {
+            CFNumberRef alpha_quality_num = CFNumberCreate(kCFAllocatorDefault,
+                                                           kCFNumberDoubleType,
+                                                           &vtctx->alpha_quality);
+            if (!alpha_quality_num) return AVERROR(ENOMEM);
+
+            status = VTSessionSetProperty(vtctx->session,
+                                          compat_keys.kVTCompressionPropertyKey_TargetQualityForAlpha,
+                                          alpha_quality_num);
+            CFRelease(alpha_quality_num);
+
+            if (status) {
+                av_log(avctx,
+                       AV_LOG_ERROR,
+                       "Error setting alpha quality: %d\n",
+                       status);
+            }
+        }
+    }
+
+    if (profile_level) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_ProfileLevel,
+                                      profile_level);
+        if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting profile/level property: %d. Output will be encoded using a supported profile/level combination.\n", status);
+        }
+    }
+
+    if (avctx->gop_size > 0 && avctx->codec_id != AV_CODEC_ID_PRORES) {
+        CFNumberRef interval = CFNumberCreate(kCFAllocatorDefault,
+                                              kCFNumberIntType,
+                                              &avctx->gop_size);
+        if (!interval) {
+            return AVERROR(ENOMEM);
+        }
+
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_MaxKeyFrameInterval,
+                                      interval);
+        CFRelease(interval);
+
+        if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting 'max key-frame interval' property: %d\n", status);
+            return AVERROR_EXTERNAL;
+        }
+    }
+
+    if (vtctx->frames_before) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_MoreFramesBeforeStart,
+                                      kCFBooleanTrue);
+
+        if (status == kVTPropertyNotSupportedErr) {
+            av_log(avctx, AV_LOG_WARNING, "frames_before property is not supported on this device. Ignoring.\n");
+        } else if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting frames_before property: %d\n", status);
+        }
+    }
+
+    if (vtctx->frames_after) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_MoreFramesAfterEnd,
+                                      kCFBooleanTrue);
+
+        if (status == kVTPropertyNotSupportedErr) {
+            av_log(avctx, AV_LOG_WARNING, "frames_after property is not supported on this device. Ignoring.\n");
+        } else if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting frames_after property: %d\n", status);
+        }
+    }
+
+    if (avctx->sample_aspect_ratio.num != 0) {
+        CFNumberRef num;
+        CFNumberRef den;
+        CFMutableDictionaryRef par;
+        AVRational *avpar = &avctx->sample_aspect_ratio;
+
+        av_reduce(&avpar->num, &avpar->den,
+                   avpar->num,  avpar->den,
+                  0xFFFFFFFF);
+
+        num = CFNumberCreate(kCFAllocatorDefault,
+                             kCFNumberIntType,
+                             &avpar->num);
+
+        den = CFNumberCreate(kCFAllocatorDefault,
+                             kCFNumberIntType,
+                             &avpar->den);
+
+
+
+        par = CFDictionaryCreateMutable(kCFAllocatorDefault,
+                                        2,
+                                        &kCFCopyStringDictionaryKeyCallBacks,
+                                        &kCFTypeDictionaryValueCallBacks);
+
+        if (!par || !num || !den) {
+            if (par) CFRelease(par);
+            if (num) CFRelease(num);
+            if (den) CFRelease(den);
+
+            return AVERROR(ENOMEM);
+        }
+
+        CFDictionarySetValue(
+            par,
+            kCMFormatDescriptionKey_PixelAspectRatioHorizontalSpacing,
+            num);
+
+        CFDictionarySetValue(
+            par,
+            kCMFormatDescriptionKey_PixelAspectRatioVerticalSpacing,
+            den);
+
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_PixelAspectRatio,
+                                      par);
+
+        CFRelease(par);
+        CFRelease(num);
+        CFRelease(den);
+
+        if (status) {
+            av_log(avctx,
+                   AV_LOG_ERROR,
+                   "Error setting pixel aspect ratio to %d:%d: %d.\n",
+                   avctx->sample_aspect_ratio.num,
+                   avctx->sample_aspect_ratio.den,
+                   status);
+
+            return AVERROR_EXTERNAL;
+        }
+    }
+
+
+    if (vtctx->transfer_function) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_TransferFunction,
+                                      vtctx->transfer_function);
+
+        if (status) {
+            av_log(avctx, AV_LOG_WARNING, "Could not set transfer function: %d\n", status);
+        }
+    }
+
+
+    if (vtctx->ycbcr_matrix) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_YCbCrMatrix,
+                                      vtctx->ycbcr_matrix);
+
+        if (status) {
+            av_log(avctx, AV_LOG_WARNING, "Could not set ycbcr matrix: %d\n", status);
+        }
+    }
+
+
+    if (vtctx->color_primaries) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_ColorPrimaries,
+                                      vtctx->color_primaries);
+
+        if (status) {
+            av_log(avctx, AV_LOG_WARNING, "Could not set color primaries: %d\n", status);
+        }
+    }
+
+    if (gamma_level) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kCVImageBufferGammaLevelKey,
+                                      gamma_level);
+
+        if (status) {
+            av_log(avctx, AV_LOG_WARNING, "Could not set gamma level: %d\n", status);
+        }
+    }
+
+    if (!vtctx->has_b_frames && avctx->codec_id != AV_CODEC_ID_PRORES) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      kVTCompressionPropertyKey_AllowFrameReordering,
+                                      kCFBooleanFalse);
+
+        if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting 'allow frame reordering' property: %d\n", status);
+            return AVERROR_EXTERNAL;
+        }
+    }
+
+    if (vtctx->entropy != VT_ENTROPY_NOT_SET) {
+        CFStringRef entropy = vtctx->entropy == VT_CABAC ?
+                                compat_keys.kVTH264EntropyMode_CABAC:
+                                compat_keys.kVTH264EntropyMode_CAVLC;
+
+        status = VTSessionSetProperty(vtctx->session,
+                                      compat_keys.kVTCompressionPropertyKey_H264EntropyMode,
+                                      entropy);
+
+        if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting entropy property: %d\n", status);
+        }
+    }
+
+    if (vtctx->realtime >= 0) {
+        status = VTSessionSetProperty(vtctx->session,
+                                      compat_keys.kVTCompressionPropertyKey_RealTime,
+                                      vtctx->realtime ? kCFBooleanTrue : kCFBooleanFalse);
+
+        if (status) {
+            av_log(avctx, AV_LOG_ERROR, "Error setting realtime property: %d\n", status);
+        }
+    }
+
+    if ((avctx->flags & AV_CODEC_FLAG_CLOSED_GOP) != 0) {
+        set_encoder_property_or_log(avctx,
+                                    compat_keys.kVTCompressionPropertyKey_AllowOpenGOP,
+                                    "AllowOpenGop",
+                                    kCFBooleanFalse);
+    }
+
+    if (avctx->qmin >= 0) {
+        status = set_encoder_int_property_or_log(avctx,
+                                                 compat_keys.kVTCompressionPropertyKey_MinAllowedFrameQP,
+                                                 "qmin",
+                                                 avctx->qmin);
+
+        if (status != 0) {
+            return status;
+        }
+    }
+
+    if (avctx->qmax >= 0) {
+        status = set_encoder_int_property_or_log(avctx,
+                                                 compat_keys.kVTCompressionPropertyKey_MaxAllowedFrameQP,
+                                                 "qmax",
+                                                 avctx->qmax);
+
+        if (status != 0) {
+            return status;
+        }
+    }
+
+    if (vtctx->max_slice_bytes >= 0 && avctx->codec_id == AV_CODEC_ID_H264) {
+        status = set_encoder_int_property_or_log(avctx,
+                                                 kVTCompressionPropertyKey_MaxH264SliceBytes,
+                                                 "max_slice_bytes",
+                                                 vtctx->max_slice_bytes);
+
+        if (status != 0) {
+            return status;
+        }
+    }
+
+    if (vtctx->power_efficient >= 0) {
+        set_encoder_property_or_log(avctx,
+                                    compat_keys.kVTCompressionPropertyKey_MaximizePowerEfficiency,
+                                    "power_efficient",
+                                    vtctx->power_efficient ? kCFBooleanTrue : kCFBooleanFalse);
+    }
+
+    if (vtctx->max_ref_frames > 0) {
+        status = set_encoder_int_property_or_log(avctx,
+                                                 compat_keys.kVTCompressionPropertyKey_ReferenceBufferCount,
+                                                 "max_ref_frames",
+                                                 vtctx->max_ref_frames);
+
+        if (status != 0) {
+            return status;
+        }
+    }
+
+    if (vtctx->spatialaq >= 0) {
+        set_encoder_int_property_or_log(avctx,
+                                        compat_keys.kVTCompressionPropertyKey_SpatialAdaptiveQPLevel,
+                                        "spatialaq",
+                                        vtctx->spatialaq ? kVTQPModulationLevel_Default : kVTQPModulationLevel_Disable);
+    }
+
+    status = VTCompressionSessionPrepareToEncodeFrames(vtctx->session);
+    if (status) {
+        av_log(avctx, AV_LOG_ERROR, "Error: cannot prepare encoder: %d\n", status);
+        return AVERROR_EXTERNAL;
+    }
+
+    return 0;
+}
 
 static int vtenc_configure_encoder(AVCodecContext *avctx)
 {
@@ -2414,6 +2860,7 @@ static const enum AVPixelFormat hevc_pix_fmts[] = {
     AV_PIX_FMT_NV12,
     AV_PIX_FMT_YUV420P,
     AV_PIX_FMT_BGRA,
+    AV_PIX_FMT_AYUV64,
     AV_PIX_FMT_P010LE,
     AV_PIX_FMT_P210,
     AV_PIX_FMT_NONE
