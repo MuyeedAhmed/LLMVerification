@@ -1,0 +1,40 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/isom.o
+libavformat/isom.c:379:21: error: no member named 'channel_config' in 'struct MPEG4AudioConfig'; did you mean 'chan_config'?
+  379 |             if (cfg.channel_config) {
+      |                     ^~~~~~~~~~~~~~
+      |                     chan_config
+./libavcodec/mpeg4audio.h:33:9: note: 'chan_config' declared here
+   33 |     int chan_config;
+      |         ^
+libavformat/isom.c:380:59: error: no member named 'channel_config' in 'struct MPEG4AudioConfig'; did you mean 'chan_config'?
+  380 |                 st->codecpar->ch_layout.nb_channels = cfg.channel_config;
+      |                                                           ^~~~~~~~~~~~~~
+      |                                                           chan_config
+./libavcodec/mpeg4audio.h:33:9: note: 'chan_config' declared here
+   33 |     int chan_config;
+      |         ^
+libavformat/isom.c:382:50: error: call to undeclared function 'av_get_channel_layout_native'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  382 |                 st->codecpar->ch_layout.u.mask = av_get_channel_layout_native(cfg.channel_config);
+      |                                                  ^
+libavformat/isom.c:382:50: note: did you mean 'av_channel_layout_retype'?
+./libavutil/channel_layout.h:727:5: note: 'av_channel_layout_retype' declared here
+  727 | int av_channel_layout_retype(AVChannelLayout *channel_layout, enum AVChannelOrder order, int flags);
+      |     ^
+libavformat/isom.c:382:83: error: no member named 'channel_config' in 'struct MPEG4AudioConfig'; did you mean 'chan_config'?
+  382 |                 st->codecpar->ch_layout.u.mask = av_get_channel_layout_native(cfg.channel_config);
+      |                                                                                   ^~~~~~~~~~~~~~
+      |                                                                                   chan_config
+./libavcodec/mpeg4audio.h:33:9: note: 'chan_config' declared here
+   33 |     int chan_config;
+      |         ^
+4 errors generated.
+make: *** [libavformat/isom.o] Error 1

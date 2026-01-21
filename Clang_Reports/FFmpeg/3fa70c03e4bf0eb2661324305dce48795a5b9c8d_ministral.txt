@@ -1,0 +1,223 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/iamf_writer.o
+libavformat/iamf_writer.c:211:12: error: redefinition of 'add_param_definition'
+  211 | static int add_param_definition(IAMFContext *iamf, AVIAMFParamDefinition *param,
+      |            ^
+libavformat/iamf_writer.c:168:12: note: previous definition is here
+  168 | static int add_param_definition(IAMFContext *iamf, AVIAMFParamDefinition *param,
+      |            ^
+libavformat/iamf_writer.c:304:28: error: call to undeclared function 'av_get_channel_layout_name'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+      |                            ^
+libavformat/iamf_writer.c:304:28: note: did you mean 'av_channel_layout_copy'?
+./libavutil/channel_layout.h:583:5: note: 'av_channel_layout_copy' declared here
+  583 | int av_channel_layout_copy(AVChannelLayout *dst, const AVChannelLayout *src);
+      |     ^
+libavformat/iamf_writer.c:304:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                     ~~
+      |                                                                     %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:305:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                         ~~
+      |                                                                         %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:306:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                             ~~
+      |                                                                             %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:307:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                 ~~
+      |                                                                                 %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:308:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                     ~~
+      |                                                                                     %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:309:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                         ~~
+      |                                                                                         %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:310:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                             ~~
+      |                                                                                             %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:311:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                 ~~
+      |                                                                                                 %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:312:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                     ~~
+      |                                                                                                     %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:313:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                         ~~
+      |                                                                                                         %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+  313 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[9]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:314:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                             ~~
+      |                                                                                                             %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+  313 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[9]),
+  314 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[10]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:315:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                                 ~~
+      |                                                                                                                 %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+  313 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[9]),
+  314 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[10]),
+  315 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[11]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:316:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                                     ~~
+      |                                                                                                                     %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+  313 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[9]),
+  314 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[10]),
+  315 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[11]),
+  316 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[12]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:317:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                                         ~~
+      |                                                                                                                         %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+  313 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[9]),
+  314 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[10]),
+  315 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[11]),
+  316 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[12]),
+  317 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[13]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:318:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                     av_log(log_ctx, AV_LOG_ERROR, "Expected one of: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      |                                                                                                                             ~~
+      |                                                                                                                             %d
+  304 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[0]),
+  305 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[1]),
+  306 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[2]),
+  307 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[3]),
+  308 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[4]),
+  309 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[5]),
+  310 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[6]),
+  311 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[7]),
+  312 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[8]),
+  313 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[9]),
+  314 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[10]),
+  315 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[11]),
+  316 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[12]),
+  317 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[13]),
+  318 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[14]),
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavformat/iamf_writer.c:319:28: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
+  303 |                            av_get_channel_layout_name(&ff_iamf_scalable_ch_layouts[15]));
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+16 warnings and 2 errors generated.
+make: *** [libavformat/iamf_writer.o] Error 1

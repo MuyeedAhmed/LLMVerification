@@ -1,0 +1,25 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/jpegxl_parser.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+In file included from libavcodec/jpegxl_parser.c:37:
+libavcodec/get_bits.h:390:26: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+  390 |     unsigned int index = s->index;
+      |                          ^~~~~~~~
+libavcodec/jpegxl_parser.c:1292:15: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1292 |         end = entropy_decoder_read_symbol(gb, &dec, toc_context(toc_count));
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/jpegxl_parser.c:1298:22: warning: Loss of sign in implicit conversion [alpha.core.Conversion]
+ 1298 |             lehmer = entropy_decoder_read_symbol(gb, &dec, toc_context(lehmer));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3 warnings generated.

@@ -1,0 +1,28 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/dovi_rpuenc.o
+libavcodec/dovi_rpuenc.c:264:5: error: function definition is not allowed here
+  264 |     {
+      |     ^
+libavcodec/dovi_rpuenc.c:281:13: error: no member named 'initialized' in 'struct DOVIContext'
+  281 |     if (!s->initialized) {
+      |          ~  ^
+libavcodec/dovi_rpuenc.c:282:19: error: call to undeclared function 'ff_dovi_configure_init'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  282 |         int ret = ff_dovi_configure_init(s, avctx);
+      |                   ^
+libavcodec/dovi_rpuenc.c:282:19: note: did you mean 'ff_dovi_configure'?
+libavcodec/dovi_rpuenc.c:261:5: note: 'ff_dovi_configure' declared here
+  261 | int ff_dovi_configure(DOVIContext *s, AVCodecContext *avctx)
+      |     ^
+libavcodec/dovi_rpuenc.c:285:12: error: no member named 'initialized' in 'struct DOVIContext'
+  285 |         s->initialized = 1;
+      |         ~  ^
+4 errors generated.
+make: *** [libavcodec/dovi_rpuenc.o] Error 1

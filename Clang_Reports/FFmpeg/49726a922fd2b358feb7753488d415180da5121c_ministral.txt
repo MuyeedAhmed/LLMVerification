@@ -1,0 +1,38 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavfilter/vf_scale.o
+clang output:
+libavfilter/vf_scale.c:861:21: warning: variable 'flags_orig' is uninitialized when used here [-Wuninitialized]
+  861 |         in->flags = flags_orig;
+      |                     ^~~~~~~~~~
+libavfilter/vf_scale.c:754:24: note: initialize the variable 'flags_orig' to silence this warning
+  754 |     int ret, flags_orig, frame_changed;
+      |                        ^
+      |                         = 0
+1 warning generated.
+libavfilter/vf_scale.c:610:5: warning: Value stored to 'eval_w' is never read [deadcode.DeadStores]
+  610 |     eval_w = scale->var_values[VAR_OUT_W] = scale->var_values[VAR_OW] = (int) res == 0 ? inlink->w : (int) res;
+      |     ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavfilter/vf_scale.c:861:19: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+  861 |         in->flags = flags_orig;
+      |                   ^ ~~~~~~~~~~
+libavfilter/vf_scale.c:873:16: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+  873 |     out->flags = flags_orig;
+      |                ^ ~~~~~~~~~~
+libavfilter/vf_scale.c:962:9: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  962 |     if (out)
+      |         ^~~
+libavfilter/vf_scale.c:1043:15: warning: Using a fixed address is not portable because that address will probably not be valid in all environments or platforms [alpha.core.FixedAddr]
+ 1043 |         *iter = (void*)(uintptr_t) 1;
+      |               ^ ~~~~~~~~~~~~~~~~~~~~
+libavfilter/vf_scale.c:1046:15: warning: Using a fixed address is not portable because that address will probably not be valid in all environments or platforms [alpha.core.FixedAddr]
+ 1046 |         *iter = (void*)(uintptr_t) 2;
+      |               ^ ~~~~~~~~~~~~~~~~~~~~
+6 warnings generated.

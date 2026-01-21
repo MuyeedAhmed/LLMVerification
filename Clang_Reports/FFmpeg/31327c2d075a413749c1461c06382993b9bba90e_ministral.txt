@@ -1,0 +1,22 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/mov.o
+libavformat/mov.c:10342:11: error: call to undeclared function 'ff_mov_read_heif_item'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 10342 |     ret = ff_mov_read_heif_item(c->fc, pb, st);
+       |           ^
+libavformat/mov.c:10342:11: note: did you mean 'mov_read_heif_item'?
+libavformat/mov.c:10320:12: note: 'mov_read_heif_item' declared here
+ 10320 | static int mov_read_heif_item(MOVContext *c, AVIOContext *pb, MOVAtom atom)
+       |            ^
+libavformat/mov.c:10326:23: warning: variable 'sc' set but not used [-Wunused-but-set-variable]
+ 10326 |     MOVStreamContext *sc;
+       |                       ^
+1 warning and 1 error generated.
+make: *** [libavformat/mov.o] Error 1

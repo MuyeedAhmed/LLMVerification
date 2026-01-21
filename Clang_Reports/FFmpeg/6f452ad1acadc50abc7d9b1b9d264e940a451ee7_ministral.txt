@@ -1,0 +1,24 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/textformat/avtextformat.o
+fftools/textformat/avtextformat.c:375:20: error: use of undeclared identifier 'unit_second_str'
+  375 |     if (uv.unit == unit_second_str) {
+      |                    ^
+fftools/textformat/avtextformat.c:383:20: error: use of undeclared identifier 'unit_second_str'
+  383 |     if (uv.unit == unit_second_str && tctx->use_value_sexagesimal_format) {
+      |                    ^
+fftools/textformat/avtextformat.c:398:28: error: use of undeclared identifier 'unit_byte_str'
+  398 |             if (uv.unit == unit_byte_str && tctx->use_byte_value_binary_prefix) {
+      |                            ^
+fftools/textformat/avtextformat.c:492:19: error: use of undeclared identifier 'unit_second_str'
+  492 |         uv.unit = unit_second_str;
+      |                   ^
+4 errors generated.
+make: *** [fftools/textformat/avtextformat.o] Error 1

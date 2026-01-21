@@ -1,0 +1,4 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavcodec/webp.o
+clang output:

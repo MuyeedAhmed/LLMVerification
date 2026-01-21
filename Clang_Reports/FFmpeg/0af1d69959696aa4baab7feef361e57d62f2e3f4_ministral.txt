@@ -1,0 +1,86 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/hevc/hevcdec.o
+libavcodec/hevc/hevcdec.c:779:9: error: no member named 'nal_unit_type' in 'struct HEVCLayerContext'
+  779 |     if (IS_IRAP(s))
+      |         ^~~~~~~~~~
+libavcodec/hevc/hevcdec.h:79:26: note: expanded from macro 'IS_IRAP'
+   79 | #define IS_IRAP(s) ((s)->nal_unit_type >= HEVC_NAL_BLA_W_LP && (s)->nal_unit_type <= HEVC_NAL_RSV_IRAP_VCL23)
+      |                     ~~~  ^
+libavcodec/hevc/hevcdec.c:779:9: error: no member named 'nal_unit_type' in 'struct HEVCLayerContext'
+  779 |     if (IS_IRAP(s))
+      |         ^~~~~~~~~~
+libavcodec/hevc/hevcdec.h:79:69: note: expanded from macro 'IS_IRAP'
+   79 | #define IS_IRAP(s) ((s)->nal_unit_type >= HEVC_NAL_BLA_W_LP && (s)->nal_unit_type <= HEVC_NAL_RSV_IRAP_VCL23)
+      |                                                                ~~~  ^
+libavcodec/hevc/hevcdec.c:783:45: error: no member named 'ps' in 'struct HEVCLayerContext'
+  783 |     if (pps_id >= HEVC_MAX_PPS_COUNT || !s->ps.pps_list[pps_id]) {
+      |                                          ~  ^
+libavcodec/hevc/hevcdec.c:784:19: error: no member named 'avctx' in 'struct HEVCLayerContext'
+  784 |         av_log(s->avctx, AV_LOG_ERROR, "PPS id out of range: %d\n", pps_id);
+      |                ~  ^
+libavcodec/hevc/hevcdec.c:787:44: error: no member named 'ps' in 'struct HEVCLayerContext'
+  787 |     if (!sh->first_slice_in_pic_flag && s->ps.pps_list[pps_id] != s->pps) {
+      |                                         ~  ^
+libavcodec/hevc/hevcdec.c:787:70: error: no member named 'pps' in 'struct HEVCLayerContext'; did you mean 'sps'?
+  787 |     if (!sh->first_slice_in_pic_flag && s->ps.pps_list[pps_id] != s->pps) {
+      |                                                                      ^~~
+      |                                                                      sps
+libavcodec/hevc/hevcdec.h:458:29: note: 'sps' declared here
+  458 |     const HEVCSPS          *sps; // RefStruct reference
+      |                             ^
+libavcodec/hevc/hevcdec.c:788:19: error: no member named 'avctx' in 'struct HEVCLayerContext'
+  788 |         av_log(s->avctx, AV_LOG_ERROR, "PPS changed between slices.\n");
+      |                ~  ^
+libavcodec/hevc/hevcdec.c:793:14: error: no member named 'ps' in 'struct HEVCLayerContext'
+  793 |     pps = s->ps.pps_list[pps_id];
+      |           ~  ^
+libavcodec/hevc/hevcdec.c:796:35: error: no member named 'nuh_layer_id' in 'struct HEVCLayerContext'
+  796 |     layer_idx = vps->layer_idx[s->nuh_layer_id];
+      |                                ~  ^
+libavcodec/hevc/hevcdec.c:798:12: error: no member named 'nal_unit_type' in 'struct HEVCLayerContext'
+  798 |     if (s->nal_unit_type == HEVC_NAL_CRA_NUT && s->last_eos == 1)
+      |         ~  ^
+libavcodec/hevc/hevcdec.c:798:52: error: no member named 'last_eos' in 'struct HEVCLayerContext'
+  798 |     if (s->nal_unit_type == HEVC_NAL_CRA_NUT && s->last_eos == 1)
+      |                                                 ~  ^
+libavcodec/hevc/hevcdec.c:807:53: error: no member named 'slice_initialized' in 'struct HEVCLayerContext'
+  807 |         if (sh->dependent_slice_segment_flag && !s->slice_initialized) {
+      |                                                  ~  ^
+libavcodec/hevc/hevcdec.c:808:23: error: no member named 'avctx' in 'struct HEVCLayerContext'
+  808 |             av_log(s->avctx, AV_LOG_ERROR, "Independent slice segment missing.\n");
+      |                    ~  ^
+libavcodec/hevc/hevcdec.c:816:23: error: no member named 'avctx' in 'struct HEVCLayerContext'
+  816 |             av_log(s->avctx, AV_LOG_ERROR,
+      |                    ~  ^
+libavcodec/hevc/hevcdec.c:830:19: error: no member named 'avctx' in 'struct HEVCLayerContext'
+  830 |         av_log(s->avctx, AV_LOG_ERROR,
+      |                ~  ^
+libavcodec/hevc/hevcdec.c:843:23: error: no member named 'avctx' in 'struct HEVCLayerContext'
+  843 |             av_log(s->avctx, AV_LOG_ERROR, "Unknown slice type: %d.\n",
+      |                    ~  ^
+libavcodec/hevc/hevcdec.c:847:13: error: no member named 'nal_unit_type' in 'struct HEVCLayerContext'
+  847 |         if (IS_IRAP(s) && sh->slice_type != HEVC_SLICE_I &&
+      |             ^~~~~~~~~~
+libavcodec/hevc/hevcdec.h:79:26: note: expanded from macro 'IS_IRAP'
+   79 | #define IS_IRAP(s) ((s)->nal_unit_type >= HEVC_NAL_BLA_W_LP && (s)->nal_unit_type <= HEVC_NAL_RSV_IRAP_VCL23)
+      |                     ~~~  ^
+libavcodec/hevc/hevcdec.c:847:13: error: no member named 'nal_unit_type' in 'struct HEVCLayerContext'
+  847 |         if (IS_IRAP(s) && sh->slice_type != HEVC_SLICE_I &&
+      |             ^~~~~~~~~~
+libavcodec/hevc/hevcdec.h:79:69: note: expanded from macro 'IS_IRAP'
+   79 | #define IS_IRAP(s) ((s)->nal_unit_type >= HEVC_NAL_BLA_W_LP && (s)->nal_unit_type <= HEVC_NAL_RSV_IRAP_VCL23)
+      |                                                                ~~~  ^
+libavcodec/hevc/hevcdec.c:849:16: error: no member named 'nuh_layer_id' in 'struct HEVCLayerContext'
+  849 |             s->nuh_layer_id == 0) {
+      |             ~  ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make: *** [libavcodec/hevc/hevcdec.o] Error 1

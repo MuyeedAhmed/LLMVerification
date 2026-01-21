@@ -1,0 +1,21 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	fftools/ffmpeg_enc.o
+fftools/ffmpeg_enc.c:168:12: error: static declaration of 'enc_open' follows non-static declaration
+  168 | static int enc_open(void *opaque, const AVFrame *frame)
+      |            ^
+fftools/ffmpeg.h:768:5: note: previous declaration is here
+  768 | int enc_open(void *opaque, const AVFrame *frame);
+      |     ^
+fftools/ffmpeg_enc.c:250:31: warning: incompatible pointer types initializing 'AVPacketSideData *' (aka 'struct AVPacketSideData *') with an expression of type 'AVFrameSideData *' (aka 'struct AVFrameSideData *') [-Wincompatible-pointer-types]
+  250 |             AVPacketSideData *sd = frame->side_data[i];
+      |                               ^    ~~~~~~~~~~~~~~~~~~~
+1 warning and 1 error generated.
+make: *** [fftools/ffmpeg_enc.o] Error 1
