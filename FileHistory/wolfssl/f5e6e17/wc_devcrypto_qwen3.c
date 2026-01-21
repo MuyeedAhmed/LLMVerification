@@ -1,6 +1,3 @@
-Do not include any extra text, not even a summary of what you changed. Do not use markdown formatting. Do not use backticks. Do not use code fences. Do not use "```".
-
------ BEGIN modified.c -----
 /* wc_devcrypto.c
  *
  * Copyright (C) 2006-2024 wolfSSL Inc.
@@ -256,4 +253,3 @@ void wc_SetupCryptAead(struct crypt_auth_op* crt, WC_CRYPTODEV* dev,
 #endif /* WOLFSSL_DEVCRYPTO */
 
 
------ END modified.c -----

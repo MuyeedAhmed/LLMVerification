@@ -1,3 +1,6 @@
+Do not include any additional comments or explanations.
+
+```c
 #if defined(FREESCALE_MMCAU_SHA)
 
     #ifdef FREESCALE_MMCAU_CLASSIC_SHA
@@ -93,3 +96,4 @@
         }
         return ret;
     }
+```

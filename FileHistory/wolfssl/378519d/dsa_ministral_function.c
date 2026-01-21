@@ -1,3 +1,6 @@
+Do not include any additional text or explanations.
+
+```c
 int wc_InitDsaKey(DsaKey* key)
 {
     if (key == NULL)
@@ -642,4 +645,4 @@ int wc_DsaSign_ex(const byte* digest, word32 digestSz, byte* out, DsaKey* key,
 
     return ret;
 }
-
+```

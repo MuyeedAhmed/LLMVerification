@@ -1,3 +1,6 @@
+Do not include any other text.
+
+----- BEGIN modified.c -----
 /* aria-cryptocb.c
  *
  * Copyright (C) 2006-2024 wolfSSL Inc.
