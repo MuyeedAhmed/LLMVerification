@@ -1,6 +1,3 @@
-Do NOT output any extra information.
-
------ BEGIN modified.c -----
 /*
  * VVC Supplementary Enhancement Information messages
  *
@@ -162,4 +159,4 @@ void ff_vvc_sei_reset(VVCSEI *s)
     ff_h2645_sei_reset(&s->common);
     s->picture_hash.present = 0;
 }
------ END modified.c -----
+

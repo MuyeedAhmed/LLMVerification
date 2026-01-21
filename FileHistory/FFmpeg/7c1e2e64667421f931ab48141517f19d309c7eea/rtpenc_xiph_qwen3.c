@@ -1,6 +1,3 @@
-Do NOT output any extra information.
-
-```c
 /*
  * RTP packetization for Xiph audio and video
  * Copyright (c) 2010 Josh Allmann
@@ -128,4 +125,3 @@ void ff_rtp_send_xiph(AVFormatContext *s1, const uint8_t *buff, int size)
         frag = size <= max_pkt_size ? 3 : 2;
     }
 }
-```

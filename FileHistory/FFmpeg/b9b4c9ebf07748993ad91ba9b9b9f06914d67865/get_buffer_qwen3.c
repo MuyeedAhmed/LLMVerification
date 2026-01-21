@@ -1,5 +1,3 @@
-Do NOT include anything else.
------ BEGIN modified.c -----
 /*
  * The default get_buffer2() implementation
  *
@@ -288,4 +286,3 @@ int avcodec_default_get_buffer2(AVCodecContext *avctx, AVFrame *frame, int flags
         return -1;
     }
 }
------ END modified.c -----

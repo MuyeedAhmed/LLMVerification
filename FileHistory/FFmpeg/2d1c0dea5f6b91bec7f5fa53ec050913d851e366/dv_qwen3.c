@@ -1,6 +1,3 @@
-Do NOT output any extra information.
-
------ BEGIN modified.c -----
 /*
  * General DV muxer/demuxer
  * Copyright (c) 2003 Roman Shaposhnik
@@ -543,4 +540,3 @@ AVInputFormat ff_dv_demuxer = {
     .extensions = "dv,dif",
 };
 #endif
------ END modified.c -----

@@ -1,6 +1,3 @@
-Do NOT return any extra text.
-
------ BEGIN modified.c -----
 /*
  * Microsoft RTP/ASF support.
  * Copyright (c) 2008 Ronald S. Bultje
@@ -295,4 +292,3 @@ RTPDynamicProtocolHandler ff_ms_rtp_ ## n ## _handler = { \
 
 RTP_ASF_HANDLER(asf_pfv, "x-asf-pf",  AVMEDIA_TYPE_VIDEO);
 RTP_ASF_HANDLER(asf_pfa, "x-asf-pf",  AVMEDIA_TYPE_AUDIO);
------ END modified.c -----

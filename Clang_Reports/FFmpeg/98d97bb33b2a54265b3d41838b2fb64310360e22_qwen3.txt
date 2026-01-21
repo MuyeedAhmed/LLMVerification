@@ -1,0 +1,84 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/rtmpproto.o
+libavformat/rtmpproto.c:3054:1: error: use of undeclared identifier 'rtmp_write'
+ 3054 | RTMP_PROTOCOL(rtmp,   RTMP)
+      | ^
+libavformat/rtmpproto.c:3052:5: note: expanded from macro 'RTMP_PROTOCOL'
+ 3052 |     RTMP_PROTOCOL_3(flavor, CONFIG_ ## uppercase ## _PROTOCOL)
+      |     ^
+libavformat/rtmpproto.c:3050:5: note: expanded from macro 'RTMP_PROTOCOL_3'
+ 3050 |     RTMP_PROTOCOL_2(flavor, config)
+      |     ^
+libavformat/rtmpproto.c:3048:5: note: expanded from macro 'RTMP_PROTOCOL_2'
+ 3048 |     RTMP_PROTOCOL_ ## enabled(flavor)
+      |     ^
+<scratch space>:110:1: note: expanded from here
+  110 | RTMP_PROTOCOL_1
+      | ^
+libavformat/rtmpproto.c:3041:23: note: expanded from macro 'RTMP_PROTOCOL_1'
+ 3041 |     .url_write      = rtmp_write,                \
+      |                       ^
+libavformat/rtmpproto.c:3056:1: error: use of undeclared identifier 'rtmp_write'
+ 3056 | RTMP_PROTOCOL(rtmps,  RTMPS)
+      | ^
+libavformat/rtmpproto.c:3052:5: note: expanded from macro 'RTMP_PROTOCOL'
+ 3052 |     RTMP_PROTOCOL_3(flavor, CONFIG_ ## uppercase ## _PROTOCOL)
+      |     ^
+libavformat/rtmpproto.c:3050:5: note: expanded from macro 'RTMP_PROTOCOL_3'
+ 3050 |     RTMP_PROTOCOL_2(flavor, config)
+      |     ^
+libavformat/rtmpproto.c:3048:5: note: expanded from macro 'RTMP_PROTOCOL_2'
+ 3048 |     RTMP_PROTOCOL_ ## enabled(flavor)
+      |     ^
+<scratch space>:122:1: note: expanded from here
+  122 | RTMP_PROTOCOL_1
+      | ^
+libavformat/rtmpproto.c:3041:23: note: expanded from macro 'RTMP_PROTOCOL_1'
+ 3041 |     .url_write      = rtmp_write,                \
+      |                       ^
+libavformat/rtmpproto.c:3057:1: error: use of undeclared identifier 'rtmp_write'
+ 3057 | RTMP_PROTOCOL(rtmpt,  RTMPT)
+      | ^
+libavformat/rtmpproto.c:3052:5: note: expanded from macro 'RTMP_PROTOCOL'
+ 3052 |     RTMP_PROTOCOL_3(flavor, CONFIG_ ## uppercase ## _PROTOCOL)
+      |     ^
+libavformat/rtmpproto.c:3050:5: note: expanded from macro 'RTMP_PROTOCOL_3'
+ 3050 |     RTMP_PROTOCOL_2(flavor, config)
+      |     ^
+libavformat/rtmpproto.c:3048:5: note: expanded from macro 'RTMP_PROTOCOL_2'
+ 3048 |     RTMP_PROTOCOL_ ## enabled(flavor)
+      |     ^
+<scratch space>:131:1: note: expanded from here
+  131 | RTMP_PROTOCOL_1
+      | ^
+libavformat/rtmpproto.c:3041:23: note: expanded from macro 'RTMP_PROTOCOL_1'
+ 3041 |     .url_write      = rtmp_write,                \
+      |                       ^
+libavformat/rtmpproto.c:3059:1: error: use of undeclared identifier 'rtmp_write'
+ 3059 | RTMP_PROTOCOL(rtmpts, RTMPTS)
+      | ^
+libavformat/rtmpproto.c:3052:5: note: expanded from macro 'RTMP_PROTOCOL'
+ 3052 |     RTMP_PROTOCOL_3(flavor, CONFIG_ ## uppercase ## _PROTOCOL)
+      |     ^
+libavformat/rtmpproto.c:3050:5: note: expanded from macro 'RTMP_PROTOCOL_3'
+ 3050 |     RTMP_PROTOCOL_2(flavor, config)
+      |     ^
+libavformat/rtmpproto.c:3048:5: note: expanded from macro 'RTMP_PROTOCOL_2'
+ 3048 |     RTMP_PROTOCOL_ ## enabled(flavor)
+      |     ^
+<scratch space>:143:1: note: expanded from here
+  143 | RTMP_PROTOCOL_1
+      | ^
+libavformat/rtmpproto.c:3041:23: note: expanded from macro 'RTMP_PROTOCOL_1'
+ 3041 |     .url_write      = rtmp_write,                \
+      |                       ^
+4 errors generated.
+make: *** [libavformat/rtmpproto.o] Error 1

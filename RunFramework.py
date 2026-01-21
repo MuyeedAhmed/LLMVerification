@@ -4,7 +4,7 @@ import os
 import pandas as pd
 
 
-from LLM import RunLLM
+# from LLM import RunLLM
 from MergeOutput import MergeLLMOutput
 from RunClang import RunClang
 
@@ -89,22 +89,26 @@ if __name__ == "__main__":
     github_link = "https://github.com/FFmpeg/FFmpeg.git"
     project = "FFmpeg"
 
-    GetGitInfo(github_link, project, start_date="2024-01-01", end_date="2024-04-30", commit_count=5000)
-
+    # GetGitInfo(github_link, project, start_date="2024-01-01", end_date="2024-04-30", commit_count=5000)
     AllCommits = pd.read_excel(f"ExcelFiles/{project}.xlsx", sheet_name="Commits")
     for commit_hash in AllCommits["Commit Hash"].values:
         commit_df = AllCommits[AllCommits["Commit Hash"] == commit_hash]
         message = commit_df["Commit Message"].values[0]
         change_file_dir = commit_df["Changed File"].values[0]
         changed_function = commit_df["Changed Functions"].values[0]
-        print(f"Processing commit {commit_hash} with message: {message}")
+        if len(changed_function.split(",")) != 1:
+            print(f"Skipping commit {commit_hash} due to multiple changed functions.")
+            continue
+        # print(f"Processing commit {commit_hash} with message: {message}")
+        print(f"Processing commit {commit_hash}")
 
         llm_dest_filename = change_file_dir.split("/")[-1].split(".")[0]
-        llm_dest = os.path.join(f"FileHistory/{project}", commit_hash, f"{llm_dest_filename}_llm_function.c")
+        llm_dest = os.path.join(f"FileHistory/{project}", commit_hash, f"{llm_dest_filename}_ministral.c")
         if not os.path.exists(llm_dest):
-            RunLLM(project, commit_hash, message, changed_function, change_file_dir)
-            MergeLLMOutput(project, commit_hash, change_file_dir, changed_function)
+            # RunLLM(project, commit_hash, message, changed_function, change_file_dir)
+            MergeLLMOutput(project, commit_hash, change_file_dir, changed_function, llm="ministral")
         else:
             print(f"LLM output already exists for commit {commit_hash}, skipping LLM run.")
 
-        RunClang(project, commit_hash, change_file_dir)
+        RunClang(project, commit_hash, change_file_dir, llm="ministral")
+

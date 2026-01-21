@@ -1,0 +1,19 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/ffv1dec.o
+clang output:
+libavcodec/ffv1dec.c:311:13: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  311 |         int current_mul = 1;
+      |             ^
+1 warning generated.
+libavcodec/ffv1dec.c:290:15: warning: Loss of precision in implicit conversion [alpha.core.Conversion]
+  290 |     int end = f->avctx->bits_per_raw_sample == 32 ? 0xFFFFFFFF : 0xFFFF;
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.

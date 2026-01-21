@@ -1,0 +1,19 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/get_buffer.o
+libavcodec/get_buffer.c:145:98: error: use of undeclared identifier 'av_buffer_mallocz'; did you mean 'av_buffer_allocz'?
+  145 |         pool->pools[0] = av_buffer_pool_init(pool->linesize[0], CONFIG_MEMORY_POISONING ? NULL : av_buffer_mallocz);
+      |                                                                                                  ^~~~~~~~~~~~~~~~~
+      |                                                                                                  av_buffer_allocz
+./libavutil/buffer.h:108:14: note: 'av_buffer_allocz' declared here
+  108 | AVBufferRef *av_buffer_allocz(size_t size);
+      |              ^
+1 error generated.
+make: *** [libavcodec/get_buffer.o] Error 1

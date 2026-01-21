@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavformat/rtpdec_asf.o
+clang output:
+warning: Path diagnostic report is not generated. Current output format does not support diagnostics that cross file boundaries. Refer to --analyzer-output for valid output formats
+libavformat/rtpdec_asf.c:206:44: warning: The left operand of '!=' is a garbage value [core.UndefinedBinaryOperatorResult]
+  206 |                 if (asf->pktbuf && len_off != avio_tell(asf->pktbuf)) {
+      |                                    ~~~~~~~ ^
+libavformat/rtpdec_asf.c:209:21: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  209 |                 if (!len_off && !asf->pktbuf &&
+      |                     ^~~~~~~~
+libavformat/rtpdec_asf.c:222:41: warning: The right operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+  222 |                 int cur_len = start_off + len_off - off;
+      |                                         ^ ~~~~~~~
+3 warnings generated.

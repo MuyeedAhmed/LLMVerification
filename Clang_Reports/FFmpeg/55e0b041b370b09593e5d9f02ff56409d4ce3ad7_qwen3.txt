@@ -1,0 +1,18 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavfilter/vf_mix.o
+clang output:
+libavfilter/vf_mix.c:411:9: warning: unused variable 'i' [-Wunused-variable]
+  411 |     int i;
+      |         ^
+libavfilter/vf_mix.c:404:12: warning: unused function 'tmix_filter_frame' [-Wunused-function]
+  404 | static int tmix_filter_frame(AVFilterLink *inlink, AVFrame *in)
+      |            ^~~~~~~~~~~~~~~~~
+2 warnings generated.

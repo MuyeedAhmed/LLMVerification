@@ -1,0 +1,19 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/refs.o
+libavcodec/vvc/refs.c:77:57: error: use of undeclared identifier 'AV_PKT_DATA_FILM_GRAIN'; did you mean 'AV_PKT_DATA_REPLAYGAIN'?
+   77 |                 if (frame->frame->side_data[i]->type == AV_PKT_DATA_FILM_GRAIN) {
+      |                                                         ^~~~~~~~~~~~~~~~~~~~~~
+      |                                                         AV_PKT_DATA_REPLAYGAIN
+./libavcodec/packet.h:96:5: note: 'AV_PKT_DATA_REPLAYGAIN' declared here
+   96 |     AV_PKT_DATA_REPLAYGAIN,
+      |     ^
+1 error generated.
+make: *** [libavcodec/vvc/refs.o] Error 1

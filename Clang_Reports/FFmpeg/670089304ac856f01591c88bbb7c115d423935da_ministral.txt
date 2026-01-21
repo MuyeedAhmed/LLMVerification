@@ -1,0 +1,22 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/filter.o
+libavcodec/vvc/filter.c:707:1: error: unknown type name 'max_filter_length_chroma'
+  707 | max_filter_length_chroma
+      | ^
+libavcodec/vvc/filter.c:715:9: error: call to undeclared function 'max_filter_length_chroma'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  715 |         max_filter_length_chroma(fc, qx, qy, vertical, horizontal_ctu_edge, bs, max_len_p, max_len_q);
+      |         ^
+libavcodec/vvc/filter.c:715:9: note: did you mean 'max_filter_length_luma'?
+libavcodec/vvc/filter.c:699:13: note: 'max_filter_length_luma' declared here
+  699 | static void max_filter_length_luma(const VVCFrameContext *fc, const int qx, const int qy,
+      |             ^
+2 errors generated.
+make: *** [libavcodec/vvc/filter.o] Error 1

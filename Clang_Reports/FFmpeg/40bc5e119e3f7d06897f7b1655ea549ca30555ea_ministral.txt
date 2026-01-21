@@ -1,0 +1,44 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/sei.o
+libavcodec/vvc/sei.c:79:12: error: no member named 'clockwise_rotation_angle' in 'struct H2645SEIDisplayOrientation'
+   79 |         h->clockwise_rotation_angle = s->display_orientation_angle;
+      |         ~  ^
+libavcodec/vvc/sei.c:79:42: error: no member named 'display_orientation_angle' in 'struct SEIRawDisplayOrientation'; did you mean 'display_orientation_cancel_flag'?
+   79 |         h->clockwise_rotation_angle = s->display_orientation_angle;
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                          display_orientation_cancel_flag
+./libavcodec/cbs_sei.h:122:18: note: 'display_orientation_cancel_flag' declared here
+  122 |     uint8_t      display_orientation_cancel_flag;
+      |                  ^
+libavcodec/vvc/sei.c:80:23: error: no member named 'display_orientation_hflip' in 'struct SEIRawDisplayOrientation'
+   80 |         h->hflip = s->display_orientation_hflip;
+      |                    ~  ^
+libavcodec/vvc/sei.c:81:23: error: no member named 'display_orientation_vflip' in 'struct SEIRawDisplayOrientation'
+   81 |         h->vflip = s->display_orientation_vflip;
+      |                    ~  ^
+libavcodec/vvc/sei.c:110:65: error: indirection requires pointer operand ('H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') invalid)
+  110 |             c->display_orientation = av_refstruct_allocz(sizeof(*c->display_orientation));
+      |                                                                 ^~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/sei.c:110:36: error: assigning to 'H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') from incompatible type 'void *'
+  110 |             c->display_orientation = av_refstruct_allocz(sizeof(*c->display_orientation));
+      |                                    ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/sei.c:111:17: error: invalid argument type 'H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') to unary expression
+  111 |             if (!c->display_orientation)
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+libavcodec/vvc/sei.c:113:47: error: passing 'H2645SEIDisplayOrientation' (aka 'struct H2645SEIDisplayOrientation') to parameter of incompatible type 'H2645SEIDisplayOrientation *' (aka 'struct H2645SEIDisplayOrientation *'); take the address with &
+  113 |             return decode_display_orientation(c->display_orientation, payload);
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~
+      |                                               &
+libavcodec/vvc/sei.c:75:67: note: passing argument to parameter 'h' here
+   75 | static int decode_display_orientation(H2645SEIDisplayOrientation *h, const SEIRawDisplayOrientation *s)
+      |                                                                   ^
+8 errors generated.
+make: *** [libavcodec/vvc/sei.o] Error 1

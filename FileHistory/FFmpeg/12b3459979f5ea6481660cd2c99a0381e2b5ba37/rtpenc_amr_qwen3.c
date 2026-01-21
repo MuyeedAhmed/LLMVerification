@@ -1,6 +1,3 @@
-Do NOT provide any explanation or any other text.
-
------ BEGIN modified.c -----
 /*
  * RTP packetization for AMR audio
  * Copyright (c) 2007 Luca Abeni
@@ -66,4 +63,3 @@ void ff_rtp_send_amr(AVFormatContext *s1, const uint8_t *buff, int size)
     memcpy(s->buf_ptr, buff, size);
     s->buf_ptr += size;
 }
------ END modified.c -----

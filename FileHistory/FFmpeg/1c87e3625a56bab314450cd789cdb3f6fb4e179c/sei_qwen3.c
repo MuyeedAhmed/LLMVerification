@@ -1,6 +1,3 @@
-Do not provide any explanations or any other text.
-
------ BEGIN modified.c -----
 /*
  * VVC Supplementary Enhancement Information messages
  *
@@ -66,4 +63,3 @@ void ff_vvc_sei_reset(VVCSEI *s)
 {
     ff_h2645_sei_reset(&s->common);
 }
------ END modified.c -----

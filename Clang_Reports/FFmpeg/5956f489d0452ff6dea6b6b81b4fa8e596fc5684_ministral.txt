@@ -1,0 +1,57 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavformat/rtpdec_hevc.o
+libavformat/rtpdec_hevc.c:25:7: error: expected ';' after top level declarator
+   25 |  * Add asterisks at the start of each long comment line
+      |       ^
+      |       ;
+In file included from libavformat/rtpdec_hevc.c:27:
+In file included from ./libavutil/base64.h:24:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h:56:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h:29:9: error: unknown type name 'int8_t'; did you mean 'uint8_t'?
+   29 | typedef int8_t           int_least8_t;
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:31:23: note: 'uint8_t' declared here
+   31 | typedef unsigned char uint8_t;
+      |                       ^
+In file included from libavformat/rtpdec_hevc.c:27:
+In file included from ./libavutil/base64.h:24:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h:56:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h:40:9: error: unknown type name 'int8_t'; did you mean 'uint8_t'?
+   40 | typedef int8_t            int_fast8_t;
+      |         ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:31:23: note: 'uint8_t' declared here
+   31 | typedef unsigned char uint8_t;
+      |                       ^
+In file included from libavformat/rtpdec_hevc.c:29:
+In file included from libavformat/avformat.h:259:
+In file included from ./libavcodec/avcodec.h:37:
+./libavutil/frame.h:251:5: error: unknown type name 'int8_t'; did you mean 'uint8_t'?
+  251 |     int8_t *qscale_table;
+      |     ^~~~~~
+      |     uint8_t
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:31:23: note: 'uint8_t' declared here
+   31 | typedef unsigned char uint8_t;
+      |                       ^
+In file included from libavformat/rtpdec_hevc.c:29:
+In file included from libavformat/avformat.h:259:
+In file included from ./libavcodec/avcodec.h:37:
+./libavutil/frame.h:299:5: error: unknown type name 'int8_t'; did you mean 'uint8_t'?
+  299 |     int8_t *ref_index[2];
+      |     ^~~~~~
+      |     uint8_t
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:31:23: note: 'uint8_t' declared here
+   31 | typedef unsigned char uint8_t;
+      |                       ^
+In file included from libavformat/rtpdec_hevc.c:29:
+In file included from libavformat/avformat.h:263:
+In file included from libavformat/avio.h:31:
+./libavutil/common.h:116:34: error: unknown type name 'int8_t'; did you mean 'uint8_t'?
+  116 | static av_always_inline av_const int8_t av_clip_int8_c(int a)
+      |                                  ^~~~~~
+      |                                  uint8_t
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:31:23: note: 'uint8_t' declared here
+   31 | typedef unsigned char uint8_t;
+      |                       ^
+6 errors generated.
+make: *** [libavformat/rtpdec_hevc.o] Error 1

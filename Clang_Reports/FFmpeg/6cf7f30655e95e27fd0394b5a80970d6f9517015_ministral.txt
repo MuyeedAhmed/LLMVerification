@@ -1,0 +1,8 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavformat/dashenc.o
+clang output:
+libavformat/dashenc.c:656:9: warning: Value stored to 'ret' is never read [deadcode.DeadStores]
+  656 |         ret = AVERROR(EINVAL);
+      |         ^     ~~~~~~~~~~~~~~~
+1 warning generated.

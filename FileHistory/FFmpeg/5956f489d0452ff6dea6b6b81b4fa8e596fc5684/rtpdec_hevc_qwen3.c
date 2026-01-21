@@ -1,6 +1,3 @@
-Do not provide any explanations or any other text.
-
------ BEGIN modified.c -----
 /*
  * RTP parser for HEVC/H.265 payload format (draft version 6)
  * Copyright (c) 2014 Thomas Volkert <thomas@homer-conferencing.com>
@@ -402,4 +399,3 @@ RTPDynamicProtocolHandler ff_hevc_dynamic_handler = {
     .parse_sdp_a_line = hevc_parse_sdp_line,
     .parse_packet     = hevc_handle_packet,
 };
------ END modified.c -----

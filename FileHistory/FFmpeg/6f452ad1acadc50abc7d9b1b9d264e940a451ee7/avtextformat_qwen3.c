@@ -1,11 +1,3 @@
-Do not provide any explanations or any other text.
-
------ BEGIN SOLUTION -----
-
------ END SOLUTION -----
-
-
-```c
 #include <limits.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -702,4 +694,3 @@ const AVTextFormatter *avtext_get_formatter_by_name(const char *name)
 
     return NULL;
 }
-```

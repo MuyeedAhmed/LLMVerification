@@ -1,6 +1,3 @@
-Do NOT include anything else.
-
------ BEGIN modified.c -----
 /*
  * RTP parser for loss tolerant payload format for MP3 audio (RFC 5219)
  * Copyright (c) 2015 Gilles Chanteperdrix <gch@xenomai.org>
@@ -201,4 +198,3 @@ RTPDynamicProtocolHandler ff_mpeg_audio_robust_dynamic_handler = {
     .close             = mpa_robust_close_context,
     .parse_packet      = mpa_robust_parse_packet,
 };
------ END modified.c -----

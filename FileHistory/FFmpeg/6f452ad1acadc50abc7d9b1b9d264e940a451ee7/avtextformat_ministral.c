@@ -1,5 +1,3 @@
-No explanation needed.
-```c
 #include <limits.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -662,4 +660,3 @@ fail:
     avtextwriter_context_close(&wctx);
     return ret;
 }
-```

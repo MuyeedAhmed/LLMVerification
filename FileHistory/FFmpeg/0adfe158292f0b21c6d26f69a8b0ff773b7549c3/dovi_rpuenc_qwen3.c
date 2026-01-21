@@ -1,6 +1,25 @@
-Do not provide any explanation or any other text.
+/*
+ * Dolby Vision RPU encoder
+ *
+ * Copyright (C) 2024 Niklas Haas
+ *
+ * This file is part of FFmpeg.
+ *
+ * FFmpeg is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * FFmpeg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with FFmpeg; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
 
-```c
 #include "libavutil/avassert.h"
 #include "libavutil/crc.h"
 #include "libavutil/mem.h"
@@ -33,7 +52,7 @@ static const struct {
     [13] = {7680*4320*120u, 7680, 240, 800},
 };
 
-static av_cold int dovi_configure_ext(DOVIContext *s, enum AVCodecID codec_id,
+static int dovi_configure_ext(DOVIContext *s, enum AVCodecID codec_id,
                               const AVDOVIMetadata *metadata,
                               enum AVDOVICompression compression,
                               int strict_std_compliance,
@@ -771,4 +790,154 @@ int ff_dovi_rpu_generate(DOVIContext *s, const AVDOVIMetadata *metadata,
 
         if (mapping->nlq_method_idc != AV_DOVI_NLQ_NONE) {
             for (int c = 0; c < 3; c++) {
-                const AVDOVINLQParams *nlq = &mapping->
+                const AVDOVINLQParams *nlq = &mapping->nlq[c];
+                put_bits(pb, hdr->el_bit_depth, nlq->nlq_offset);
+                put_ue_coef(pb, hdr, nlq->vdr_in_max);
+                switch (mapping->nlq_method_idc) {
+                case AV_DOVI_NLQ_LINEAR_DZ:
+                    put_ue_coef(pb, hdr, nlq->linear_deadzone_slope);
+                    put_ue_coef(pb, hdr, nlq->linear_deadzone_threshold);
+                    break;
+                }
+            }
+        }
+
+        memcpy(s->vdr[vdr_rpu_id], mapping, sizeof(*mapping));
+    }
+
+    if (vdr_dm_metadata_present) {
+        DOVIExt *ext = s->ext_blocks;
+        const int denom = profile == 4 ? (1 << 30) : (1 << 28);
+        set_ue_golomb(pb, color->dm_metadata_id); /* affected_dm_id */
+        set_ue_golomb(pb, color->dm_metadata_id); /* current_dm_id */
+        set_ue_golomb(pb, color->scene_refresh_flag);
+        if (!dm_compression) {
+            for (int i = 0; i < 9; i++)
+                put_sbits(pb, 16, av_q2den(color->ycc_to_rgb_matrix[i], 1 << 13));
+            for (int i = 0; i < 3; i++)
+                put_bits32(pb, av_q2den(color->ycc_to_rgb_offset[i], denom));
+            for (int i = 0; i < 9; i++)
+                put_sbits(pb, 16, av_q2den(color->rgb_to_lms_matrix[i], 1 << 14));
+            put_bits(pb, 16, color->signal_eotf);
+            put_bits(pb, 16, color->signal_eotf_param0);
+            put_bits(pb, 16, color->signal_eotf_param1);
+            put_bits32(pb, color->signal_eotf_param2);
+            put_bits(pb, 5, color->signal_bit_depth);
+            put_bits(pb, 2, color->signal_color_space);
+            put_bits(pb, 2, color->signal_chroma_format);
+            put_bits(pb, 2, color->signal_full_range_flag);
+            put_bits(pb, 12, color->source_min_pq);
+            put_bits(pb, 12, color->source_max_pq);
+            put_bits(pb, 10, color->source_diagonal);
+        }
+
+        memcpy(s->dm, color, sizeof(*color));
+        s->color = s->dm;
+
+        /* Extension blocks */
+        set_ue_golomb(pb, num_ext_blocks_v1);
+        align_put_bits(pb);
+        for (int i = 0; i < metadata->num_ext_blocks; i++) {
+            const AVDOVIDmData *dm = av_dovi_get_ext(metadata, i);
+            if (dm_compression && ff_dovi_rpu_extension_is_static(dm->level))
+                continue;
+            generate_ext_v1(pb, dm);
+        }
+
+        if (num_ext_blocks_v2) {
+            set_ue_golomb(pb, num_ext_blocks_v2);
+            align_put_bits(pb);
+            for (int i = 0; i < metadata->num_ext_blocks; i++) {
+                const AVDOVIDmData *dm = av_dovi_get_ext(metadata, i);
+                if (dm_compression && ff_dovi_rpu_extension_is_static(dm->level))
+                    continue;
+                generate_ext_v2(pb, av_dovi_get_ext(metadata, i));
+            }
+        }
+
+        if (ext) {
+            size_t ext_sz = FFMIN(sizeof(AVDOVIDmData), metadata->ext_block_size);
+            ext->num_dynamic = 0;
+            if (!dm_compression)
+                ext->num_static = 0;
+            for (int i = 0; i < metadata->num_ext_blocks; i++) {
+                const AVDOVIDmData *dm = av_dovi_get_ext(metadata, i);
+                if (!ff_dovi_rpu_extension_is_static(dm->level))
+                    memcpy(&ext->dm_dynamic[ext->num_dynamic++], dm, ext_sz);
+                else if (!dm_compression)
+                    memcpy(&ext->dm_static[ext->num_static++], dm, ext_sz);
+            }
+        }
+    } else {
+        s->color = &ff_dovi_color_default;
+        av_refstruct_unref(&s->ext_blocks);
+    }
+
+    flush_put_bits(pb);
+    crc = av_bswap32(av_crc(av_crc_get_table(AV_CRC_32_IEEE), -1,
+                            s->rpu_buf, put_bytes_output(pb)));
+    put_bits32(pb, crc);
+    put_bits(pb, 8, 0x80); /* terminator */
+    flush_put_bits(pb);
+
+    rpu_size = put_bytes_output(pb);
+    if (flags & FF_DOVI_WRAP_T35) {
+        *out_rpu = av_malloc(rpu_size + 15);
+        if (!*out_rpu)
+            return AVERROR(ENOMEM);
+        init_put_bits(pb, *out_rpu, rpu_size + 15);
+        put_bits(pb,  8, ITU_T_T35_COUNTRY_CODE_US);
+        put_bits(pb, 16, ITU_T_T35_PROVIDER_CODE_DOLBY);
+        put_bits32(pb, 0x800); /* provider_oriented_code */
+        put_bits(pb, 27, 0x01be6841u); /* fixed EMDF header, see above */
+        if (rpu_size > 0xFF) {
+            av_assert2(rpu_size <= 0x10000);
+            put_bits(pb, 8, (rpu_size >> 8) - 1);
+            put_bits(pb, 1, 1); /* read_more */
+            put_bits(pb, 8, rpu_size & 0xFF);
+            put_bits(pb, 1, 0);
+        } else {
+            put_bits(pb, 8, rpu_size);
+            put_bits(pb, 1, 0);
+        }
+        ff_copy_bits(pb, s->rpu_buf, rpu_size * 8);
+        put_bits(pb, 17, 0x400); /* emdf payload id + emdf_protection */
+
+        pad = pb->bit_left & 7;
+        put_bits(pb, pad, (1 << pad) - 1); /* pad to next byte with 1 bits */
+        flush_put_bits(pb);
+        *out_size = put_bytes_output(pb);
+        return 0;
+    } else if (flags & FF_DOVI_WRAP_NAL) {
+        *out_rpu = dst = av_malloc(4 + rpu_size * 3 / 2); /* worst case */
+        if (!*out_rpu)
+            return AVERROR(ENOMEM);
+        *dst++ = 25; /* NAL prefix */
+        zero_run = 0;
+        for (int i = 0; i < rpu_size; i++) {
+            if (zero_run < 2) {
+                if (s->rpu_buf[i] == 0) {
+                    zero_run++;
+                } else {
+                    zero_run = 0;
+                }
+            } else {
+                if ((s->rpu_buf[i] & ~3) == 0) {
+                    /* emulation prevention */
+                    *dst++ = 3;
+                }
+                zero_run = s->rpu_buf[i] == 0;
+            }
+            *dst++ = s->rpu_buf[i];
+        }
+        *out_size = dst - *out_rpu;
+        return 0;
+    } else {
+        /* Return intermediate buffer directly */
+        *out_rpu = s->rpu_buf;
+        *out_size = rpu_size;
+        s->rpu_buf = NULL;
+        s->rpu_buf_sz = 0;
+        return 0;
+    }
+}

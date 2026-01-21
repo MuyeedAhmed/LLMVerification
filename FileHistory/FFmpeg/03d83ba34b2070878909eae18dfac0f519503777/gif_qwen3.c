@@ -1,6 +1,3 @@
-Do NOT return any extra information. Do NOT return any explanations. Do NOT return any comments. Do NOT return the original code. Only return the modified C code. Do NOT return any text outside the code block.
-
------ BEGIN modified.c -----
 /*
  * Copyright (c) 2000 Fabrice Bellard
  * Copyright (c) 2002 Francois Revol
@@ -360,4 +357,3 @@ AVCodec ff_gif_encoder = {
     },
     .priv_class     = &gif_class,
 };
------ END modified.c -----

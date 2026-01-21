@@ -1,0 +1,22 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/sei.o
+libavcodec/vvc/sei.c:14:14: error: use of undeclared identifier 'VVC_SEI_TYPE_FILM_GRAIN_CHARACTERISTICS'; did you mean 'SEI_TYPE_FILM_GRAIN_CHARACTERISTICS'?
+   14 |         case VVC_SEI_TYPE_FILM_GRAIN_CHARACTERISTICS:
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |              SEI_TYPE_FILM_GRAIN_CHARACTERISTICS
+./libavcodec/sei.h:49:5: note: 'SEI_TYPE_FILM_GRAIN_CHARACTERISTICS' declared here
+   49 |     SEI_TYPE_FILM_GRAIN_CHARACTERISTICS                  = 19,
+      |     ^
+libavcodec/vvc/sei.c:15:17: error: call to undeclared function 'ff_vvc_sei_decode_film_grain_characteristics'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   15 |             if (ff_vvc_sei_decode_film_grain_characteristics(s, message, fc) < 0)
+      |                 ^
+2 errors generated.
+make: *** [libavcodec/vvc/sei.o] Error 1

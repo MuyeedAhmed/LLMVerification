@@ -1,5 +1,3 @@
-Do not output any extra information.
------ BEGIN solution.c -----
 /*
  * Indeo Video Interactive v5 compatible decoder
  * Copyright (c) 2009 Maxim Poliakovski
@@ -639,4 +637,3 @@ AVCodec ff_indeo5_decoder = {
     .decode         = ff_ivi_decode_frame,
     .long_name      = NULL_IF_CONFIG_SMALL("Intel Indeo Video Interactive 5"),
 };
------ END solution.c -----

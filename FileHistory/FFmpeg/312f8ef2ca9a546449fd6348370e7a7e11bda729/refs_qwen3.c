@@ -1,6 +1,3 @@
-Do not provide any explanations. Do not repeat the original code unless it is required.
-
------ BEGIN modified.c -----
 /*
  * VVC reference management
  *
@@ -681,5 +678,3 @@ void ff_vvc_add_progress_listener(VVCFrame *frame, VVCProgressListener *l)
         ff_mutex_unlock(&p->lock);
     }
 }
-
------ END modified.c -----

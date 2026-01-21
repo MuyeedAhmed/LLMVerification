@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/iamf_parse.o
+clang output:
+libavformat/iamf_parse.c:736:9: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  736 |     int has_mix_gain = 0, has_demixing = 0, has_recon_gain = 0;
+      |         ^
+1 warning generated.

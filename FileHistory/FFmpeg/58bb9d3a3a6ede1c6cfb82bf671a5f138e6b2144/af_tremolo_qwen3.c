@@ -1,6 +1,3 @@
-Do NOT return any extra information.
-
------ BEGIN modified.c -----
 /*
  * Copyright (c) 2015 Kyle Swanson <k@ylo.ph>.
  *
@@ -174,4 +171,3 @@ AVFilter ff_af_tremolo = {
     .inputs        = avfilter_af_tremolo_inputs,
     .outputs       = avfilter_af_tremolo_outputs,
 };
------ END modified.c -----

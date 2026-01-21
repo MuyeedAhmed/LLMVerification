@@ -1,6 +1,3 @@
-Do not provide any explanation or any other text.
-
------ BEGIN SOLUTION -----
 /*
  * WebP (.webp) image decoder
  * Copyright (c) 2013 Aneesh Dogra <aneesh@sugarlabs.org>
@@ -844,4 +841,638 @@ static void inv_predict_7(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
 {
     p[0] = p_l[0] + p_t[0] >> 1;
     p[1] = p_l[1] + p_t[1] >> 1;
-    p[2] = p_l[2] + p_t[
+    p[2] = p_l[2] + p_t[2] >> 1;
+    p[3] = p_l[3] + p_t[3] >> 1;
+}
+
+/* PRED_MODE_AVG_TL_T */
+static void inv_predict_8(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
+                          const uint8_t *p_t, const uint8_t *p_tr)
+{
+    p[0] = p_tl[0] + p_t[0] >> 1;
+    p[1] = p_tl[1] + p_t[1] >> 1;
+    p[2] = p_tl[2] + p_t[2] >> 1;
+    p[3] = p_tl[3] + p_t[3] >> 1;
+}
+
+/* PRED_MODE_AVG_T_TR */
+static void inv_predict_9(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
+                          const uint8_t *p_t, const uint8_t *p_tr)
+{
+    p[0] = p_t[0] + p_tr[0] >> 1;
+    p[1] = p_t[1] + p_tr[1] >> 1;
+    p[2] = p_t[2] + p_tr[2] >> 1;
+    p[3] = p_t[3] + p_tr[3] >> 1;
+}
+
+/* PRED_MODE_AVG_AVG_L_TL_AVG_T_TR */
+static void inv_predict_10(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
+                           const uint8_t *p_t, const uint8_t *p_tr)
+{
+    p[0] = (p_l[0] + p_tl[0] >> 1) + (p_t[0] + p_tr[0] >> 1) >> 1;
+    p[1] = (p_l[1] + p_tl[1] >> 1) + (p_t[1] + p_tr[1] >> 1) >> 1;
+    p[2] = (p_l[2] + p_tl[2] >> 1) + (p_t[2] + p_tr[2] >> 1) >> 1;
+    p[3] = (p_l[3] + p_tl[3] >> 1) + (p_t[3] + p_tr[3] >> 1) >> 1;
+}
+
+/* PRED_MODE_SELECT */
+static void inv_predict_11(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
+                           const uint8_t *p_t, const uint8_t *p_tr)
+{
+    int diff = (FFABS(p_l[0] - p_tl[0]) - FFABS(p_t[0] - p_tl[0])) +
+               (FFABS(p_l[1] - p_tl[1]) - FFABS(p_t[1] - p_tl[1])) +
+               (FFABS(p_l[2] - p_tl[2]) - FFABS(p_t[2] - p_tl[2])) +
+               (FFABS(p_l[3] - p_tl[3]) - FFABS(p_t[3] - p_tl[3]));
+    if (diff <= 0)
+        AV_COPY32(p, p_t);
+    else
+        AV_COPY32(p, p_l);
+}
+
+/* PRED_MODE_ADD_SUBTRACT_FULL */
+static void inv_predict_12(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
+                           const uint8_t *p_t, const uint8_t *p_tr)
+{
+    p[0] = av_clip_uint8(p_l[0] + p_t[0] - p_tl[0]);
+    p[1] = av_clip_uint8(p_l[1] + p_t[1] - p_tl[1]);
+    p[2] = av_clip_uint8(p_l[2] + p_t[2] - p_tl[2]);
+    p[3] = av_clip_uint8(p_l[3] + p_t[3] - p_tl[3]);
+}
+
+static av_always_inline uint8_t clamp_add_subtract_half(int a, int b, int c)
+{
+    int d = a + b >> 1;
+    return av_clip_uint8(d + (d - c) / 2);
+}
+
+/* PRED_MODE_ADD_SUBTRACT_HALF */
+static void inv_predict_13(uint8_t *p, const uint8_t *p_l, const uint8_t *p_tl,
+                           const uint8_t *p_t, const uint8_t *p_tr)
+{
+    p[0] = clamp_add_subtract_half(p_l[0], p_t[0], p_tl[0]);
+    p[1] = clamp_add_subtract_half(p_l[1], p_t[1], p_tl[1]);
+    p[2] = clamp_add_subtract_half(p_l[2], p_t[2], p_tl[2]);
+    p[3] = clamp_add_subtract_half(p_l[3], p_t[3], p_tl[3]);
+}
+
+typedef void (*inv_predict_func)(uint8_t *p, const uint8_t *p_l,
+                                 const uint8_t *p_tl, const uint8_t *p_t,
+                                 const uint8_t *p_tr);
+
+static const inv_predict_func inverse_predict[14] = {
+    inv_predict_0,  inv_predict_1,  inv_predict_2,  inv_predict_3,
+    inv_predict_4,  inv_predict_5,  inv_predict_6,  inv_predict_7,
+    inv_predict_8,  inv_predict_9,  inv_predict_10, inv_predict_11,
+    inv_predict_12, inv_predict_13,
+};
+
+static void inverse_prediction(AVFrame *frame, enum PredictionMode m, int x, int y)
+{
+    uint8_t *dec, *p_l, *p_tl, *p_t, *p_tr;
+    uint8_t p[4];
+
+    dec  = GET_PIXEL(frame, x,     y);
+    p_l  = GET_PIXEL(frame, x - 1, y);
+    p_tl = GET_PIXEL(frame, x - 1, y - 1);
+    p_t  = GET_PIXEL(frame, x,     y - 1);
+    if (x == frame->width - 1)
+        p_tr = GET_PIXEL(frame, 0, y);
+    else
+        p_tr = GET_PIXEL(frame, x + 1, y - 1);
+
+    inverse_predict[m](p, p_l, p_tl, p_t, p_tr);
+
+    dec[0] += p[0];
+    dec[1] += p[1];
+    dec[2] += p[2];
+    dec[3] += p[3];
+}
+
+static int apply_predictor_transform(WebPContext *s)
+{
+    ImageContext *img  = &s->image[IMAGE_ROLE_ARGB];
+    ImageContext *pimg = &s->image[IMAGE_ROLE_PREDICTOR];
+    int x, y;
+
+    for (y = 0; y < img->frame->height; y++) {
+        for (x = 0; x < img->frame->width; x++) {
+            int tx = x >> pimg->size_reduction;
+            int ty = y >> pimg->size_reduction;
+            enum PredictionMode m = GET_PIXEL_COMP(pimg->frame, tx, ty, 2);
+
+            if (x == 0) {
+                if (y == 0)
+                    m = PRED_MODE_BLACK;
+                else
+                    m = PRED_MODE_T;
+            } else if (y == 0)
+                m = PRED_MODE_L;
+
+            if (m > 13) {
+                av_log(s->avctx, AV_LOG_ERROR,
+                       "invalid predictor mode: %d\n", m);
+                return AVERROR_INVALIDDATA;
+            }
+            inverse_prediction(img->frame, m, x, y);
+        }
+    }
+    return 0;
+}
+
+static av_always_inline uint8_t color_transform_delta(uint8_t color_pred,
+                                                      uint8_t color)
+{
+    return (int)ff_u8_to_s8(color_pred) * ff_u8_to_s8(color) >> 5;
+}
+
+static int apply_color_transform(WebPContext *s)
+{
+    ImageContext *img, *cimg;
+    int x, y, cx, cy;
+    uint8_t *p, *cp;
+
+    img  = &s->image[IMAGE_ROLE_ARGB];
+    cimg = &s->image[IMAGE_ROLE_COLOR_TRANSFORM];
+
+    for (y = 0; y < img->frame->height; y++) {
+        for (x = 0; x < img->frame->width; x++) {
+            cx = x >> cimg->size_reduction;
+            cy = y >> cimg->size_reduction;
+            cp = GET_PIXEL(cimg->frame, cx, cy);
+            p  = GET_PIXEL(img->frame,   x,  y);
+
+            p[1] += color_transform_delta(cp[3], p[2]);
+            p[3] += color_transform_delta(cp[2], p[2]) +
+                    color_transform_delta(cp[1], p[1]);
+        }
+    }
+    return 0;
+}
+
+static int apply_subtract_green_transform(WebPContext *s)
+{
+    int x, y;
+    ImageContext *img = &s->image[IMAGE_ROLE_ARGB];
+
+    for (y = 0; y < img->frame->height; y++) {
+        for (x = 0; x < img->frame->width; x++) {
+            uint8_t *p = GET_PIXEL(img->frame, x, y);
+            p[1] += p[2];
+            p[3] += p[2];
+        }
+    }
+    return 0;
+}
+
+static int apply_color_indexing_transform(WebPContext *s)
+{
+    ImageContext *img;
+    ImageContext *pal;
+    int i, x, y;
+    uint8_t *p, *pi;
+
+    img = &s->image[IMAGE_ROLE_ARGB];
+    pal = &s->image[IMAGE_ROLE_COLOR_INDEXING];
+
+    if (pal->size_reduction > 0) {
+        GetBitContext gb_g;
+        uint8_t *line;
+        int pixel_bits = 8 >> pal->size_reduction;
+
+        line = av_malloc(img->frame->linesize[0]);
+        if (!line)
+            return AVERROR(ENOMEM);
+
+        for (y = 0; y < img->frame->height; y++) {
+            p = GET_PIXEL(img->frame, 0, y);
+            memcpy(line, p, img->frame->linesize[0]);
+            init_get_bits(&gb_g, line, img->frame->linesize[0] * 8);
+            skip_bits(&gb_g, 16);
+            i = 0;
+            for (x = 0; x < img->frame->width; x++) {
+                p    = GET_PIXEL(img->frame, x, y);
+                p[2] = get_bits(&gb_g, pixel_bits);
+                i++;
+                if (i == 1 << pal->size_reduction) {
+                    skip_bits(&gb_g, 24);
+                    i = 0;
+                }
+            }
+        }
+        av_free(line);
+    }
+
+    for (y = 0; y < img->frame->height; y++) {
+        for (x = 0; x < img->frame->width; x++) {
+            p = GET_PIXEL(img->frame, x, y);
+            i = p[2];
+            if (i >= pal->frame->width) {
+                av_log(s->avctx, AV_LOG_ERROR, "invalid palette index %d\n", i);
+                return AVERROR_INVALIDDATA;
+            }
+            pi = GET_PIXEL(pal->frame, i, 0);
+            AV_COPY32(p, pi);
+        }
+    }
+
+    return 0;
+}
+
+static int vp8_lossless_decode_frame(AVCodecContext *avctx, AVFrame *p,
+                                     int *got_frame, uint8_t *data_start,
+                                     unsigned int data_size, int is_alpha_chunk)
+{
+    WebPContext *s = avctx->priv_data;
+    int w, h, ret, i;
+
+    if (!is_alpha_chunk) {
+        s->lossless = 1;
+        avctx->pix_fmt = AV_PIX_FMT_ARGB;
+    }
+
+    ret = init_get_bits(&s->gb, data_start, data_size * 8);
+    if (ret < 0)
+        return ret;
+
+    if (!is_alpha_chunk) {
+        if (get_bits(&s->gb, 8) != 0x2F) {
+            av_log(avctx, AV_LOG_ERROR, "Invalid WebP Lossless signature\n");
+            return AVERROR_INVALIDDATA;
+        }
+
+        w = get_bits(&s->gb, 14) + 1;
+        h = get_bits(&s->gb, 14) + 1;
+        if (s->width && s->width != w) {
+            av_log(avctx, AV_LOG_WARNING, "Width mismatch. %d != %d\n",
+                   s->width, w);
+        }
+        s->width = w;
+        if (s->height && s->height != h) {
+            av_log(avctx, AV_LOG_WARNING, "Height mismatch. %d != %d\n",
+                   s->width, w);
+        }
+        s->height = h;
+
+        ret = ff_set_dimensions(avctx, s->width, s->height);
+        if (ret < 0)
+            return ret;
+
+        s->has_alpha = get_bits1(&s->gb);
+
+        if (get_bits(&s->gb, 3) != 0x0) {
+            av_log(avctx, AV_LOG_ERROR, "Invalid WebP Lossless version\n");
+            return AVERROR_INVALIDDATA;
+        }
+    } else {
+        if (!s->width || !s->height)
+            return AVERROR_BUG;
+        w = s->width;
+        h = s->height;
+    }
+
+    /* parse transformations */
+    s->nb_transforms = 0;
+    s->reduced_width = 0;
+    while (get_bits1(&s->gb)) {
+        enum TransformType transform = get_bits(&s->gb, 2);
+        s->transforms[s->nb_transforms++] = transform;
+        switch (transform) {
+        case PREDICTOR_TRANSFORM:
+            ret = parse_transform_predictor(s);
+            break;
+        case COLOR_TRANSFORM:
+            ret = parse_transform_color(s);
+            break;
+        case COLOR_INDEXING_TRANSFORM:
+            ret = parse_transform_color_indexing(s);
+            break;
+        }
+        if (ret < 0)
+            goto free_and_return;
+    }
+
+    /* decode primary image */
+    s->image[IMAGE_ROLE_ARGB].frame = p;
+    if (is_alpha_chunk)
+        s->image[IMAGE_ROLE_ARGB].is_alpha_primary = 1;
+    ret = decode_entropy_coded_image(s, IMAGE_ROLE_ARGB, w, h);
+    if (ret < 0)
+        goto free_and_return;
+
+    /* apply transformations */
+    for (i = s->nb_transforms - 1; i >= 0; i--) {
+        switch (s->transforms[i]) {
+        case PREDICTOR_TRANSFORM:
+            ret = apply_predictor_transform(s);
+            break;
+        case COLOR_TRANSFORM:
+            ret = apply_color_transform(s);
+            break;
+        case SUBTRACT_GREEN:
+            ret = apply_subtract_green_transform(s);
+            break;
+        case COLOR_INDEXING_TRANSFORM:
+            ret = apply_color_indexing_transform(s);
+            break;
+        }
+        if (ret < 0)
+            goto free_and_return;
+    }
+
+    *got_frame   = 1;
+    p->pict_type = AV_PICTURE_TYPE_I;
+    p->key_frame = 1;
+    ret          = data_size;
+
+free_and_return:
+    for (i = 0; i < IMAGE_ROLE_NB; i++)
+        image_ctx_free(&s->image[i]);
+
+    return ret;
+}
+
+static void alpha_inverse_prediction(AVFrame *frame, enum AlphaFilter m)
+{
+    int x, y, ls;
+    uint8_t *dec;
+
+    ls = frame->linesize[3];
+
+    /* filter first row using horizontal filter */
+    dec = frame->data[3] + 1;
+    for (x = 1; x < frame->width; x++, dec++)
+        *dec += *(dec - 1);
+
+    /* filter first column using vertical filter */
+    dec = frame->data[3] + ls;
+    for (y = 1; y < frame->height; y++, dec += ls)
+        *dec += *(dec - ls);
+
+    /* filter the rest using the specified filter */
+    switch (m) {
+    case ALPHA_FILTER_HORIZONTAL:
+        for (y = 1; y < frame->height; y++) {
+            dec = frame->data[3] + y * ls + 1;
+            for (x = 1; x < frame->width; x++, dec++)
+                *dec += *(dec - 1);
+        }
+        break;
+    case ALPHA_FILTER_VERTICAL:
+        for (y = 1; y < frame->height; y++) {
+            dec = frame->data[3] + y * ls + 1;
+            for (x = 1; x < frame->width; x++, dec++)
+                *dec += *(dec - ls);
+        }
+        break;
+    case ALPHA_FILTER_GRADIENT:
+        for (y = 1; y < frame->height; y++) {
+            dec = frame->data[3] + y * ls + 1;
+            for (x = 1; x < frame->width; x++, dec++)
+                dec[0] += av_clip_uint8(*(dec - 1) + *(dec - ls) - *(dec - ls - 1));
+        }
+        break;
+    }
+}
+
+static int vp8_lossy_decode_alpha(AVCodecContext *avctx, AVFrame *p,
+                                  uint8_t *data_start,
+                                  unsigned int data_size)
+{
+    WebPContext *s = avctx->priv_data;
+    int x, y, ret;
+
+    if (s->alpha_compression == ALPHA_COMPRESSION_NONE) {
+        GetByteContext gb;
+
+        bytestream2_init(&gb, data_start, data_size);
+        for (y = 0; y < s->height; y++)
+            bytestream2_get_buffer(&gb, p->data[3] + p->linesize[3] * y,
+                                   s->width);
+    } else if (s->alpha_compression == ALPHA_COMPRESSION_VP8L) {
+        uint8_t *ap, *pp;
+        int alpha_got_frame = 0;
+
+        s->alpha_frame = av_frame_alloc();
+        if (!s->alpha_frame)
+            return AVERROR(ENOMEM);
+
+        ret = vp8_lossless_decode_frame(avctx, s->alpha_frame, &alpha_got_frame,
+                                        data_start, data_size, 1);
+        if (ret < 0) {
+            av_frame_free(&s->alpha_frame);
+            return ret;
+        }
+        if (!alpha_got_frame) {
+            av_frame_free(&s->alpha_frame);
+            return AVERROR_INVALIDDATA;
+        }
+
+        /* copy green component of alpha image to alpha plane of primary image */
+        for (y = 0; y < s->height; y++) {
+            ap = GET_PIXEL(s->alpha_frame, 0, y) + 2;
+            pp = p->data[3] + p->linesize[3] * y;
+            for (x = 0; x < s->width; x++) {
+                *pp = *ap;
+                pp++;
+                ap += 4;
+            }
+        }
+        av_frame_free(&s->alpha_frame);
+    }
+
+    /* apply alpha filtering */
+    if (s->alpha_filter)
+        alpha_inverse_prediction(p, s->alpha_filter);
+
+    return 0;
+}
+
+static int vp8_lossy_decode_frame(AVCodecContext *avctx, AVFrame *p,
+                                  int *got_frame, uint8_t *data_start,
+                                  unsigned int data_size)
+{
+    WebPContext *s = avctx->priv_data;
+    AVPacket pkt;
+    int ret;
+
+    if (!s->initialized) {
+        ff_vp8_decode_init(avctx);
+        s->initialized = 1;
+        if (s->has_alpha)
+            avctx->pix_fmt = AV_PIX_FMT_YUVA420P;
+    }
+    s->lossless = 0;
+
+    if (data_size > INT_MAX) {
+        av_log(avctx, AV_LOG_ERROR, "unsupported chunk size\n");
+        return AVERROR_PATCHWELCOME;
+    }
+
+    av_init_packet(&pkt);
+    pkt.data = data_start;
+    pkt.size = data_size;
+
+    ret = ff_vp8_decode_frame(avctx, p, got_frame, &pkt);
+    if (s->has_alpha) {
+        ret = vp8_lossy_decode_alpha(avctx, p, s->alpha_data,
+                                     s->alpha_data_size);
+        if (ret < 0)
+            return ret;
+    }
+    return ret;
+}
+
+static int webp_decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
+                             AVPacket *avpkt)
+{
+    AVFrame * const p = data;
+    WebPContext *s = avctx->priv_data;
+    GetByteContext gb;
+    int ret;
+    uint32_t chunk_type, chunk_size;
+    int vp8x_flags = 0;
+
+    s->avctx     = avctx;
+    s->width     = 0;
+    s->height    = 0;
+    *got_frame   = 0;
+    s->has_alpha = 0;
+    bytestream2_init(&gb, avpkt->data, avpkt->size);
+
+    if (bytestream2_get_bytes_left(&gb) < 12)
+        return AVERROR_INVALIDDATA;
+
+    if (bytestream2_get_le32(&gb) != MKTAG('R', 'I', 'F', 'F')) {
+        av_log(avctx, AV_LOG_ERROR, "missing RIFF tag\n");
+        return AVERROR_INVALIDDATA;
+    }
+
+    chunk_size = bytestream2_get_le32(&gb);
+    if (bytestream2_get_bytes_left(&gb) < chunk_size)
+        return AVERROR_INVALIDDATA;
+
+    if (bytestream2_get_le32(&gb) != MKTAG('W', 'E', 'B', 'P')) {
+        av_log(avctx, AV_LOG_ERROR, "missing WEBP tag\n");
+        return AVERROR_INVALIDDATA;
+    }
+
+    while (bytestream2_get_bytes_left(&gb) > 0) {
+        char chunk_str[5] = { 0 };
+
+        chunk_type = bytestream2_get_le32(&gb);
+        chunk_size = bytestream2_get_le32(&gb);
+        if (chunk_size == UINT32_MAX)
+            return AVERROR_INVALIDDATA;
+        chunk_size += chunk_size & 1;
+
+        if (bytestream2_get_bytes_left(&gb) < chunk_size)
+            return AVERROR_INVALIDDATA;
+
+        switch (chunk_type) {
+        case MKTAG('V', 'P', '8', ' '):
+            if (!*got_frame) {
+                ret = vp8_lossy_decode_frame(avctx, p, got_frame,
+                                             avpkt->data + bytestream2_tell(&gb),
+                                             chunk_size);
+                if (ret < 0)
+                    return ret;
+            }
+            bytestream2_skip(&gb, chunk_size);
+            break;
+        case MKTAG('V', 'P', '8', 'L'):
+            if (!*got_frame) {
+                ret = vp8_lossless_decode_frame(avctx, p, got_frame,
+                                                avpkt->data + bytestream2_tell(&gb),
+                                                chunk_size, 0);
+                if (ret < 0)
+                    return ret;
+            }
+            bytestream2_skip(&gb, chunk_size);
+            break;
+        case MKTAG('V', 'P', '8', 'X'):
+            vp8x_flags = bytestream2_get_byte(&gb);
+            bytestream2_skip(&gb, 3);
+            s->width  = bytestream2_get_le24(&gb) + 1;
+            s->height = bytestream2_get_le24(&gb) + 1;
+            ret = av_image_check_size(s->width, s->height, 0, avctx);
+            if (ret < 0)
+                return ret;
+            break;
+        case MKTAG('A', 'L', 'P', 'H'): {
+            int alpha_header, filter_m, compression;
+
+            if (!(vp8x_flags & VP8X_FLAG_ALPHA)) {
+                av_log(avctx, AV_LOG_WARNING,
+                       "ALPHA chunk present, but alpha bit not set in the "
+                       "VP8X header\n");
+            }
+            if (chunk_size == 0) {
+                av_log(avctx, AV_LOG_ERROR, "invalid ALPHA chunk size\n");
+                return AVERROR_INVALIDDATA;
+            }
+            alpha_header       = bytestream2_get_byte(&gb);
+            s->alpha_data      = avpkt->data + bytestream2_tell(&gb);
+            s->alpha_data_size = chunk_size - 1;
+            bytestream2_skip(&gb, s->alpha_data_size);
+
+            filter_m    = (alpha_header >> 2) & 0x03;
+            compression =  alpha_header       & 0x03;
+
+            if (compression > ALPHA_COMPRESSION_VP8L) {
+                av_log(avctx, AV_LOG_VERBOSE,
+                       "skipping unsupported ALPHA chunk\n");
+            } else {
+                s->has_alpha         = 1;
+                s->alpha_compression = compression;
+                s->alpha_filter      = filter_m;
+            }
+
+            break;
+        }
+        case MKTAG('I', 'C', 'C', 'P'):
+        case MKTAG('A', 'N', 'I', 'M'):
+        case MKTAG('A', 'N', 'M', 'F'):
+        case MKTAG('E', 'X', 'I', 'F'):
+        case MKTAG('X', 'M', 'P', ' '):
+            AV_WL32(chunk_str, chunk_type);
+            av_log(avctx, AV_LOG_VERBOSE, "skipping unsupported chunk: %s\n",
+                   chunk_str);
+            bytestream2_skip(&gb, chunk_size);
+            break;
+        default:
+            AV_WL32(chunk_str, chunk_type);
+            av_log(avctx, AV_LOG_VERBOSE, "skipping unknown chunk: %s\n",
+                   chunk_str);
+            bytestream2_skip(&gb, chunk_size);
+            break;
+        }
+    }
+
+    if (!*got_frame) {
+        av_log(avctx, AV_LOG_ERROR, "image data not found\n");
+        return AVERROR_INVALIDDATA;
+    }
+
+    return avpkt->size;
+}
+
+static av_cold int webp_decode_close(AVCodecContext *avctx)
+{
+    WebPContext *s = avctx->priv_data;
+
+    if (s->initialized)
+        return ff_vp8_decode_free(avctx);
+
+    return 0;
+}
+
+AVCodec ff_webp_decoder = {
+    .name           = "webp",
+    .long_name      = NULL_IF_CONFIG_SMALL("WebP image"),
+    .type           = AVMEDIA_TYPE_VIDEO,
+    .id             = AV_CODEC_ID_WEBP,
+    .priv_data_size = sizeof(WebPContext),
+    .decode         = webp_decode_frame,
+    .close          = webp_decode_close,
+    .capabilities   = CODEC_CAP_DR1 | CODEC_CAP_FRAME_THREADS,
+};

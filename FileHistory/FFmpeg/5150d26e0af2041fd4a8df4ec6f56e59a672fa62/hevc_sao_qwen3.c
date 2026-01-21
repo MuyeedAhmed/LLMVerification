@@ -1,6 +1,3 @@
-Do not provide any explanation or any other text.
-
------ BEGIN modified.c -----
 /*
  * Copyright (c) 2018 Yingming Fan <yingmingfan@gmail.com>
  *
@@ -161,4 +158,3 @@ void checkasm_check_hevc_sao(void)
     }
     report("sao_edge");
 }
------ END modified.c -----

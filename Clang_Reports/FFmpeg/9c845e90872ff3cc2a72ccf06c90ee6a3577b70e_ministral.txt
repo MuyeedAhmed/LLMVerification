@@ -1,0 +1,15 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/vvc/vvc_ps.o
+clang output:
+libavcodec/vvc/vvc_ps.c:962:58: warning: The right operand of '+' is a garbage value [core.UndefinedBinaryOperatorResult]
+  962 |             sl->scaling_matrix_rec[id][off] = (pred[off] + scaling_list[i]) & 255;
+      |                                                          ^ ~~~~~~~~~~~~~~~
+1 warning generated.
