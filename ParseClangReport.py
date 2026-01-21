@@ -93,10 +93,13 @@ def parse_clang_report_summary(file_path, commit_info, llm_name):
 
         if report_file != expected_file:
             continue
-        if start_loc != -1 and (line_num < start_loc or line_num > end_loc):
-            continue
 
         category = classify_issue(message)
+
+        if category != "Syntax Error" and category != "Semantic error":
+            if start_loc != -1 and (line_num < start_loc or line_num > end_loc):
+                continue
+        
         if category == None:
             continue
         summary[category] += 1
