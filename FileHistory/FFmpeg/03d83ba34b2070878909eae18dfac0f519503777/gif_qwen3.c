@@ -357,4 +357,3 @@ AVCodec ff_gif_encoder = {
     },
     .priv_class     = &gif_class,
 };
-

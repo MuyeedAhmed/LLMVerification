@@ -200,7 +200,6 @@ static void restore_rgb_planes(uint8_t *src, int step, int stride, int width,
     }
 }
 
-
 static void restore_median(uint8_t *src, int step, int stride,
                            int width, int height, int slices, int rmode)
 {
@@ -332,6 +331,7 @@ static void restore_median_il(uint8_t *src, int step, int stride,
     }
 }
 
+ 
 static int decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
                         AVPacket *avpkt)
 {

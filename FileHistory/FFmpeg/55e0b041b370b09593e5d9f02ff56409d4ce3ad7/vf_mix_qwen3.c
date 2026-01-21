@@ -401,7 +401,6 @@ const AVFilter ff_vf_mix = {
 #endif /* CONFIG_MIX_FILTER */
 
 #if CONFIG_TMIX_FILTER
-#if CONFIG_TMIX_FILTER
 static int tmix_filter_frame(AVFilterLink *inlink, AVFrame *in)
 {
     AVFilterContext *ctx = inlink->dst;
@@ -444,38 +443,4 @@ static int tmix_filter_frame(AVFilterLink *inlink, AVFrame *in)
 
     return ff_filter_frame(outlink, out);
 }
-#endif /* CONFIG_TMIX_FILTER */
-
-static const AVOption tmix_options[] = {
-    { "frames", "set number of successive frames to mix", OFFSET(nb_inputs), AV_OPT_TYPE_INT, {.i64=3}, 1, 1024, .flags = FLAGS },
-    { "weights", "set weight for each frame", OFFSET(weights_str), AV_OPT_TYPE_STRING, {.str="1 1 1"}, 0, 0, .flags = TFLAGS },
-    { "scale", "set scale", OFFSET(scale), AV_OPT_TYPE_FLOAT, {.dbl=0}, 0, INT16_MAX, .flags = TFLAGS },
-    { "planes", "set what planes to filter", OFFSET(planes),   AV_OPT_TYPE_FLAGS, {.i64=15}, 0, 15,  .flags = TFLAGS },
-    { NULL },
-};
-
-static const AVFilterPad inputs[] = {
-    {
-        .name          = "default",
-        .type          = AVMEDIA_TYPE_VIDEO,
-        .filter_frame  = tmix_filter_frame,
-    },
-};
-
-AVFILTER_DEFINE_CLASS(tmix);
-
-const AVFilter ff_vf_tmix = {
-    .name          = "tmix",
-    .description   = NULL_IF_CONFIG_SMALL("Mix successive video frames."),
-    .priv_size     = sizeof(MixContext),
-    .priv_class    = &tmix_class,
-    FILTER_OUTPUTS(outputs),
-    FILTER_INPUTS(inputs),
-    FILTER_QUERY_FUNC(query_formats),
-    .init          = init,
-    .uninit        = uninit,
-    .flags         = AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL | AVFILTER_FLAG_SLICE_THREADS,
-    .process_command = process_command,
-};
-
 #endif /* CONFIG_TMIX_FILTER */

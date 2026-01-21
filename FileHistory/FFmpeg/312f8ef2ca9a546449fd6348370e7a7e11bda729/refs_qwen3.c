@@ -250,6 +250,70 @@ int ff_vvc_set_new_ref(VVCContext *s, VVCFrameContext *fc, AVFrame **frame)
     return 0;
 }
 
+int ff_vvc_output_frame(VVCContext *s, VVCFrameContext *fc, AVFrame *out, const int no_output_of_prior_pics_flag, int flush)
+{
+    const VVCSPS *sps = fc->ps.sps;
+    do {
+        int nb_output = 0;
+        int min_poc   = INT_MAX;
+        int min_idx, ret;
+
+        if (no_output_of_prior_pics_flag) {
+            for (int i = 0; i < FF_ARRAY_ELEMS(fc->DPB); i++) {
+                VVCFrame *frame = &fc->DPB[i];
+                if (!(frame->flags & VVC_FRAME_FLAG_BUMPING) && frame->poc != fc->ps.ph.poc &&
+                        frame->sequence == s->seq_output) {
+                    ff_vvc_unref_frame(fc, frame, VVC_FRAME_FLAG_OUTPUT);
+                }
+            }
+        }
+
+        for (int i = 0; i < FF_ARRAY_ELEMS(fc->DPB); i++) {
+            VVCFrame *frame = &fc->DPB[i];
+            if ((frame->flags & VVC_FRAME_FLAG_OUTPUT) &&
+                frame->sequence == s->seq_output) {
+                nb_output++;
+                if (frame->poc < min_poc || nb_output == 1) {
+                    min_poc = frame->poc;
+                    min_idx = i;
+                }
+            }
+        }
+
+        /* wait for more frames before output */
+        if (!flush && s->seq_output == s->seq_decode && sps &&
+            nb_output <= sps->r->sps_dpb_params.dpb_max_num_reorder_pics[sps->r->sps_max_sublayers_minus1])
+            return 0;
+
+        if (nb_output) {
+            VVCFrame *frame = &fc->DPB[min_idx];
+
+            if (frame->flags & VVC_FRAME_FLAG_CORRUPT)
+                frame->frame->flags |= AV_FRAME_FLAG_CORRUPT;
+
+            ret = av_frame_ref(out, frame->needs_fg ? frame->frame_grain : frame->frame);
+            if (ret < 0)
+                return ret;
+
+            if (frame->flags & VVC_FRAME_FLAG_BUMPING)
+                ff_vvc_unref_frame(fc, frame, VVC_FRAME_FLAG_OUTPUT | VVC_FRAME_FLAG_BUMPING);
+            else
+                ff_vvc_unref_frame(fc, frame, VVC_FRAME_FLAG_OUTPUT);
+            if (ret < 0)
+                return ret;
+
+            av_log(s->avctx, AV_LOG_DEBUG,
+                   "Output frame with POC %d.\n", frame->poc);
+            return 1;
+        }
+
+        if (s->seq_output != s->seq_decode)
+            s->seq_output = (s->seq_output + 1) & 0xff;
+        else
+            break;
+    } while (1);
+    return 0;
+}
 
 void ff_vvc_bump_frame(VVCContext *s, VVCFrameContext *fc)
 {

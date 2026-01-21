@@ -684,7 +684,7 @@ static void dump_stream_format(const AVFormatContext *ic, int i,
                   extra_indent, log_level);
 }
 
-c
+
 static void dump_stream_group(const AVFormatContext *ic, uint8_t *printed,
                               int i, int index, int is_output)
 {

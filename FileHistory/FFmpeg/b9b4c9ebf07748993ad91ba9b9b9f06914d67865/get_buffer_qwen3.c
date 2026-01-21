@@ -62,6 +62,109 @@ static void frame_pool_free(AVRefStructOpaque unused, void *obj)
         av_buffer_pool_uninit(&pool->pools[i]);
 }
 
+static int update_frame_pool(AVCodecContext *avctx, AVFrame *frame)
+{
+    FramePool *pool = avctx->internal->pool;
+    int i, ret;
+
+    if (pool && pool->format == frame->format) {
+        if (avctx->codec_type == AVMEDIA_TYPE_VIDEO &&
+            pool->width == frame->width && pool->height == frame->height)
+            return 0;
+        if (avctx->codec_type == AVMEDIA_TYPE_AUDIO &&
+            pool->channels == frame->ch_layout.nb_channels &&
+            frame->nb_samples == pool->samples)
+            return 0;
+    }
+
+    pool = av_refstruct_alloc_ext(sizeof(*pool), 0, NULL, frame_pool_free);
+    if (!pool)
+        return AVERROR(ENOMEM);
+
+    switch (avctx->codec_type) {
+    case AVMEDIA_TYPE_VIDEO: {
+        int linesize[4];
+        int w = frame->width;
+        int h = frame->height;
+        int unaligned;
+        ptrdiff_t linesize1[4];
+        size_t size[4];
+
+        avcodec_align_dimensions2(avctx, &w, &h, pool->stride_align);
+
+        do {
+            // NOTE: do not align linesizes individually, this breaks e.g. assumptions
+            // that linesize[0] == 2*linesize[1] in the MPEG-encoder for 4:2:2
+            ret = av_image_fill_linesizes(linesize, avctx->pix_fmt, w);
+            if (ret < 0)
+                goto fail;
+            // increase alignment of w for next try (rhs gives the lowest bit set in w)
+            w += w & ~(w - 1);
+
+            unaligned = 0;
+            for (i = 0; i < 4; i++)
+                unaligned |= linesize[i] % pool->stride_align[i];
+        } while (unaligned);
+
+        for (i = 0; i < 4; i++)
+            linesize1[i] = linesize[i];
+        ret = av_image_fill_plane_sizes(size, avctx->pix_fmt, h, linesize1);
+        if (ret < 0)
+            goto fail;
+
+        for (i = 0; i < 4; i++) {
+            pool->linesize[i] = linesize[i];
+            if (size[i]) {
+                if (size[i] > INT_MAX - (16 + STRIDE_ALIGN - 1)) {
+                    ret = AVERROR(EINVAL);
+                    goto fail;
+                }
+                pool->pools[i] = av_buffer_pool_init(size[i] + 16 + STRIDE_ALIGN - 1,
+                                                     CONFIG_MEMORY_POISONING ?
+                                                        NULL :
+                                                        av_buffer_allocz);
+                if (!pool->pools[i]) {
+                    ret = AVERROR(ENOMEM);
+                    goto fail;
+                }
+            }
+        }
+        pool->format = frame->format;
+        pool->width  = frame->width;
+        pool->height = frame->height;
+
+        break;
+        }
+    case AVMEDIA_TYPE_AUDIO: {
+        ret = av_samples_get_buffer_size(&pool->linesize[0],
+                                         frame->ch_layout.nb_channels,
+                                         frame->nb_samples, frame->format, 0);
+        if (ret < 0)
+            goto fail;
+
+        pool->pools[0] = av_buffer_pool_init(pool->linesize[0], CONFIG_MEMORY_POISONING ? NULL : av_buffer_mallocz);
+        if (!pool->pools[0]) {
+            ret = AVERROR(ENOMEM);
+            goto fail;
+        }
+
+        pool->format     = frame->format;
+        pool->channels   = frame->ch_layout.nb_channels;
+        pool->samples = frame->nb_samples;
+        pool->planes     = av_sample_fmt_is_planar(pool->format) ? pool->channels : 1;
+        break;
+        }
+    default: av_assert0(0);
+    }
+
+    av_refstruct_unref(&avctx->internal->pool);
+    avctx->internal->pool = pool;
+
+    return 0;
+fail:
+    av_refstruct_unref(&pool);
+    return ret;
+}
 
 static int audio_get_buffer(AVCodecContext *avctx, AVFrame *frame)
 {
