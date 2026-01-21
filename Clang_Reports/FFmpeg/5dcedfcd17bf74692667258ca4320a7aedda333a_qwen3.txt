@@ -1,0 +1,18 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavformat/mpegts.o
+libavformat/mpegts.c:3041:49: error: use of undeclared identifier 'sdt_cb'
+ 3041 |         mpegts_open_section_filter(ts, SDT_PID, sdt_cb, ts, 1);
+      |                                                 ^
+libavformat/mpegts.c:3303:45: error: use of undeclared identifier 'sdt_cb'
+ 3303 |     mpegts_open_section_filter(ts, SDT_PID, sdt_cb, ts, 1);
+      |                                             ^
+2 errors generated.
+make: *** [libavformat/mpegts.o] Error 1

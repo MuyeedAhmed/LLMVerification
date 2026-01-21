@@ -1,0 +1,17 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+CC	libavformat/rtpdec_asf.o
+libavformat/rtpdec_asf.c:289:1: error: use of undeclared identifier 'asfrtp_close_context'
+  289 | RTP_ASF_HANDLER(asf_pfv, "x-asf-pf",  AVMEDIA_TYPE_VIDEO);
+      | ^
+libavformat/rtpdec_asf.c:285:25: note: expanded from macro 'RTP_ASF_HANDLER'
+  285 |     .close            = asfrtp_close_context, \
+      |                         ^
+libavformat/rtpdec_asf.c:290:1: error: use of undeclared identifier 'asfrtp_close_context'
+  290 | RTP_ASF_HANDLER(asf_pfa, "x-asf-pf",  AVMEDIA_TYPE_AUDIO);
+      | ^
+libavformat/rtpdec_asf.c:285:25: note: expanded from macro 'RTP_ASF_HANDLER'
+  285 |     .close            = asfrtp_close_context, \
+      |                         ^
+2 errors generated.
+make: *** [libavformat/rtpdec_asf.o] Error 1

@@ -1,0 +1,22 @@
+Detected Clang
+Makefile found: cleaning and building with Bear
+GEN	libavutil/libavutil.version
+GEN	libswscale/libswscale.version
+GEN	libswresample/libswresample.version
+GEN	libavcodec/libavcodec.version
+GEN	libavformat/libavformat.version
+GEN	libavfilter/libavfilter.version
+GEN	libavdevice/libavdevice.version
+CC	libavcodec/ffv1dec.o
+libavcodec/ffv1dec.c:312:13: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  312 |         int current_mul = 1;
+      |             ^
+libavcodec/ffv1dec.c:287:5: error: no previous prototype for function 'decode_remap' [-Werror,-Wmissing-prototypes]
+  287 | int decode_remap(FFV1Context *f, FFV1SliceContext *sc)
+      |     ^
+libavcodec/ffv1dec.c:287:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  287 | int decode_remap(FFV1Context *f, FFV1SliceContext *sc)
+      | ^
+      | static 
+1 warning and 1 error generated.
+make: *** [libavcodec/ffv1dec.o] Error 1
