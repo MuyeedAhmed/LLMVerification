@@ -1,0 +1,62 @@
+wolfcrypt/src/dsa.c:1:19: error: unknown type name 'DsaKey'
+    1 | int wc_InitDsaKey(DsaKey* key)
+      |                   ^
+wolfcrypt/src/dsa.c:3:16: error: use of undeclared identifier 'NULL'
+    3 |     if (key == NULL)
+      |                ^~~~
+wolfcrypt/src/dsa.c:4:16: error: use of undeclared identifier 'BAD_FUNC_ARG'
+    4 |         return BAD_FUNC_ARG;
+      |                ^~~~~~~~~~~~
+wolfcrypt/src/dsa.c:7:17: error: use of undeclared identifier 'NULL'
+    7 |     key->heap = NULL;
+      |                 ^~~~
+wolfcrypt/src/dsa.c:9:12: error: call to undeclared function 'mp_init_multi'; ISO C99 and later do not support implicit function
+      declarations [-Wimplicit-function-declaration]
+    9 |     return mp_init_multi(
+      |            ^
+wolfcrypt/src/dsa.c:18:9: error: use of undeclared identifier 'NULL'
+   18 |         NULL
+      |         ^~~~
+wolfcrypt/src/dsa.c:22:21: error: unknown type name 'DsaKey'
+   22 | int wc_InitDsaKey_h(DsaKey* key, void* h)
+      |                     ^
+wolfcrypt/src/dsa.c:31:20: error: unknown type name 'DsaKey'
+   31 | void wc_FreeDsaKey(DsaKey* key)
+      |                    ^
+wolfcrypt/src/dsa.c:33:16: error: use of undeclared identifier 'NULL'
+   33 |     if (key == NULL)
+      |                ^~~~
+wolfcrypt/src/dsa.c:36:22: error: use of undeclared identifier 'DSA_PRIVATE'
+   36 |     if (key->type == DSA_PRIVATE)
+      |                      ^~~~~~~~~~~
+wolfcrypt/src/dsa.c:37:9: error: call to undeclared function 'mp_forcezero'; ISO C99 and later do not support implicit function
+      declarations [-Wimplicit-function-declaration]
+   37 |         mp_forcezero(&key->x);
+      |         ^
+wolfcrypt/src/dsa.c:39:5: error: call to undeclared function 'mp_clear'; ISO C99 and later do not support implicit function declarations
+      [-Wimplicit-function-declaration]
+   39 |     mp_clear(&key->x);
+      |     ^
+wolfcrypt/src/dsa.c:46:19: error: unknown type name 'WC_RNG'
+   46 | int wc_MakeDsaKey(WC_RNG *rng, DsaKey *dsa)
+      |                   ^
+wolfcrypt/src/dsa.c:46:32: error: unknown type name 'DsaKey'
+   46 | int wc_MakeDsaKey(WC_RNG *rng, DsaKey *dsa)
+      |                                ^
+wolfcrypt/src/dsa.c:48:5: error: use of undeclared identifier 'byte'
+   48 |     byte* cBuf;
+      |     ^~~~
+wolfcrypt/src/dsa.c:48:11: error: use of undeclared identifier 'cBuf'
+   48 |     byte* cBuf;
+      |           ^~~~
+wolfcrypt/src/dsa.c:53:5: error: use of undeclared identifier 'mp_int'
+   53 |     mp_int tmpQ[1];
+      |     ^~~~~~
+wolfcrypt/src/dsa.c:56:16: error: use of undeclared identifier 'NULL'
+   56 |     if (rng == NULL || dsa == NULL)
+      |                ^~~~
+wolfcrypt/src/dsa.c:56:31: error: use of undeclared identifier 'NULL'
+   56 |     if (rng == NULL || dsa == NULL)
+      |                               ^~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.

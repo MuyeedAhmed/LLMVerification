@@ -1,0 +1,5 @@
+clang output:
+wolfcrypt/src/port/devcrypto/wc_devcrypto.c:27:10: fatal error: 'wolfssl/wolfcrypt/settings.h' file not found
+   27 | #include <wolfssl/wolfcrypt/settings.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.

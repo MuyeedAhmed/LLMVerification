@@ -1,0 +1,5 @@
+clang output:
+wolfcrypt/src/sha256.c:1:2: error: unterminated conditional directive
+    1 | #if defined(FREESCALE_MMCAU_SHA)
+      |  ^
+1 error generated.

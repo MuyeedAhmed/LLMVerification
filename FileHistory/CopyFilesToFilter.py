@@ -3,7 +3,7 @@ import shutil
 
 base_dir = "FFmpeg"
 filtered_dir = "FFmpegFiltered/"
-llm = "ministral"
+llm = "qwen3"
 
 dest_original = os.path.join(filtered_dir, "Original")
 dest_human = os.path.join(filtered_dir, "Human")
