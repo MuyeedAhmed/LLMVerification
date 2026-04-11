@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import stats
 
 df = pd.read_excel("All.xlsx")
 
@@ -13,7 +14,6 @@ def plot_bin_counts(column_name):
     df_bin = df[[column_name, "Result", "LLM"]].dropna()
     df_bin["bin"] = pd.qcut(df_bin[column_name], q=bin_count, duplicates="drop")
 
-    # group by bin + LLM
     grouped = df_bin.groupby(["bin", "LLM"])
     stats = grouped["Result"].agg(total="count", correct="sum")
     stats["correct_pct"] = stats["correct"] / stats["total"] * 100
@@ -35,7 +35,6 @@ def plot_bin_counts(column_name):
     plt.xlabel(column_name)
     plt.ylabel("Success Rate (%)")
 
-    # custom x-tick labels
     if column_name == "Context File Size":
         labels = ["[32-276]", "[277-479]", "[480-602]", "[603-774]",
                   "[745-1066]", "[1067-2335]", "[2336-7695]", "[7696-125527]"]
@@ -53,6 +52,28 @@ def plot_bin_counts(column_name):
     plt.tight_layout()
     plt.savefig(f"Figures/{column_name}_by_LLM.pdf")
 
+def ttests(column_name):
+    df_c = df[[column_name, "Result", "LLM"]].dropna()
+    llms = df_c["LLM"].unique()
+    for llm in llms:
+        llm_data = df_c[df_c["LLM"] == llm]
+        success_group = llm_data[llm_data['Result'] == 1][column_name]
+        failure_group = llm_data[llm_data['Result'] == 0][column_name]
+
+        # Welch's T-Test (does not assume equal variance or sample size)
+        t_stat, p_val = stats.ttest_ind(success_group, failure_group, equal_var=False)
+
+        print(f"--- Welch's T-Test on Raw Data {column_name} - {llm} ---")
+        print(f"Mean size (Success): {success_group.mean():.2f}")
+        print(f"Mean size (Failure): {failure_group.mean():.2f}")
+        print(f"T-statistic: {t_stat:.4f}")
+        print(f"P-value: {p_val:.4f}")
+
+        if p_val < 0.05:
+            print("Result: Statistically Significant. File size differs between outcomes.")
+        else:
+            print("Result: Not Significant. File size is not a primary driver of outcome.")
 
 for col in ["Context File Size", "Function Size", "Diff Size"]:
     plot_bin_counts(col)
+    ttests(col)
