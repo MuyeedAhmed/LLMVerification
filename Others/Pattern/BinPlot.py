@@ -33,11 +33,11 @@ def plot_bin_counts(column_name):
         ### Curve Fit
         color = bars[0].get_facecolor()
         if len(y) > 1:
-            degree = min(3, len(y) - 1)
+            degree = 3
             z = np.polyfit(x_llm, y, degree)
             p = np.poly1d(z)
             x_smooth = np.linspace(x_llm.min(), x_llm.max(), 100)
-            plt.plot(x_smooth, p(x_smooth), color=color, linestyle='--',linewidth=1, alpha=0.6)
+            plt.plot(x_smooth, p(x_smooth), color=color, linestyle='--',linewidth=1.2, alpha=0.7)
     
     ### Combined curve fit
     # combined = df_bin.groupby("bin", observed=False)["Result"].agg(["sum", "count"]).fillna(0)
