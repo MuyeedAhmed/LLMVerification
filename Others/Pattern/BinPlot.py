@@ -14,23 +14,41 @@ def plot_bin_counts(column_name):
     df_bin = df[[column_name, "Result", "LLM"]].dropna()
     df_bin["bin"] = pd.qcut(df_bin[column_name], q=bin_count, duplicates="drop")
 
-    grouped = df_bin.groupby(["bin", "LLM"])
-    stats = grouped["Result"].agg(total="count", correct="sum")
-    stats["correct_pct"] = stats["correct"] / stats["total"] * 100
-    stats = stats.reset_index()
-
-    bins = stats["bin"].astype(str).unique()
-    llms = stats["LLM"].unique()
-
+    pivot = df_bin.pivot_table(index="bin", columns="LLM", values="Result", 
+                               aggfunc=["sum", "count"], observed=False).fillna(0)
+    
+    bins = pivot.index
+    llms = pivot["sum"].columns
     x = np.arange(len(bins))
     width = 0.8 / len(llms)
 
     plt.figure(figsize=(5, 3))
+    all_x_centers = x + width * (len(llms) - 1) / 2
 
     for i, llm in enumerate(llms):
-        llm_data = stats[stats["LLM"] == llm]
-        y = llm_data["correct_pct"].values
-        plt.bar(x + i * width, y, width, label=llm)
+        y = (pivot["sum"][llm] / pivot["count"][llm] * 100).fillna(0).values
+        x_llm = x + i * width
+        bars = plt.bar(x_llm, y, width, label=llm)
+        
+        ### Curve Fit
+        color = bars[0].get_facecolor()
+        if len(y) > 1:
+            degree = min(3, len(y) - 1)
+            z = np.polyfit(x_llm, y, degree)
+            p = np.poly1d(z)
+            x_smooth = np.linspace(x_llm.min(), x_llm.max(), 100)
+            plt.plot(x_smooth, p(x_smooth), color=color, linestyle='--',linewidth=1, alpha=0.6)
+    
+    ### Combined curve fit
+    # combined = df_bin.groupby("bin", observed=False)["Result"].agg(["sum", "count"]).fillna(0)
+    # y_combined = (combined["sum"] / combined["count"] * 100).fillna(0).values
+    
+    # if len(y_combined) > 1:
+    #     degree = min(3, len(y_combined) - 1)
+    #     z = np.polyfit(all_x_centers, y_combined, degree)
+    #     p = np.poly1d(z)
+    #     x_smooth = np.linspace(all_x_centers.min(), all_x_centers.max(), 100)
+    #     plt.plot(x_smooth, p(x_smooth), color='black', linestyle='--', linewidth=2, label='Combined Fit',alpha=0.6)
 
     plt.xlabel(column_name)
     plt.ylabel("Success Rate (%)")
@@ -44,13 +62,16 @@ def plot_bin_counts(column_name):
     elif column_name == "Diff Size":
         labels = ["[1-3]", "[3-8]", "[9-66]"]
     else:
-        labels = bins
+        labels = [str(b) for b in bins]
 
-    plt.xticks(x + width * (len(llms) - 1) / 2, labels, rotation=45, ha="center")
+    if len(labels) != len(bins):
+        labels = [str(b) for b in bins]
+
+    plt.xticks(all_x_centers, labels, rotation=45, ha="center")
 
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"Figures/{column_name}_by_LLM.pdf")
+    plt.savefig(f"Figures/{column_name}_by_LLM.pdf", format='pdf', bbox_inches='tight')
 
 def ttests(column_name):
     df_c = df[[column_name, "Result", "LLM"]].dropna()
@@ -60,7 +81,6 @@ def ttests(column_name):
         success_group = llm_data[llm_data['Result'] == 1][column_name]
         failure_group = llm_data[llm_data['Result'] == 0][column_name]
 
-        # Welch's T-Test (does not assume equal variance or sample size)
         t_stat, p_val = stats.ttest_ind(success_group, failure_group, equal_var=False)
 
         print(f"--- Welch's T-Test on Raw Data {column_name} - {llm} ---")
@@ -68,11 +88,6 @@ def ttests(column_name):
         print(f"Mean size (Failure): {failure_group.mean():.2f}")
         print(f"T-statistic: {t_stat:.4f}")
         print(f"P-value: {p_val:.4f}")
-
-        if p_val < 0.05:
-            print("Result: Statistically Significant. File size differs between outcomes.")
-        else:
-            print("Result: Not Significant. File size is not a primary driver of outcome.")
 
 for col in ["Context File Size", "Function Size", "Diff Size"]:
     plot_bin_counts(col)
